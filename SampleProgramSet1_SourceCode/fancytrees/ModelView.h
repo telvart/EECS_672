@@ -25,7 +25,7 @@ public:
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
 	void getMCBoundingBox(double* xyzLimits) const;
-	bool handleCommand(unsigned char key, double ldsX, double ldsY);
+	bool handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY);
 	void render() const;
 
 	// Viewing controls common to 2D and 3D:

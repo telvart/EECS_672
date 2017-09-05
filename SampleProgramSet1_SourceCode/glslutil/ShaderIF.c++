@@ -32,11 +32,11 @@ ShaderIF::ShaderIF(const ShaderSpec* shaders, int nShaders) :
 
 ShaderIF::~ShaderIF()
 {
-	if (shaders != NULL)
+	if (shaders != nullptr)
 	{
 		destroy();
 		delete [] shaders;
-		shaders = NULL;
+		shaders = nullptr;
 	}
 }
 
@@ -70,7 +70,7 @@ void ShaderIF::initShaders()
 
 		shaders[i].pgmID = glCreateShader(shaders[i].sType);
 		const char* src = shaders[i].source.c_str();
-		glShaderSource(shaders[i].pgmID, 1, &src, NULL);
+		glShaderSource(shaders[i].pgmID, 1, &src, nullptr);
 		glCompileShader(shaders[i].pgmID);
 		
 		GLint  compiled;
@@ -87,7 +87,7 @@ void ShaderIF::initShaders()
 				try
 				{
 					char* logMsg = new char[logSize];
-					glGetShaderInfoLog(shaders[i].pgmID, logSize, NULL, logMsg );
+					glGetShaderInfoLog(shaders[i].pgmID, logSize, nullptr, logMsg );
 					std::cerr << "ERROR LOG: '" << logMsg << "'\n";
 					delete [] logMsg;
 				}
@@ -120,7 +120,7 @@ void ShaderIF::initShaders()
 		try
 		{
 			char* logMsg = new char[logSize];
-			glGetProgramInfoLog( shaderPgm, logSize, NULL, logMsg );
+			glGetProgramInfoLog( shaderPgm, logSize, nullptr, logMsg );
 			std::cerr << "ERROR LOG: '" << logMsg << "'\n";
 			delete [] logMsg;
 		}
@@ -134,12 +134,19 @@ void ShaderIF::initShaders()
 
 GLint ShaderIF::ppuExists(const std::string& name) // per-primitive (uniform)
 {
+	if (shaderPgm <= 0)
+		return -1;
 	GLint loc = glGetUniformLocation(shaderPgm, name.c_str());
 	return loc;
 }
 
 GLint ShaderIF::ppuLoc(const std::string& name) // per-primitive (uniform)
 {
+	if (shaderPgm <= 0)
+	{
+		std::cerr << "Shader program did not get built; cannot look up: '" << name << "'\n";
+		return -1;
+	}
 	GLint loc = glGetUniformLocation(shaderPgm, name.c_str());
 	if (loc < 0)
 		std::cerr << "Could not locate per-primitive uniform: '" << name << "'\n";
@@ -148,12 +155,19 @@ GLint ShaderIF::ppuLoc(const std::string& name) // per-primitive (uniform)
 
 GLint ShaderIF::pvaExists(const std::string& name) // per-vertex attribute
 {
+	if (shaderPgm <= 0)
+		return -1;
 	GLint loc = glGetAttribLocation(shaderPgm, name.c_str());
 	return loc;
 }
 
 GLint ShaderIF::pvaLoc(const std::string& name) // per-vertex attribute
 {
+	if (shaderPgm <= 0)
+	{
+		std::cerr << "Shader program did not get built; cannot look up: '" << name << "'\n";
+		return -1;
+	}
 	GLint loc = glGetAttribLocation(shaderPgm, name.c_str());
 	if (loc < 0)
 		std::cerr << "Could not locate per-vertex attribute: '" << name << "'\n";

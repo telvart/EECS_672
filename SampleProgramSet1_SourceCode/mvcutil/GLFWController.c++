@@ -5,17 +5,15 @@
 #include "GLFWController.h"
 #include "ModelView.h"
 
-bool GLFWController::glfwInitialized = false;
+int GLFWController::numGLFWControllers = 0;
 
 GLFWController::GLFWController(const std::string& windowTitle, int rcFlags) :
+	theWindow(nullptr),
 	returnFromRun(false), runWaitsForAnEvent(true),
 	lastPixelPosX(0), lastPixelPosY(0)
 {
-	if (!glfwInitialized)
-	{
+	if (numGLFWControllers++ == 0)
 		glfwInit();
-		glfwInitialized = true;
-	}
 
 	// First create the window and its Rendering Context (RC)
 	createWindowAndRC(windowTitle, rcFlags);
@@ -23,11 +21,11 @@ GLFWController::GLFWController(const std::string& windowTitle, int rcFlags) :
 
 GLFWController::~GLFWController()
 {
-	// IF THIS IS THE LAST CONTROLLER
-	{
+	if (theWindow != nullptr)
+		glfwDestroyWindow(theWindow);
+
+	if (--numGLFWControllers == 0)
 		glfwTerminate();
-		glfwInitialized = false;
-	}
 }
 
 void GLFWController::charCB(GLFWwindow* window, unsigned int theChar)
@@ -48,34 +46,26 @@ void GLFWController::createWindowAndRC(const std::string& windowTitle, int rcFla
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	int minor = 8; // Start AT LEAST one greater than where you really want to start
-	theWindow = NULL;
-	while ((theWindow == NULL) && (minor > 0))
+	while ((theWindow == nullptr) && (minor > 0))
 	{
 		minor--;
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
-		theWindow = glfwCreateWindow(newWindowWidth, newWindowHeight, titleString(windowTitle).c_str(), NULL, NULL);
+		theWindow = glfwCreateWindow(newWindowWidth, newWindowHeight, titleString(windowTitle).c_str(), nullptr, nullptr);
 	}
-	if (theWindow == NULL)
+	if (theWindow == nullptr)
 	{
 		std::cerr << "\n**** COULD NOT CREATE A 4.x RENDERING CONTEXT ****\n\n";
-		glfwTerminate();
-		glfwInitialized = false;
+		return;
 	}
 
 	glfwMakeContextCurrent(theWindow);
-	establishInitialCallbacksForRC();
-}
-
-void GLFWController::establishInitialCallbacksForRC()
-{
-	glfwSetWindowSizeCallback(theWindow, reshapeCB);
-	glfwSetCharCallback(theWindow, charCB);
-	glfwSetKeyCallback(theWindow, keyboardCB);
-	glfwSetCursorPosCallback(theWindow, mouseMotionCB);
+	initializeCallbacksForRC();
 }
 
 void GLFWController::handleDisplay()
 {
+	if (theWindow == nullptr)
+		return;
 	glfwMakeContextCurrent(theWindow);
 	int width, height;
 	glfwGetFramebufferSize(theWindow, &width, &height);
@@ -94,19 +84,27 @@ void GLFWController::handleDisplay()
 	checkForErrors(std::cout, "GLFWController::handleDisplay");
 }
 
+void GLFWController::initializeCallbacksForRC()
+{
+	glfwSetWindowSizeCallback(theWindow, reshapeCB);
+	glfwSetCharCallback(theWindow, charCB);
+	glfwSetKeyCallback(theWindow, keyboardCB);
+	glfwSetCursorPosCallback(theWindow, mouseMotionCB);
+}
+
 void GLFWController::keyboardCB(GLFWwindow* window, int key, int scanCode, int action, int mods)
 {
-	if (curController != NULL)
+	if (curController != nullptr)
 	{
 		GLFWController* theC = dynamic_cast<GLFWController*>(curController);
-		if (key == GLFW_KEY_ESCAPE)
+		if ((key == GLFW_KEY_ESCAPE) && (action != GLFW_PRESS))
 			theC->handleAsciiChar(27, theC->lastPixelPosX, theC->lastPixelPosY);
 	}
 }
 
 void GLFWController::mouseMotionCB(GLFWwindow* window, double x, double y)
 {
-	if (curController != NULL)
+	if (curController != nullptr)
 	{
 		GLFWController* c = dynamic_cast<GLFWController*>(curController);
 		c->lastPixelPosX = static_cast<int>(x + 0.5);
@@ -126,6 +124,8 @@ void GLFWController::reshapeCB(GLFWwindow* window, int width, int height)
 
 void GLFWController::run()
 {
+	if (theWindow == nullptr)
+		return;
 	while (!glfwWindowShouldClose(theWindow) && !returnFromRun)
 	{
 		if (runWaitsForAnEvent)
@@ -135,10 +135,11 @@ void GLFWController::run()
 		handleDisplay();
 	}
 	glfwDestroyWindow(theWindow);
-	theWindow = NULL;
+	theWindow = nullptr;
 }
 
 void GLFWController::setWindowTitle(const std::string& title)
 {
-	glfwSetWindowTitle(theWindow, title.c_str());
+	if (theWindow != nullptr)
+		glfwSetWindowTitle(theWindow, title.c_str());
 }

@@ -1,4 +1,4 @@
-CPP = g++
+CPP = g++ -std=c++11
 C_FLAGS = -fPIC -O -c -DGL_GLEXT_PROTOTYPES
 
 LINK = g++ -fPIC

@@ -12,7 +12,7 @@ int ModelView::numInstances = 0;
 static const int numVerticesInTriangle = 3; // same as in Hello, OpenGL
 
 ModelView::ModelView(ShaderIF* sIF, vec2* triangleVertices) : shaderIF(sIF),
-	serialNumber(++numInstances), drawInBlack(false), visible(true)
+	serialNumber(++numInstances)
 {
 	initModelGeometry(triangleVertices);
 }
@@ -52,29 +52,12 @@ void ModelView::getMCBoundingBox(double* xyzLimits) const
 {
 	xyzLimits[0] = xmin; xyzLimits[1] = xmax;
 	xyzLimits[2] = ymin; xyzLimits[3] = ymax;
-	xyzLimits[4] =  -1.0; xyzLimits[5] =   1.0; // (zmin, zmax) (really 0..0)
+	xyzLimits[4] = -1.0; xyzLimits[5] =  1.0; // (zmin, zmax) (really 0..0)
 }
 
-bool ModelView::handleCommand(unsigned char key, double ldsX, double ldsY)
+bool ModelView::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)
 {
-	// determine if this triangle was "picked" based on whether the
-	// given location is inside the bounding box of this triangle.
-	float st[4];
-	compute2DScaleTrans(st);
-	float xMC = (ldsX - st[1]) / st[0];
-	float yMC = (ldsY - st[3]) / st[2];
-	if ((xMC < xmin) || (xMC > xmax) || (yMC < ymin) || (yMC > ymax))
-		return true;
-
-	// Now apply the current operation to it:
-	if (key == 'v')
-		// toggle visibility
-		visible = !visible;
-	else if (key == 'd')
-		deleteObject();
-	else // assume toggle drawing in black
-		drawInBlack = !drawInBlack;
-	return false;
+	return true;
 }
 
 void ModelView::initModelGeometry(vec2* vertices) // assume numVerticesInTriangle
@@ -131,10 +114,6 @@ void ModelView::linearMap(double fromMin, double fromMax, double toMin, double t
 
 void ModelView::render() const
 {
-	if ((vao[0] == 0)  || // if this triangle has been deleted -OR-
-	    !visible)         // if this triangle has been temporarily blanked
-		return;
-
 	// save the current GLSL program in use
 	GLint pgm;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &pgm);
@@ -146,14 +125,9 @@ void ModelView::render() const
 	float scaleTrans[4];
 	compute2DScaleTrans(scaleTrans);
 	glUniform4fv(shaderIF->ppuLoc("scaleTrans"), 1, scaleTrans);
-	
-	float black[] = { 0.0, 0.0, 0.0 };
 
-	// set the desired triangle (primitive) color
-	if (drawInBlack)
-		glUniform3fv(shaderIF->ppuLoc("color"), 1, black);
-	else
-		glUniform3fv(shaderIF->ppuLoc("color"), 1, triangleColor);
+	// Establish the triangle color
+	glUniform3fv(shaderIF->ppuLoc("color"), 1, triangleColor);
 
 	// Binding a VAO automatically binds all buffers associated with it. It also
 	// effectively reestablishes all associated glVertexAttribPointer settings

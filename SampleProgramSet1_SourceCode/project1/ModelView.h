@@ -16,14 +16,14 @@
 class ModelView
 {
 public:
+	// NOTE: You will likely want to modify the ModelView constructor to
+	//       take additional parameters.
 	ModelView(ShaderIF* sIF);
 	virtual ~ModelView();
-        
-        void initModelGeometry();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
 	void getMCBoundingBox(double* xyzLimits) const;
-	bool handleCommand(unsigned char key, double ldsX, double ldsY);
+	bool handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY);
 	void render() const;
 
 	// Viewing controls common to 2D and 3D:
@@ -35,8 +35,6 @@ private:
 	// TODO: VAO(s), VBO(s), and other relevant INSTANCE variables
 
 	ShaderIF* shaderIF;
-        GLuint vao[1];
-        GLuint vbo[1];
 	
 	// TODO: add uniform and attribute variable location CLASS variables
 

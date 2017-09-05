@@ -10,7 +10,7 @@
 #include "Controller.h"
 #include "ModelView.h"
 
-Controller* Controller::curController = NULL;
+Controller* Controller::curController = nullptr;
 int Controller::newWindowWidth = 512;
 int Controller::newWindowHeight = 512;
 
@@ -26,12 +26,12 @@ Controller::Controller() : glClearFlags(GL_COLOR_BUFFER_BIT)
 Controller::~Controller()
 {
 	if (this == curController)
-		curController = NULL;
+		curController = nullptr;
 }
 
 void Controller::addModel(ModelView* m)
 {
-	if (m == NULL)
+	if (m == nullptr)
 		return;
 	models.push_back(m);
 	updateMCBoundingBox(m);
@@ -99,15 +99,15 @@ void Controller::reportVersions(std::ostream& os) const
 	const char* glVer = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 	const char* glslVer = reinterpret_cast<const char*>
 			(glGetString(GL_SHADING_LANGUAGE_VERSION));
-	// glGetString can return NULL if no rendering context has been created
+	// glGetString can return nullptr if no rendering context has been created
 	os << "VERSIONS: GL: ";
-	if (glVer == NULL)
-		os << "NULL (has RC been created?)\n";
+	if (glVer == nullptr)
+		os << "nullptr (has RC been created?)\n";
 	else
 		os << glVer << '\n';
 	os << "        GLSL: ";
-	if (glslVer == NULL)
-		os << "NULL (has RC been created?)\n";
+	if (glslVer == nullptr)
+		os << "nullptr (has RC been created?)\n";
 	else
 		os << glslVer << '\n';
 	reportWindowInterfaceVersion(os);
@@ -140,7 +140,7 @@ std::string Controller::titleString(const std::string& str)
 
 void Controller::updateMCBoundingBox(ModelView* m)
 {
-	if (m == NULL)
+	if (m == nullptr)
 		return;
 	if (overallMCBoundingBox[0] <= overallMCBoundingBox[1])
 	{

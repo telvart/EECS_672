@@ -9,38 +9,16 @@
 double ModelView::mcRegionOfInterest[6] = { -1.0, 1.0, -1.0, 1.0, -1.0, 1.0 };
 bool ModelView::aspectRatioPreservationEnabled = true;
 
+// NOTE: You will likely want to modify the ModelView constructor to
+//       take additional parameters.
 ModelView::ModelView(ShaderIF* sIF) : shaderIF(sIF)
 {
 	// TODO: define and call method(s) to initialize your model and send data to GPU
-        initModelGeometry();
-
 }
 
 ModelView::~ModelView()
 {
 	// TODO: delete the vertex array objects and buffers here
-        glDeleteBuffers(1,vbo);
-        glDeleteVertexArrays(1,vao);
-}
-void ModelView::initModelGeometry()
-{
-    float axisVerticies[2]={-0.5,0.5};
-
-    glGenVertexArrays(1, vao);
-    glBindVertexArray(vao[0]);
-
-    glGenBuffers(1,vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-
-    int numBytesInBuffer= 2 * sizeof(float);
-    glBufferData(GL_ARRAY_BUFFER, numBytesInBuffer, axisVerticies, GL_STATIC_DRAW);
-
-    int coordinateLocation = 0;
-    glVertexAttribPointer(coordinateLocation, 2, GL_FLOAT, GL_FALSE, 0 , 0);
-    glEnableVertexAttribArray(coordinateLocation);
-
-
-
 }
 
 void ModelView::compute2DScaleTrans(float* scaleTransF) // CLASS METHOD
@@ -77,10 +55,9 @@ void ModelView::getMCBoundingBox(double* xyzLimits) const
 	// TODO:
 	// Put this ModelView instance's min and max x, y, and z extents
 	// into xyzLimits[0..5]. (-1 .. +1 is OK for z direction for 2D models)
-        double bounds[6]={};
 }
 
-bool ModelView::handleCommand(unsigned char key, double ldsX, double ldsY)
+bool ModelView::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)
 {
 	return true;
 }
@@ -134,8 +111,6 @@ void ModelView::render() const
 	// TODO: set scaleTrans (and all other needed) uniform(s)
 
 	// TODO: make require primitive call(s)
-        glBindVertexArray(vao[0]);
-        glDrawArrays(GL_LINES, 0, 2);
 
 	// restore the previous program
 	glUseProgram(pgm);

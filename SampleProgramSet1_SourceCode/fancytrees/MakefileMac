@@ -1,15 +1,15 @@
-CPP = g++
+CPP = g++ -std=c++11
 INC = -I../glslutil -I../mvcutil -I. -I/usr/local/include
 C_FLAGS = -fPIC -g -c -DGLFW_INCLUDE_GLEXT -DGLFW_INCLUDE_GLCOREARB $(INC)
 
 LINK = g++ -fPIC -g
 LOCAL_UTIL_LIBRARIES = ../lib/libglsl.so
-OGL_LIBRARIES = -L/usr/local/lib  -lglfw -framework OpenGL
+GL_LIBRARIES = -L/usr/local/lib  -lglfw -framework OpenGL
 
 OBJS = main.o ModelView.o Controller.o GLFWController.o
 
 main: $(OBJS) $(LOCAL_UTIL_LIBRARIES)
-	$(LINK) -o main $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(OGL_LIBRARIES)
+	$(LINK) -o main $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(GL_LIBRARIES)
 
 ../lib/libglsl.so : ../glslutil/ShaderIF.h ../glslutil/ShaderIF.c++
 	(cd ../glslutil; make -f MakefileMac)

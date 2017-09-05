@@ -1,4 +1,4 @@
-CPP = g++
+CPP = g++ -std=c++11
 C_FLAGS = -I/usr/local/include -fPIC -g -c -DGLFW_INCLUDE_GLEXT -DGLFW_INCLUDE_GLCOREARB
 
 LINK = g++ -fPIC

@@ -10,7 +10,7 @@ double ModelView::mcRegionOfInterest[6] = { -1.0, 1.0, -1.0, 1.0, -1.0, 1.0 };
 static const int numVerticesInTriangle = 3; // same as in Hello, OpenGL
 
 ModelView::ModelView(ShaderIF* sIF, vec2* triangleVertices) :
-	shaderIF(sIF), colorMode(8), visible(true)
+	shaderIF(sIF), colorMode(7)
 {
 	initModelGeometry(triangleVertices);
 }
@@ -53,7 +53,7 @@ void ModelView::getMCBoundingBox(double* xyzLimits) const
 	xyzLimits[4] = -1.0; xyzLimits[5] =  1.0; // (zmin, zmax) (really 0..0)
 }
 
-bool ModelView::handleCommand(unsigned char key, double ldsX, double ldsY)
+bool ModelView::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)
 {
 	// determine if this triangle was "picked" based on whether the
 	// given location is inside the bounding box of this triangle.
@@ -62,20 +62,15 @@ bool ModelView::handleCommand(unsigned char key, double ldsX, double ldsY)
 	float xMC = (ldsX - st[1]) / st[0];
 	float yMC = (ldsY - st[3]) / st[2];
 	if ((xMC < xmin) || (xMC > xmax) || (yMC < ymin) || (yMC > ymax))
+		// No, this triangle was not picked; tell Controller to keep looking
+		// for someone to handle this event.
 		return true;
 
-	// Yes - this triangle: Now apply the current operation to it:
-	if (key == 'v')
-		// toggle visibility
-		visible = !visible;
-	else if (key == 'd')
-		deleteObject();
-	else if ((key >= '0') && (key <= '9'))
-	{
+	// Yes - it is this triangle: Now apply the current operation to it:
+	if ((anASCIIChar >= '0') && (anASCIIChar <= '9'))
 		// set a new color mode to be used in the fragment shader
-		int requestedNewMode = static_cast<int>(key) - static_cast<int>('0');
-		colorMode = requestedNewMode;
-	}
+		colorMode = static_cast<int>(anASCIIChar) - static_cast<int>('0');
+	// Tell Controller to stop passing this event to other ModelView instances:
 	return false;
 }
 
@@ -123,10 +118,6 @@ void ModelView::linearMap(double fromMin, double fromMax, double toMin, double t
 
 void ModelView::render() const
 {
-	if ((vao[0] == 0)  || // if this triangle has been deleted -OR-
-	    !visible)         // if this triangle has been temporarily blanked
-		return;
-
 	// save the current GLSL program in use
 	GLint pgm;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &pgm);

@@ -56,18 +56,20 @@ void ModelView::getMCBoundingBox(double* xyzLimits) const
 	xyzLimits[4] = -1.0; xyzLimits[5] = 1.0; // (zmin, zmax) (really 0..0)
 }
 
-bool ModelView::handleCommand(unsigned char key, double ldsX, double ldsY)
+bool ModelView::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)
 {
-	if ((key >= '0') && (key <= '9'))
+	if ((anASCIIChar >= '0') && (anASCIIChar <= '9'))
 	{
-		int which = static_cast<int>(key) - static_cast<int>('0');
+		int which = static_cast<int>(anASCIIChar) - static_cast<int>('0');
 		if (which == serialNumber) // was this message intended for me???
 		{
+			// Yes, it is intended for me. Process and then tell Controller
+			// stop sending this event to other ModelView instances:
 			colorMode = (colorMode + 1) % 4; // cycle among 0, 1, 2, 3
-			return false;
+			return false; // tell Controller to stop send this event
 		}
 	}
-	return true;
+	return true; // not intended for me; tell Controller to keep trying.
 }
 
 void ModelView::initModelGeometry(vec2* coords, vec3* colors, float* fractions)
@@ -118,7 +120,7 @@ void ModelView::initModelGeometry(vec2* coords, vec3* colors, float* fractions)
 	// REMEMBER:
 	// All three array buffers here - along with their memory layout information and
 	// enable statuses - will be reestablished in ModelView::render with the single
-	// call to glBindVertexArray(va0).
+	// call to glBindVertexArray(vao[0]).
 }
 
 // linearMap determines the scale and translate parameters needed in

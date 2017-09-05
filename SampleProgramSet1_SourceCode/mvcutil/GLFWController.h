@@ -3,8 +3,6 @@
 #ifndef GLFWCONTROLLER_H
 #define GLFWCONTROLLER_H
 
-#ifdef __APPLE_CC__
-#endif
 #include "GLFW/glfw3.h"
 
 #include "Controller.h"
@@ -22,8 +20,8 @@ public:
 protected:
 	GLFWController(const GLFWController& c) : Controller(c) {}
 
-	void establishInitialCallbacksForRC();
 	virtual void handleDisplay();
+	void initializeCallbacksForRC();
 	void reportWindowInterfaceVersion(std::ostream& os) const;
 	void swapBuffers() const { glfwSwapBuffers(theWindow); }
 
@@ -34,7 +32,7 @@ private:
 
 	void createWindowAndRC(const std::string& windowTitle, int rcFlags);
 
-	static bool glfwInitialized;
+	static int numGLFWControllers;
 
 	static void charCB(GLFWwindow* window, unsigned int theChar);
 	static void keyboardCB(GLFWwindow* window, int key, int scanCode, int action, int mods);

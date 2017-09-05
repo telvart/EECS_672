@@ -25,7 +25,7 @@ public:
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
 	void getMCBoundingBox(double* xyzLimits) const;
-	bool handleCommand(unsigned char key, double ldsX, double ldsY);
+	bool handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY);
 	void render() const;
 
 	static void setMCRegionOfInterest(double xyz[]);
@@ -35,12 +35,12 @@ private:
 	vec3 triangleColor; // This will be passed as a uniform
 	int serialNumber;
 
-	// interactive display options
-	bool drawInBlack;
-	bool visible; // i.e., whether we actually currently draw it
 	double xmin, xmax, ymin, ymax; // record the limits of this instance
 
 	ShaderIF* shaderIF;
+
+	void deleteObject();
+	void initModelGeometry(vec2* vertices);
 
 	// Routines for computing parameters necessary to map from arbitrary
 	// model coordinate ranges into OpenGL's -1..+1 Logical Device Space.
@@ -58,11 +58,8 @@ private:
 
 	// Current MC region of interest
 	static double mcRegionOfInterest[6];
-	// Count number of instances created
+	// Count number of instances created (needed for serialNumber)
 	static int numInstances;
-
-	void deleteObject();
-	void initModelGeometry(vec2* vertices);
 };
 
 #endif
