@@ -15,7 +15,17 @@ int main(int argc, char* argv[])
 
 	vec2 lineCoords[2] =
 	{
-		{-0.5, -0.5}, {0.5, 0.5}
+		{-0.75, -0.75}, {0.75, -0.75}
+	};
+
+	vec2 lineCoords2[2] =
+	{
+		{0, 0.5}, {0, -0.5}
+	};
+
+	vec2 lineCoords3[2] =
+	{
+		{-1, -1}, {1, 1}
 	};
 
 	float a0, a1, a2, a3, b0, b1, b2, b3, tmin, tmax;
@@ -23,6 +33,7 @@ int main(int argc, char* argv[])
 
 	while(fileIn>>a0>>a1>>a2>>a3)
 	{
+	  fileIn>>a0>>a1>>a2>>a3;
 		fileIn>>b0>>b1>>b2>>b3>>tmin>>tmax>>numPoints;
 		//std::cout<<"\na0: "<<a0<<" a1: "<<a1<<" a2: "<<a2<<" a3: "<<a3<<"\n";
 		//std::cout<<"b0: "<<b0<<" b1: "<<b1<<" b2: "<<b2<<" b3: "<<a3<<"\n";
@@ -43,18 +54,17 @@ int main(int argc, char* argv[])
 			t += deltaT;
 			//std::cout<<"("<<tempx<<", "<<tempy<<") ";
 		}
-		//c.addModel(new ModelView(sIF, thisLine, numPoints));
-		//std::cout<<"\n";
+	//c.addModel(new ModelView(sIF, thisLine, numPoints));;
 	}
 
-	c.addModel(new ModelView(sIF, lineCoords, 2));
-//	c.addModel(new ModelView(sIF, lineCoords2));
+  c.addModel(new ModelView(sIF, lineCoords, 2));
+	c.addModel(new ModelView(sIF, lineCoords2, 2));
+	c.addModel(new ModelView(sIF, lineCoords3, 2));
+	//NOTE: Currently adds the three lines and each one is a different color.
+	//			Scale and Trans is working correctly, all left to do is figure out how to draw the curves
 
 	// TODO: one or more ModelView dynamic allocations, adding
 	//       each to the Controller using "c.addModel(...);"
-	//
-	//       NOTE: You will likely want to modify the ModelView
-	//             constructor to take additional parameters.
 
 	// initialize 2D viewing information:
 	// Get the overall scene bounding box in Model Coordinates:

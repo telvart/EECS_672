@@ -40,6 +40,7 @@ private:
 	ShaderIF* shaderIF;
 	GLuint vao[1];
 	GLuint vbo[1];
+	vec3 lineColor;
 	double xmin, xmax, ymin, ymax;
 	int myNumPoints, mySerialNum;
 

@@ -27,6 +27,20 @@ ModelView::~ModelView()
 
 void ModelView::initModelGeometry(vec2* verticies)
 {
+
+	if(mySerialNum == 1)
+	{
+		lineColor[0] = 255; lineColor[1] = 0; lineColor[2] = 0;
+	}
+	else if(mySerialNum == 2)
+	{
+		lineColor[0] = 0; lineColor[1] = 255; lineColor[2] = 0;
+	}
+	else if(mySerialNum == 3)
+	{
+		lineColor[1] = 0; lineColor[1] = 0; lineColor[2] = 255;
+	}
+
 	glGenVertexArrays(1, vao);
 	glGenBuffers(1, vbo);
 
@@ -149,11 +163,15 @@ void ModelView::render() const
 	// draw the triangles using our vertex and fragment shaders
 	glUseProgram(shaderIF->getShaderPgmID());
 
+	float scaleTrans[4];
+	compute2DScaleTrans(scaleTrans);
+	glUniform4fv(shaderIF->ppuLoc("scaleTranslate"), 1, scaleTrans);
+	glUniform3fv(shaderIF->ppuLoc("color"), 1, lineColor);
+
+
 	glBindVertexArray(vao[0]);
 	glDrawArrays(GL_LINES, 0, myNumPoints);
-	// TODO: set scaleTrans (and all other needed) uniform(s)
-
-	// TODO: make require primitive call(s)
+	//TODO: Figure out how to draw many points and connect them, currently only draws one at a time
 
 	// restore the previous program
 	glUseProgram(pgm);
