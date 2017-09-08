@@ -13,12 +13,15 @@
 #include <GL/gl.h>
 #endif
 
+typedef float vec2[2];
+typedef float vec3[3];
+
 class ModelView
 {
 public:
 	// NOTE: You will likely want to modify the ModelView constructor to
 	//       take additional parameters.
-	ModelView(ShaderIF* sIF);
+	ModelView(ShaderIF* sIF, vec2* coords);
 	virtual ~ModelView();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -35,7 +38,12 @@ private:
 	// TODO: VAO(s), VBO(s), and other relevant INSTANCE variables
 
 	ShaderIF* shaderIF;
-	
+	GLuint vao[1];
+	GLuint vbo[1];
+	double xmin, xmax, ymin, ymax;
+
+	void initModelGeometry(vec2* verticies);
+
 	// TODO: add uniform and attribute variable location CLASS variables
 
 	// Routines for computing parameters necessary to map from arbitrary

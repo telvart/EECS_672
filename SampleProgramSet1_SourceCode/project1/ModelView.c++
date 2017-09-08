@@ -11,14 +11,40 @@ bool ModelView::aspectRatioPreservationEnabled = true;
 
 // NOTE: You will likely want to modify the ModelView constructor to
 //       take additional parameters.
-ModelView::ModelView(ShaderIF* sIF) : shaderIF(sIF)
+ModelView::ModelView(ShaderIF* sIF, vec2* coords) : shaderIF(sIF)
 {
 	// TODO: define and call method(s) to initialize your model and send data to GPU
+	initModelGeometry(coords);
 }
 
 ModelView::~ModelView()
 {
 	// TODO: delete the vertex array objects and buffers here
+}
+
+void ModelView::initModelGeometry(vec2* verticies)
+{
+	glGenVertexArrays(1, vao);
+	glGenBuffers(1, vbo);
+
+	glBindVertexArray(vao[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+
+	int bytesinBuffer = 2 * sizeof(vec2);
+
+	glBufferData(GL_ARRAY_BUFFER, bytesinBuffer, verticies, GL_STATIC_DRAW);
+	glVertexAttribPointer(shaderIF->pvaLoc("MC"), 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(shaderIF->pvaLoc("MC"));
+
+
+	xmin = -0.5;
+	xmax = 0.5;
+	ymin = -0.5;
+	ymax = 0.5;
+
+
+
+
 }
 
 void ModelView::compute2DScaleTrans(float* scaleTransF) // CLASS METHOD
@@ -55,6 +81,12 @@ void ModelView::getMCBoundingBox(double* xyzLimits) const
 	// TODO:
 	// Put this ModelView instance's min and max x, y, and z extents
 	// into xyzLimits[0..5]. (-1 .. +1 is OK for z direction for 2D models)
+	xyzLimits[0] = xmin;
+	xyzLimits[1] = xmax;
+	xyzLimits[2] = ymin;
+	xyzLimits[3] = ymax;
+	xyzLimits[4] = -1;
+	xyzLimits[5] = 1;
 }
 
 bool ModelView::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)
@@ -108,6 +140,11 @@ void ModelView::render() const
 	// draw the triangles using our vertex and fragment shaders
 	glUseProgram(shaderIF->getShaderPgmID());
 
+
+
+
+	glBindVertexArray(vao[0]);
+	glDrawArrays(GL_LINES, 0, 2);
 	// TODO: set scaleTrans (and all other needed) uniform(s)
 
 	// TODO: make require primitive call(s)
