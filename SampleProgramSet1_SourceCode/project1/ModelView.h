@@ -21,7 +21,7 @@ class ModelView
 public:
 	// NOTE: You will likely want to modify the ModelView constructor to
 	//       take additional parameters.
-	ModelView(ShaderIF* sIF, vec2* coords);
+	ModelView(ShaderIF* sIF, vec2* coords, int numPoints);
 	virtual ~ModelView();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -41,6 +41,7 @@ private:
 	GLuint vao[1];
 	GLuint vbo[1];
 	double xmin, xmax, ymin, ymax;
+	int myNumPoints, mySerialNum;
 
 	void initModelGeometry(vec2* verticies);
 
@@ -67,6 +68,7 @@ private:
 
 	static double mcRegionOfInterest[6];
 	static bool aspectRatioPreservationEnabled;
+	static int numInstances;
 };
 
 #endif

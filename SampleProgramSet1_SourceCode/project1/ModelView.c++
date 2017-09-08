@@ -8,12 +8,15 @@
 
 double ModelView::mcRegionOfInterest[6] = { -1.0, 1.0, -1.0, 1.0, -1.0, 1.0 };
 bool ModelView::aspectRatioPreservationEnabled = true;
+int ModelView::numInstances = 0;
 
 // NOTE: You will likely want to modify the ModelView constructor to
 //       take additional parameters.
-ModelView::ModelView(ShaderIF* sIF, vec2* coords) : shaderIF(sIF)
+ModelView::ModelView(ShaderIF* sIF, vec2* coords, int numPoints) : shaderIF(sIF)
 {
 	// TODO: define and call method(s) to initialize your model and send data to GPU
+	this->myNumPoints = numPoints;
+	this->mySerialNum = ++numInstances;
 	initModelGeometry(coords);
 }
 
@@ -37,13 +40,19 @@ void ModelView::initModelGeometry(vec2* verticies)
 	glEnableVertexAttribArray(shaderIF->pvaLoc("MC"));
 
 
-	xmin = -0.5;
-	xmax = 0.5;
-	ymin = -0.5;
-	ymax = 0.5;
-
-
-
+	xmin = xmax = verticies[0][0];
+	ymin = ymax = verticies[0][1];
+	for (int i=1 ; i<myNumPoints ; i++)
+	{
+		if (verticies[i][0] < xmin)
+			xmin = verticies[i][0];
+		else if (verticies[i][0] > xmax)
+			xmax = verticies[i][0];
+		if (verticies[i][1] < ymin)
+			ymin = verticies[i][1];
+		else if (verticies[i][1] > ymax)
+			ymax = verticies[i][1];
+	}
 
 }
 
@@ -140,11 +149,8 @@ void ModelView::render() const
 	// draw the triangles using our vertex and fragment shaders
 	glUseProgram(shaderIF->getShaderPgmID());
 
-
-
-
 	glBindVertexArray(vao[0]);
-	glDrawArrays(GL_LINES, 0, 2);
+	glDrawArrays(GL_LINES, 0, myNumPoints);
 	// TODO: set scaleTrans (and all other needed) uniform(s)
 
 	// TODO: make require primitive call(s)

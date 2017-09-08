@@ -2,35 +2,53 @@
 
 #include "GLFWController.h"
 #include "ModelView.h"
+#include <iostream>
+#include <fstream>
 
 int main(int argc, char* argv[])
 {
 
-	// vec2 vertexPositions[][3] =
-	// {
-	// 	// triangle 1:
-	// 	{ { -6.0, 137.0 }, { 2.0, 137.0 }, { -2.0, 145.0 } },
-	// 	// triangle 2:
-	// 	{ { -6.0, 135.0 }, { 2.0, 135.0 }, { -2.0, 127.0 } }
-	// };
+	std::ifstream fileIn("data.txt");
+	GLFWController c(argv[0]);
+	c.reportVersions(std::cout);
+	ShaderIF* sIF = new ShaderIF("shaders/project1.vsh", "shaders/project1.fsh");
+
 	vec2 lineCoords[2] =
 	{
 		{-0.5, -0.5}, {0.5, 0.5}
 	};
 
-	vec2 lineCoords2[2] =
+	float a0, a1, a2, a3, b0, b1, b2, b3, tmin, tmax;
+	int numPoints;
+
+	while(fileIn>>a0>>a1>>a2>>a3)
 	{
-		{0,1}, {-1,0}
-	};
+		fileIn>>b0>>b1>>b2>>b3>>tmin>>tmax>>numPoints;
+		//std::cout<<"\na0: "<<a0<<" a1: "<<a1<<" a2: "<<a2<<" a3: "<<a3<<"\n";
+		//std::cout<<"b0: "<<b0<<" b1: "<<b1<<" b2: "<<b2<<" b3: "<<a3<<"\n";
+		//std::cout<<"tmin: "<<tmin<<" tmax: "<<tmax<<" numPoints "<<numPoints<<"\n";
 
-	GLFWController c(argv[0]);
-	c.reportVersions(std::cout);
+		vec2 thisLine[numPoints];
+		float tempx, tempy;
+		float t = tmin;
+		double deltaT = (tmax - tmin)/((double)numPoints-1);
+		//std::cout<<"DELTA T: "<<deltaT<<"\n";
 
-	ShaderIF* sIF = new ShaderIF("shaders/project1.vsh", "shaders/project1.fsh");
-	c.addModel(new ModelView(sIF, lineCoords));
-	c.addModel(new ModelView(sIF, lineCoords2));
+		for(int i=0; i<numPoints; i++)
+		{
+			tempx = a0 + (a1*t) + (a2*t*t) + (a3*t*t*t);
+			tempy = b0 + (b1*t) + (b2*t*t) + (a3*t*t*t);
+			thisLine[i][0]=tempx;
+			thisLine[i][1]=tempy;
+			t += deltaT;
+			//std::cout<<"("<<tempx<<", "<<tempy<<") ";
+		}
+		//c.addModel(new ModelView(sIF, thisLine, numPoints));
+		//std::cout<<"\n";
+	}
 
-
+	c.addModel(new ModelView(sIF, lineCoords, 2));
+//	c.addModel(new ModelView(sIF, lineCoords2));
 
 	// TODO: one or more ModelView dynamic allocations, adding
 	//       each to the Controller using "c.addModel(...);"
@@ -42,6 +60,11 @@ int main(int argc, char* argv[])
 	// Get the overall scene bounding box in Model Coordinates:
 	double xyz[6]; // xyz limits, even though this is 2D
 	c.getOverallMCBoundingBox(xyz);
+	std::cout<<xyz[0] <<" "<<xyz[1]<<"\n"
+					 <<xyz[2] <<" "<<xyz[3]<<"\n"
+					 <<xyz[4] <<" "<<xyz[5]<<"\n";
+
+
 	// Tell class ModelView we initially want to see the whole scene:
 	ModelView::setMCRegionOfInterest(xyz);
 
