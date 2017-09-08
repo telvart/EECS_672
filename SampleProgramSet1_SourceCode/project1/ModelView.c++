@@ -39,9 +39,9 @@ void ModelView::initModelGeometry(vec2* verticies)
 	glVertexAttribPointer(shaderIF->pvaLoc("MC"), 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(shaderIF->pvaLoc("MC"));
 
-
 	xmin = xmax = verticies[0][0];
 	ymin = ymax = verticies[0][1];
+
 	for (int i=1 ; i<myNumPoints ; i++)
 	{
 		if (verticies[i][0] < xmin)

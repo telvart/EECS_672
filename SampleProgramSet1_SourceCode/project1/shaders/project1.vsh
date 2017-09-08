@@ -3,6 +3,7 @@
 // replace the placeholder implementation here
 
 in vec2 MC;
+uniform vec4 scaleTranslate;
 
 void main()
 {
