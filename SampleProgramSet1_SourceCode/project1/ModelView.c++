@@ -10,8 +10,6 @@ double ModelView::mcRegionOfInterest[6] = { -1.0, 1.0, -1.0, 1.0, -1.0, 1.0 };
 bool ModelView::aspectRatioPreservationEnabled = true;
 int ModelView::numInstances = 0;
 
-// NOTE: You will likely want to modify the ModelView constructor to
-//       take additional parameters.
 ModelView::ModelView(ShaderIF* sIF, vec2* coords, int numPoints) : shaderIF(sIF)
 {
 	// TODO: define and call method(s) to initialize your model and send data to GPU
@@ -22,7 +20,12 @@ ModelView::ModelView(ShaderIF* sIF, vec2* coords, int numPoints) : shaderIF(sIF)
 
 ModelView::~ModelView()
 {
-	// TODO: delete the vertex array objects and buffers here
+	if(vao[0] > 0)
+	{
+		glDeleteBuffers(1, vbo);
+		glDeleteVertexArrays(1, vao);
+		vao[0] = vbo[0] = 0;
+	}
 }
 
 void ModelView::initModelGeometry(vec2* verticies)
@@ -71,7 +74,6 @@ void ModelView::initModelGeometry(vec2* verticies)
 		else if (verticies[i][1] > ymax)
 			ymax = verticies[i][1];
 	}
-
 }
 
 void ModelView::compute2DScaleTrans(float* scaleTransF) // CLASS METHOD
@@ -169,13 +171,12 @@ void ModelView::render() const
 
 	float scaleTrans[4];
 	compute2DScaleTrans(scaleTrans);
+	
 	glUniform4fv(shaderIF->ppuLoc("scaleTranslate"), 1, scaleTrans);
 	glUniform3fv(shaderIF->ppuLoc("color"), 1, lineColor);
 
-
 	glBindVertexArray(vao[0]);
 	glDrawArrays(GL_LINE_STRIP, 0, myNumPoints);
-	//TODO: Figure out how to draw many points and connect them, currently only draws one at a time
 
 	// restore the previous program
 	glUseProgram(pgm);
