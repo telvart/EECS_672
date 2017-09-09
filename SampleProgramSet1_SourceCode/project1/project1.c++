@@ -33,33 +33,29 @@ int main(int argc, char* argv[])
 
 	while(fileIn>>a0>>a1>>a2>>a3)
 	{
-	  fileIn>>a0>>a1>>a2>>a3;
 		fileIn>>b0>>b1>>b2>>b3>>tmin>>tmax>>numPoints;
 		//std::cout<<"\na0: "<<a0<<" a1: "<<a1<<" a2: "<<a2<<" a3: "<<a3<<"\n";
 		//std::cout<<"b0: "<<b0<<" b1: "<<b1<<" b2: "<<b2<<" b3: "<<a3<<"\n";
 		//std::cout<<"tmin: "<<tmin<<" tmax: "<<tmax<<" numPoints "<<numPoints<<"\n";
 
 		vec2 thisLine[numPoints];
-		float tempx, tempy;
 		float t = tmin;
 		double deltaT = (tmax - tmin)/((double)numPoints-1);
 		//std::cout<<"DELTA T: "<<deltaT<<"\n";
 
 		for(int i=0; i<numPoints; i++)
 		{
-			tempx = a0 + (a1*t) + (a2*t*t) + (a3*t*t*t);
-			tempy = b0 + (b1*t) + (b2*t*t) + (a3*t*t*t);
-			thisLine[i][0]=tempx;
-			thisLine[i][1]=tempy;
+			thisLine[i][0] = a0 + (a1*t) + (a2*t*t) + (a3*t*t*t);
+			thisLine[i][1] = b0 + (b1*t) + (b2*t*t) + (a3*t*t*t);
 			t += deltaT;
-			//std::cout<<"("<<tempx<<", "<<tempy<<") ";
+			//std::cout<<"("<<thisLine[i][0]<<", "<<thisLine[i][1]<<") ";
 		}
-	//c.addModel(new ModelView(sIF, thisLine, numPoints));;
+	c.addModel(new ModelView(sIF, thisLine, numPoints));;
 	}
 
-  c.addModel(new ModelView(sIF, lineCoords, 2));
-	c.addModel(new ModelView(sIF, lineCoords2, 2));
-	c.addModel(new ModelView(sIF, lineCoords3, 2));
+  //c.addModel(new ModelView(sIF, lineCoords, 2));
+	//c.addModel(new ModelView(sIF, lineCoords2, 2));
+	//c.addModel(new ModelView(sIF, lineCoords3, 2));
 	//NOTE: Currently adds the three lines and each one is a different color.
 	//			Scale and Trans is working correctly, all left to do is figure out how to draw the curves
 

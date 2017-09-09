@@ -40,6 +40,10 @@ void ModelView::initModelGeometry(vec2* verticies)
 	{
 		lineColor[1] = 0; lineColor[1] = 0; lineColor[2] = 255;
 	}
+	else
+	{
+		lineColor[1] = 200; lineColor[1] = 100; lineColor[2] = 100;
+	}
 
 	glGenVertexArrays(1, vao);
 	glGenBuffers(1, vbo);
@@ -47,7 +51,7 @@ void ModelView::initModelGeometry(vec2* verticies)
 	glBindVertexArray(vao[0]);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 
-	int bytesinBuffer = 2 * sizeof(vec2);
+	int bytesinBuffer = myNumPoints * sizeof(vec2);
 
 	glBufferData(GL_ARRAY_BUFFER, bytesinBuffer, verticies, GL_STATIC_DRAW);
 	glVertexAttribPointer(shaderIF->pvaLoc("MC"), 2, GL_FLOAT, GL_FALSE, 0, 0);
@@ -170,7 +174,7 @@ void ModelView::render() const
 
 
 	glBindVertexArray(vao[0]);
-	glDrawArrays(GL_LINES, 0, myNumPoints);
+	glDrawArrays(GL_LINE_STRIP, 0, myNumPoints);
 	//TODO: Figure out how to draw many points and connect them, currently only draws one at a time
 
 	// restore the previous program
