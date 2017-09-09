@@ -34,19 +34,20 @@ int main(int argc, char* argv[])
 	while(fileIn>>a0>>a1>>a2>>a3)
 	{
 		fileIn>>b0>>b1>>b2>>b3>>tmin>>tmax>>numPoints;
-		//std::cout<<"\na0: "<<a0<<" a1: "<<a1<<" a2: "<<a2<<" a3: "<<a3<<"\n";
-		//std::cout<<"b0: "<<b0<<" b1: "<<b1<<" b2: "<<b2<<" b3: "<<a3<<"\n";
-		//std::cout<<"tmin: "<<tmin<<" tmax: "<<tmax<<" numPoints "<<numPoints<<"\n";
+		std::cout<<"\n\na0: "<<a0<<" a1: "<<a1<<" a2: "<<a2<<" a3: "<<a3<<"\n";
+		std::cout<<"b0: "<<b0<<" b1: "<<b1<<" b2: "<<b2<<" b3: "<<b3<<"\n";
+		std::cout<<"tmin: "<<tmin<<" tmax: "<<tmax<<" numPoints "<<numPoints<<"\n";
 
 		vec2 thisLine[numPoints];
 		float t = tmin;
 		double deltaT = (tmax - tmin)/((double)numPoints-1);
 		//std::cout<<"DELTA T: "<<deltaT<<"\n";
 
+		std::cout<<"\nPoints added:\n\n";
 		for(int i=0; i<numPoints; i++)
 		{
 			thisLine[i][0] = a0 + (a1*t) + (a2*t*t) + (a3*t*t*t);
-			thisLine[i][1] = b0 + (b1*t) + (b2*t*t) + (a3*t*t*t);
+			thisLine[i][1] = b0 + (b1*t) + (b2*t*t) + (b3*t*t*t);
 			t += deltaT;
 			//std::cout<<"("<<thisLine[i][0]<<", "<<thisLine[i][1]<<") ";
 		}

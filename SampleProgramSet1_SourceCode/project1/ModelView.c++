@@ -38,11 +38,11 @@ void ModelView::initModelGeometry(vec2* verticies)
 	}
 	else if(mySerialNum == 3)
 	{
-		lineColor[1] = 0; lineColor[1] = 0; lineColor[2] = 255;
+		lineColor[0] = 0; lineColor[1] = 0; lineColor[2] = 255;
 	}
 	else
 	{
-		lineColor[1] = 200; lineColor[1] = 100; lineColor[2] = 100;
+		lineColor[0] = 255; lineColor[1] = 255; lineColor[2] = 0;
 	}
 
 	glGenVertexArrays(1, vao);
