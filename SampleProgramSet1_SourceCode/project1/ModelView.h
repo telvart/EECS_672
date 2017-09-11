@@ -35,18 +35,15 @@ public:
 	static void setMCRegionOfInterest(double xyz[6]);
 
 private:
-	// TODO: VAO(s), VBO(s), and other relevant INSTANCE variables
 
 	ShaderIF* shaderIF;
 	GLuint vao[1];
 	GLuint vbo[1];
-	vec3 lineColor;
+	vec3 curveColor;
 	double xmin, xmax, ymin, ymax;
 	int myNumPoints, mySerialNum;
 
 	void initModelGeometry(vec2* verticies);
-
-	// TODO: add uniform and attribute variable location CLASS variables
 
 	// Routines for computing parameters necessary to map from arbitrary
 	// model coordinate ranges into OpenGL's -1..+1 Logical Device Space.

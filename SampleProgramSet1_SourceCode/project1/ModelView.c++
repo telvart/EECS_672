@@ -12,15 +12,14 @@ int ModelView::numInstances = 0;
 
 ModelView::ModelView(ShaderIF* sIF, vec2* coords, int numPoints) : shaderIF(sIF)
 {
-	// TODO: define and call method(s) to initialize your model and send data to GPU
-	this->myNumPoints = numPoints;
-	this->mySerialNum = ++numInstances;
+	myNumPoints = numPoints;
+	mySerialNum = ++numInstances;
 	initModelGeometry(coords);
 }
 
 ModelView::~ModelView()
 {
-	if(vao[0] > 0)
+	if (vao[0] > 0)
 	{
 		glDeleteBuffers(1, vbo);
 		glDeleteVertexArrays(1, vao);
@@ -31,21 +30,21 @@ ModelView::~ModelView()
 void ModelView::initModelGeometry(vec2* verticies)
 {
 
-	if(mySerialNum == 1)
+	if (mySerialNum == 1)
 	{
-		lineColor[0] = 255; lineColor[1] = 0; lineColor[2] = 0;
+		curveColor[0] = 255; curveColor[1] = 0; curveColor[2] = 0;
 	}
-	else if(mySerialNum == 2)
+	else if (mySerialNum == 2)
 	{
-		lineColor[0] = 0; lineColor[1] = 255; lineColor[2] = 0;
+		curveColor[0] = 0; curveColor[1] = 255; curveColor[2] = 0;
 	}
-	else if(mySerialNum == 3)
+	else if (mySerialNum == 3)
 	{
-		lineColor[0] = 0; lineColor[1] = 0; lineColor[2] = 255;
+		curveColor[0] = 0; curveColor[1] = 0; curveColor[2] = 255;
 	}
 	else
 	{
-		lineColor[0] = 255; lineColor[1] = 255; lineColor[2] = 0;
+		curveColor[0] = 255; curveColor[1] = 255; curveColor[2] = 0;
 	}
 
 	glGenVertexArrays(1, vao);
@@ -54,16 +53,16 @@ void ModelView::initModelGeometry(vec2* verticies)
 	glBindVertexArray(vao[0]);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 
-	int bytesinBuffer = myNumPoints * sizeof(vec2);
+	int bufferSize = myNumPoints * sizeof(vec2);
 
-	glBufferData(GL_ARRAY_BUFFER, bytesinBuffer, verticies, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, verticies, GL_STATIC_DRAW);
 	glVertexAttribPointer(shaderIF->pvaLoc("MC"), 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(shaderIF->pvaLoc("MC"));
 
 	xmin = xmax = verticies[0][0];
 	ymin = ymax = verticies[0][1];
 
-	for (int i=1 ; i<myNumPoints ; i++)
+	for (int i = 1; i < myNumPoints; i++)
 	{
 		if (verticies[i][0] < xmin)
 			xmin = verticies[i][0];
@@ -110,12 +109,9 @@ void ModelView::getMCBoundingBox(double* xyzLimits) const
 	// TODO:
 	// Put this ModelView instance's min and max x, y, and z extents
 	// into xyzLimits[0..5]. (-1 .. +1 is OK for z direction for 2D models)
-	xyzLimits[0] = xmin;
-	xyzLimits[1] = xmax;
-	xyzLimits[2] = ymin;
-	xyzLimits[3] = ymax;
-	xyzLimits[4] = -1;
-	xyzLimits[5] = 1;
+	xyzLimits[0] = xmin; xyzLimits[1] = xmax;
+	xyzLimits[2] = ymin; xyzLimits[3] = ymax;
+	xyzLimits[4] = -1;   xyzLimits[5] = 1;
 }
 
 bool ModelView::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)
@@ -171,9 +167,9 @@ void ModelView::render() const
 
 	float scaleTrans[4];
 	compute2DScaleTrans(scaleTrans);
-	
+
 	glUniform4fv(shaderIF->ppuLoc("scaleTranslate"), 1, scaleTrans);
-	glUniform3fv(shaderIF->ppuLoc("color"), 1, lineColor);
+	glUniform3fv(shaderIF->ppuLoc("myColor"), 1, curveColor);
 
 	glBindVertexArray(vao[0]);
 	glDrawArrays(GL_LINE_STRIP, 0, myNumPoints);
