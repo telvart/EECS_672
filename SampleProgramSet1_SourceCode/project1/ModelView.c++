@@ -9,12 +9,9 @@
 double ModelView::mcRegionOfInterest[6] = { -1.0, 1.0, -1.0, 1.0, -1.0, 1.0 };
 bool ModelView::aspectRatioPreservationEnabled = true;
 int ModelView::numInstances = 0;
-vec3 ModelView::colorTable[6] = { {255, 0, 0},
-																	{0, 255, 0},
-																	{0, 0, 255},
-																	{255, 255, 0},
-																	{0, 255, 255},
-																	{255, 0, 255} };
+vec3 ModelView::colorTable[6] = { {255, 0, 0}, {0, 255, 0},
+																	{0, 0, 255}, {255, 255, 0},
+																	{0, 255, 255}, {255, 0, 255} };
 
 ModelView::ModelView(ShaderIF* sIF, vec2* coords, int numPoints) : shaderIF(sIF)
 {

@@ -13,21 +13,23 @@
 #include <GL/gl.h>
 #endif
 
-typedef float vec2[2];
-typedef float vec3[3];
+#include "AffPoint.h"
+#include "AffVector.h"
+
+class CFont;
+class CGLString;
 
 class ModelView
 {
 public:
-	// NOTE: You will likely want to modify the ModelView constructor to
-	//       take additional parameters.
-	ModelView(ShaderIF* sIF, vec2* coords, int numPoints);
+	ModelView(ShaderIF* sIF, cryph::AffPoint centerIn,
+		cryph::AffVector u, cryph::AffVector v, double radiusIn, double a,
+		std::string font);
 	virtual ~ModelView();
 
-	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
-	void getMCBoundingBox(double* xyzLimits) const;
+	void getMCBoundingBox(double* xyzLimits) const; // xyz min/max
 	bool handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY);
-	void render() const;
+	void render();
 
 	// Viewing controls common to 2D and 3D:
 	static void setAspectRatioPreservationEnabled(bool b)
@@ -35,16 +37,23 @@ public:
 	static void setMCRegionOfInterest(double xyz[6]);
 
 private:
-
 	ShaderIF* shaderIF;
+	int nVerticesAroundPerimeter;
 	GLuint vao[1];
-	GLuint vbo[1];
-	vec3 curveColor;
+	GLuint vbo[2];
+	cryph::AffPoint center;
+	double radius;
 
-	double xmin, xmax, ymin, ymax;
-	int myNumPoints, mySerialNum;
-
-	void initModelGeometry(vec2* verticies);
+	// String/Font information for label
+	CGLString* labelString;
+	CFont* labelFont;
+	// For label animation:
+	double lastAnimationUpdate;
+	void maybeRotateLabel();
+	bool animating;
+	double labelAngle, labelRotationRadius;
+	void rotateLabel();
+	// END: For label animation
 
 	// Routines for computing parameters necessary to map from arbitrary
 	// model coordinate ranges into OpenGL's -1..+1 Logical Device Space.
@@ -67,8 +76,14 @@ private:
 
 	static double mcRegionOfInterest[6];
 	static bool aspectRatioPreservationEnabled;
-	static int numInstances;
-	static vec3 colorTable[6];
+
+	// 'a' is a bow tie parameter; typically want: 0 < a < 1.
+	void createColoredBowTie(cryph::AffPoint center,
+		cryph::AffVector u, cryph::AffVector v, double radius, double a);
+	void renderString() const;
+
+	static void hsv2rgb(double hue, double saturation, double value,
+						double rgb[]);
 };
 
 #endif

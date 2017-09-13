@@ -13,19 +13,17 @@
 #include <GL/gl.h>
 #endif
 
-typedef float vec2[2];
-typedef float vec3[3];
+#include "AffPoint.h"
+#include "AffVector.h"
 
 class ModelView
 {
 public:
-	// NOTE: You will likely want to modify the ModelView constructor to
-	//       take additional parameters.
-	ModelView(ShaderIF* sIF, vec2* coords, int numPoints);
+	ModelView(ShaderIF* sIF, cryph::AffPoint centerIn,
+		cryph::AffVector u, cryph::AffVector v, double radiusIn);
 	virtual ~ModelView();
 
-	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
-	void getMCBoundingBox(double* xyzLimits) const;
+	void getMCBoundingBox(double* xyzLimits) const; // xyz min/max
 	bool handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY);
 	void render() const;
 
@@ -35,16 +33,12 @@ public:
 	static void setMCRegionOfInterest(double xyz[6]);
 
 private:
-
 	ShaderIF* shaderIF;
+	int nVerticesAroundPerimeter;
 	GLuint vao[1];
-	GLuint vbo[1];
-	vec3 curveColor;
-
-	double xmin, xmax, ymin, ymax;
-	int myNumPoints, mySerialNum;
-
-	void initModelGeometry(vec2* verticies);
+	GLuint vbo[2];
+	cryph::AffPoint center;
+	double radius;
 
 	// Routines for computing parameters necessary to map from arbitrary
 	// model coordinate ranges into OpenGL's -1..+1 Logical Device Space.
@@ -67,8 +61,12 @@ private:
 
 	static double mcRegionOfInterest[6];
 	static bool aspectRatioPreservationEnabled;
-	static int numInstances;
-	static vec3 colorTable[6];
+
+	void createColoredCircle(cryph::AffPoint center,
+		cryph::AffVector u, cryph::AffVector v, double radius);
+
+	static void hsv2rgb(double hue, double saturation, double value,
+						double rgb[]);
 };
 
 #endif
