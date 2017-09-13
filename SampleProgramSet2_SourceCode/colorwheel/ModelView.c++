@@ -83,10 +83,26 @@ void ModelView::createColoredCircle(cryph::AffPoint center,
 	// ***********************************
 	// EXERCISE: create VAO and VBOs here.
 	// ***********************************
-	vao[0] = 0; // delete this line and the following "cout" when completing the exercise
-	std::cout <<
-		"ModelView::createColoredCircle: code has been left as an exercise.\n" <<
-	    "You must complete it on order to see the result of this program.\n";
+	//vao[0] = 0; // delete this line and the following "cout" when completing the exercise
+	glGenVertexArrays(1, vao);
+	glGenBuffers(2, vbo);
+
+	glBindVertexArray(vao[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+
+	int bufferSize = (nVerticesAroundPerimeter + 1) * sizeof(vec3);
+
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, vertexPositions, GL_STATIC_DRAW);
+	glVertexAttribPointer(shaderIF->pvaLoc("mcPosition"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(shaderIF->pvaLoc("mcPosition"));
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, vertexColors, GL_STATIC_DRAW);
+	glVertexAttribPointer(shaderIF->pvaLoc("vertexColor"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(shaderIF->pvaLoc("vertexColor"));
+	//std::cout <<
+	//	"ModelView::createColoredCircle: code has been left as an exercise.\n" <<
+	//   "You must complete it on order to see the result of this program.\n";
 
 	// glBufferData copies data to server, so:
 	delete [] vertexColors;
@@ -124,7 +140,7 @@ void ModelView::hsv2rgb( // CLASS METHOD
 		double var_1 = value * ( 1.0 - saturation );
 		double var_2 = value * ( 1.0 - saturation * ( var_h - var_i ) );
 		double var_3 = value * ( 1.0 - saturation * ( 1.0 - ( var_h - var_i ) ) );
-		
+
 		switch (var_i)
 		{
 			case 0: rgb[0] = value; rgb[1] = var_3; rgb[2] = var_1; break;
