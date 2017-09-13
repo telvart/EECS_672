@@ -40,6 +40,8 @@ private:
 	GLuint vao[1];
 	GLuint vbo[1];
 	vec3 curveColor;
+
+
 	double xmin, xmax, ymin, ymax;
 	int myNumPoints, mySerialNum;
 
@@ -67,6 +69,7 @@ private:
 	static double mcRegionOfInterest[6];
 	static bool aspectRatioPreservationEnabled;
 	static int numInstances;
+	static vec3 colorTable[6];
 };
 
 #endif
