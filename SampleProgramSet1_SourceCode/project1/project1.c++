@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 
 		c.addModel(new ModelView(sIF, thisCurve, numPoints));
 	}
-	
+
 	fileIn.close();
 
 	// initialize 2D viewing information:

@@ -87,22 +87,58 @@ void ModelView::createColoredBowTie(cryph::AffPoint center,
 	v.normalize();
 
 	// define vertex colors and positions
+	vec3* vertexColors = new vec3[nVerticesAroundPerimeter+1]; // "+1" is for center
+	vec3* vertexPositions = new vec3[nVerticesAroundPerimeter+1];
 
-	// **********************************************************************
-	// EXERCISE: Modify the circle code to do the pinch as mentioned ********
-	//           on the web page and discussed in class.             ********
-	// **********************************************************************
-	std::cout <<
-		"ModelView::createColoredBowTie (1): code has been left as an exercise.\n" <<
-	    "You must complete it on order to see the result of this program.\n";
+	center.aCoords(vertexPositions, 0); // circle center
+	// colored white:
+	vertexColors[0][0] = vertexColors[0][1] = vertexColors[0][2] = 1.0;
+	double theta = 0.0, dTheta = 2.0*M_PI/(nVerticesAroundPerimeter-1);
+	double rgb[3];
+	for (int i=1 ; i<nVerticesAroundPerimeter ; i++)
+	{
+		cryph::AffPoint p = center + radius * (cos(theta)*u + sin(theta)*v);
+		p.aCoords(vertexPositions, i);
+		hsv2rgb(theta*180.0/M_PI, 1.0, 1.0, rgb);
+		for (int j=0 ; j<3 ; j++)
+			vertexColors[i][j] = static_cast<float>(rgb[j]);
+		theta += dTheta;
+	}
+	// last point has same coordinates and colors as first. (First starts
+	// at [1] since center is in positon [0].)
+	for (int i=0 ; i<3 ; i++)
+	{
+		vertexPositions[nVerticesAroundPerimeter][i] = vertexPositions[1][i];
+		vertexColors[nVerticesAroundPerimeter][i] = vertexColors[1][i];
+	}
 
 	// ***********************************
 	// EXERCISE: create VAO and VBOs here.
 	// ***********************************
-	vao[0] = 0; // delete this line and the following "cout" when completing the exercise
-	std::cout <<
-		"ModelView::createColoredBowTie (2): code has been left as an exercise.\n" <<
-	    "You must complete it on order to see the result of this program.\n";
+	//vao[0] = 0; // delete this line and the following "cout" when completing the exercise
+	glGenVertexArrays(1, vao);
+	glGenBuffers(2, vbo);
+
+	glBindVertexArray(vao[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+
+	int bufferSize = (nVerticesAroundPerimeter + 1) * sizeof(vec3);
+
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, vertexPositions, GL_STATIC_DRAW);
+	glVertexAttribPointer(shaderIF->pvaLoc("mcPosition"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(shaderIF->pvaLoc("mcPosition"));
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, vertexColors, GL_STATIC_DRAW);
+	glVertexAttribPointer(shaderIF->pvaLoc("vertexColor"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(shaderIF->pvaLoc("vertexColor"));
+	//std::cout <<
+	//	"ModelView::createColoredCircle: code has been left as an exercise.\n" <<
+	//   "You must complete it on order to see the result of this program.\n";
+
+	// glBufferData copies data to server, so:
+	delete [] vertexColors;
+	delete [] vertexPositions;
 }
 
 // xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -160,7 +196,7 @@ void ModelView::hsv2rgb( // CLASS METHOD
 		double var_1 = value * ( 1.0 - saturation );
 		double var_2 = value * ( 1.0 - saturation * ( var_h - var_i ) );
 		double var_3 = value * ( 1.0 - saturation * ( 1.0 - ( var_h - var_i ) ) );
-		
+
 		switch (var_i)
 		{
 			case 0: rgb[0] = value; rgb[1] = var_3; rgb[2] = var_1; break;
