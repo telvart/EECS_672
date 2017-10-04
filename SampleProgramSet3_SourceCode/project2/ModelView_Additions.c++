@@ -56,13 +56,30 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	//    2.a. Determine the maximum of delta_mcX, delta_mcY, and delta_mcZ. (For
 	//         example, delta_mcX = mcRegionOfInterest[1] - mcRegionOfInterest[0].)
 	//         Suppose you store the maximum of these delta_mc* values in "maxDelta".
-	double maxDelta = 0.0; // TODO: compute this as just described.
+
+
+	double deltaMCs[3];
+	double* xyz = ModelView::mcRegionOfInterest;
+
+	deltaMCs[0] = xyz[1] - xyz[0];
+	deltaMCs[1] = xyz[3] - xyz[2];
+	deltaMCs[2] = xyz[5] - xyz[4];
+	double maxDelta = deltaMCs[0]; // TODO: compute this as just described.
+	for(int i=1; i<3; i++)
+	{
+		if (deltaMCs[i] > maxDelta)
+			maxDelta = deltaMCs[i];
+	}
+
 	double halfWidth = 0.5 * maxDelta;
 	//    2.b. In project 3 & 4: Scale "halfWidth" by "dynamic_zoomScale"
 	//    2.c. initialize the XY direction of the view volume as:
 	last_ecXmin = -halfWidth; last_ecXmax = halfWidth; // instance variables; see...
 	last_ecYmin = -halfWidth; last_ecYmax = halfWidth; // ... ModelView.h
 	// TODO:
+
+
+
 	//    2.d. Use ModelView::matchAspectRatio to alter one of these pairs.
 
 	if (ModelView::projType == ORTHOGONAL)

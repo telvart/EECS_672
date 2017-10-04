@@ -17,6 +17,13 @@ public:
 	void getMCBoundingBox(double* xyzLimitsF) const;
 	void render();
 private:
+
+
+  GLuint vao[1];
+  GLuint vbo[2];
+
+
+
 	ShaderIF* shaderIF;
 	float kd[3];
 };
