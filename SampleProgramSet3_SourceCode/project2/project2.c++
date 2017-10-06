@@ -44,10 +44,10 @@ void set3DViewingInformation(double xyz[6])
 
 	// 2:
 	double distEyeCenter = 2.0 * maxDelta;
-	cryph::AffVector dir(1, 1, 0);
+	cryph::AffVector dir(1, 0, 0);
 	cryph::AffPoint eye = center + distEyeCenter*(dir);
 	// 3:
-	cryph::AffVector up = cryph::AffVector::zu;
+	cryph::AffVector up = cryph::AffVector::yu;
 
 
 	// Set values for eye-center-up to produce a reasonable off-axis
@@ -86,7 +86,8 @@ int main(int argc, char* argv[])
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
 
-	c.addModel(new Block(sIF, 0.3, -0.4, 1.2, 0.3, 0.3, 0.4));
+	c.addModel(new Block(sIF, -5, -5, -5, 2, 2, 2));
+	c.addModel(new Block(sIF, 5, 5, 5, 2, 2, 2));
 	//c.addModel(new Tree(sIF));
 
 	double xyz[6];
