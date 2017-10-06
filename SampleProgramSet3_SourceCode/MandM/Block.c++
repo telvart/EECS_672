@@ -20,7 +20,7 @@ Block::Block(ShaderIF* sIF, float cx, float cy, float cz, float lx, float ly, fl
 	xmin = cx; xmax = cx + lx;
 	ymin = cy; ymax = cy + ly;
 	zmin = cz; zmax = cz + lz;
-	
+
 	kd[0] = 0.7; kd[1] = 0.7; kd[2] = 0.0;
 	defineBlock();
 }

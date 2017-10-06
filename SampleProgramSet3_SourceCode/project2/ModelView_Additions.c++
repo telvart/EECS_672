@@ -26,7 +26,7 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 {
 	// TODO: Delete or comment out the following std::cout statement when
 	//       everything else is done here.
-	std::cout << "In project 2, you must implement ModelView::getMatrices in ModelView_Additions.c++\n";
+	//std::cout << "In project 2, you must implement ModelView::getMatrices in ModelView_Additions.c++\n";
 	// 1. Create the mc_ec matrix:
 	//    Create a local variable of type Matrix4x4 called M_ECu from the eye,
 	//    center, and up. Recall that those values are initialized in the main
@@ -76,11 +76,12 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	//    2.c. initialize the XY direction of the view volume as:
 	last_ecXmin = -halfWidth; last_ecXmax = halfWidth; // instance variables; see...
 	last_ecYmin = -halfWidth; last_ecYmax = halfWidth; // ... ModelView.h
-	// TODO:
+	// TODO: 2.d. Use ModelView::matchAspectRatio to alter one of these pairs.
+
+	double vAR = Controller::getCurrentController() -> getViewportAspectRatio();
+	ModelView::matchAspectRatio(last_ecXmin, last_ecXmax, last_ecYmin, last_ecYmax, vAR);
 
 
-
-	//    2.d. Use ModelView::matchAspectRatio to alter one of these pairs.
 
 	if (ModelView::projType == ORTHOGONAL)
 		ec_lds = cryph::Matrix4x4::orthogonal(last_ecXmin, last_ecXmax, last_ecYmin, last_ecYmax,
