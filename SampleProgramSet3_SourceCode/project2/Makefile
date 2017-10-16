@@ -7,7 +7,7 @@ LOCAL_UTIL_LIBRARIES = ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ..
 GL_LIB_LOC = -L/usr/lib/nvidia-375
 GL_LIBRARIES = $(GL_LIB_LOC) -lglfw -lGLU -lGL
 
-OBJS = project2.o TEMPLATE_Subclass.o ModelView_Additions.o Tree.o
+OBJS = project2.o TEMPLATE_Subclass.o ModelView_Additions.o Tree.o Trunk.o
 
 project2: $(OBJS) $(LOCAL_UTIL_LIBRARIES)
 	$(LINK) -o project2 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(GL_LIBRARIES)
@@ -32,3 +32,5 @@ TEMPLATE_Subclass.o: TEMPLATE_Subclass.h TEMPLATE_Subclass.c++
 	$(CPP) $(C_FLAGS) TEMPLATE_Subclass.c++
 Tree.o: Tree.c++
 	$(CPP) $(C_FLAGS) Tree.c++
+Trunk.o: Trunk.c++
+	$(CPP) $(C_FLAGS) Trunk.c++

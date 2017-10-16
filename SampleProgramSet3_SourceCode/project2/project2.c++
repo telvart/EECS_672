@@ -3,6 +3,7 @@
 #include "GLFWController.h"
 #include "House.h"
 #include "Tree.h"
+#include "Trunk.h"
 void set3DViewingInformation(double xyz[6])
 {
 	ModelView::setMCRegionOfInterest(xyz);
@@ -43,11 +44,12 @@ void set3DViewingInformation(double xyz[6])
 	cryph::AffPoint center(xmid, ymid, zmid);
 
 	// 2:
-	double distEyeCenter = 2.0 * maxDelta;
-	cryph::AffVector dir(1, 0, 0);
+	double distEyeCenter = 3.0 * maxDelta;
+	cryph::AffVector dir(0.5, 1, 0);
+	dir.normalize();
 	cryph::AffPoint eye = center + distEyeCenter*(dir);
 	// 3:
-	cryph::AffVector up = cryph::AffVector::yu;
+	cryph::AffVector up = cryph::AffVector::zu;
 
 
 	// Set values for eye-center-up to produce a reasonable off-axis
@@ -76,6 +78,10 @@ void set3DViewingInformation(double xyz[6])
 
 int main(int argc, char* argv[])
 {
+	cryph::AffPoint trunkTop(0, 0, 4);
+	cryph::AffPoint trunkBottom(0, 0, 0);
+
+
 	GLFWController c("House and Trees", MVC_USE_DEPTH_BIT);
 	c.reportVersions(std::cout);
 
@@ -88,6 +94,7 @@ int main(int argc, char* argv[])
 
 	c.addModel(new Block(sIF, -5, -5, -5, 2, 2, 2));
 	c.addModel(new Block(sIF, 5, 5, 5, 2, 2, 2));
+	c.addModel(new Trunk(sIF, 2, trunkBottom, trunkTop));
 	//c.addModel(new Tree(sIF));
 
 	double xyz[6];
