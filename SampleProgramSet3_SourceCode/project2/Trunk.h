@@ -25,8 +25,7 @@ private:
 	GLuint vao[1];
 	GLuint vbo[2]; // 0: coordinates; 1: normal vectors
 
-  cryph::AffPoint m_bottom;
-	cryph::AffPoint m_top;
+  cryph::AffPoint m_bottom, m_top;
   float xyz[6], kd[3], radius;
   ShaderIF* sIF;
 
