@@ -59,21 +59,12 @@ void Trunk::defineTrunk()
 	for (int i=0 ; i <= N_POINTS_AROUND_SLICE ; i++)
 	{
 		/* Set the values for the new coordinates after moving to the next point */
-		coords[2*i][0] 		= b.x;
-		coords[2*i][1] 		= b.y;
-		coords[2*i][2] 		= b.z;
-		coords[2*i+1][0] 	= t.x;
-		coords[2*i+1][1] 	= t.y;
-		coords[2*i+1][2] 	= t.z;
+		coords[2*i][0] = b.x; coords[2*i][1] = b.y; coords[2*i][2] = b.z;
+		coords[2*i+1][0] = t.x; coords[2*i+1][1] = t.y; coords[2*i+1][2] = t.z;
 
 		/* Set the values for the normal vectors */
-		normals[2*i][0] = bPerpendicular.dx;
-		normals[2*i][1] = bPerpendicular.dy;
-		normals[2*i][2] = bPerpendicular.dz;
-
-		normals[2*i+1][0] = bPerpendicular.dx;
-		normals[2*i+1][1] = bPerpendicular.dy;
-		normals[2*i+1][2] = bPerpendicular.dz;
+		normals[2*i][0] = bPerpendicular.dx; normals[2*i][1] = bPerpendicular.dy; normals[2*i][2] = bPerpendicular.dz;
+		normals[2*i+1][0] = bPerpendicular.dx; normals[2*i+1][1] = bPerpendicular.dy; normals[2*i+1][2] = bPerpendicular.dz;
 
 		b = m_bottom 	+ ((radius * cos(dTheta)) * toPoint + ((radius * sin(dTheta)) * dir.cross(toPoint)));
 		t = m_top + ((radius * cos(dTheta)) * toPoint + ((radius * sin(dTheta)) * dir.cross(toPoint)));
