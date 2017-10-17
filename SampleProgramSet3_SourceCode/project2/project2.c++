@@ -105,11 +105,12 @@ int main(int argc, char* argv[])
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
 
-	//c.addModel(new Block(sIF, -5, -5, -5, 10, 10, 10));
+  //c.addModel(new Plane(sIF, tl, tr, bl, br, color));
+	c.addModel(new Block(sIF, -20, -20, 1, 10, 10, 10));
 	//c.addModel(new Block(sIF, 5, 5, 5, 10, 10, 10));
-	//c.addModel(new Trunk(sIF, 20, trunkBottom, trunkTop));
-	c.addModel(new Plane(sIF, tl, tr, bl, br, color));
-	//c.addModel(new TreeTop(sIF, treetopBottom, 20, 30));
+	c.addModel(new Trunk(sIF, 20, trunkBottom, trunkTop));
+
+	c.addModel(new TreeTop(sIF, treetopBottom, 20, 50));
 
 
 	//c.addModel(new Tree(sIF));
