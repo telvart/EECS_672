@@ -3,11 +3,10 @@
 
 cryph::AffVector dir;
 
-#define N_POINTS_AROUND_SLICE 20
-
 typedef float vec3[3];
 
 Trunk::Trunk(ShaderIF* sIF, float radius, const cryph::AffPoint& b, const cryph::AffPoint& t)
+  :PointsAroundCircle(20)
 {
   this->sIF = sIF;
 	this->radius = radius;
@@ -44,9 +43,9 @@ void Trunk::defineTrunk()
 	xyz[5] = m_bottom.z 	+ radius;
 
 	double 	theta 	= 0.0;
-	double 	dTheta 	= 2.0 * M_PI / N_POINTS_AROUND_SLICE;
+	double 	dTheta 	= 2.0 * M_PI / PointsAroundCircle;
 
-	int 	nPoints = 2 * (N_POINTS_AROUND_SLICE + 1);
+	int 	nPoints = 2 * (PointsAroundCircle + 1);
 	vec3 	coords[nPoints];
 	vec3 	normals[nPoints];
 
@@ -56,7 +55,7 @@ void Trunk::defineTrunk()
 
 	cryph::AffVector bPerpendicular = (b - m_bottom).cross(t - b).cross(t - b);
 
-	for (int i=0 ; i <= N_POINTS_AROUND_SLICE ; i++)
+	for (int i=0 ; i <= PointsAroundCircle ; i++)
 	{
 		/* Set the values for the new coordinates after moving to the next point */
 		coords[2*i][0] = b.x; coords[2*i][1] = b.y; coords[2*i][2] = b.z;
@@ -105,11 +104,11 @@ void Trunk::render()
 	glUniformMatrix4fv(sIF->ppuLoc("mc_ec"), 	1, false, mc_ec.	extractColMajor(mat));
 	glUniformMatrix4fv(sIF->ppuLoc("ec_lds"), 	1, false, ec_lds.	extractColMajor(mat));
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glUniform3fv(sIF->ppuLoc("kd"), 1, kd);
 	glBindVertexArray(vao[0]);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*(N_POINTS_AROUND_SLICE+1));
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*(PointsAroundCircle+1));
 
 	glUseProgram(pgm);
 }

@@ -22,9 +22,11 @@ private:
 
   void defineTrunk();
 
+
 	GLuint vao[1];
 	GLuint vbo[2]; // 0: coordinates; 1: normal vectors
 
+  const int PointsAroundCircle;
   cryph::AffPoint m_bottom, m_top;
   float xyz[6], kd[3], radius;
   ShaderIF* sIF;

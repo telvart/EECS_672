@@ -4,6 +4,8 @@
 #include "House.h"
 #include "Tree.h"
 #include "Trunk.h"
+#include "Plane.h"
+#include "Treetop.h"
 void set3DViewingInformation(double xyz[6])
 {
 	ModelView::setMCRegionOfInterest(xyz);
@@ -44,8 +46,8 @@ void set3DViewingInformation(double xyz[6])
 	cryph::AffPoint center(xmid, ymid, zmid);
 
 	// 2:
-	double distEyeCenter = 3.0 * maxDelta;
-	cryph::AffVector dir(0.5, 1, 0);
+	double distEyeCenter = 2 * maxDelta;
+	cryph::AffVector dir(0, -25, 15);
 	dir.normalize();
 	cryph::AffPoint eye = center + distEyeCenter*(dir);
 	// 3:
@@ -78,9 +80,20 @@ void set3DViewingInformation(double xyz[6])
 
 int main(int argc, char* argv[])
 {
-	cryph::AffPoint trunkTop(0, 0, 4);
-	cryph::AffPoint trunkBottom(0, 0, 0);
+	cryph::AffPoint trunkTop(0, 0, 50);
+	cryph::AffPoint trunkBottom(0, 0, 20);
+	cryph::AffPoint treetopBottom(0, 0, 60);
 
+	cryph::AffPoint tl(-100, 100, -20);
+	cryph::AffPoint tr(100, 100, -20);
+	cryph::AffPoint	bl(-100, -100, -20);
+	cryph::AffPoint br(100, -100, -20);
+
+	// cryph::AffPoint tl(-100, 100, 50);
+	// cryph::AffPoint tr(-100, 100, 0);
+	// cryph::AffPoint	bl(100, -100, 50);
+	// cryph::AffPoint br(100, -100, 0);
+	vec3 color = {0.486, 0.988, 0};
 
 	GLFWController c("House and Trees", MVC_USE_DEPTH_BIT);
 	c.reportVersions(std::cout);
@@ -92,9 +105,13 @@ int main(int argc, char* argv[])
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
 
-	c.addModel(new Block(sIF, -5, -5, -5, 2, 2, 2));
-	c.addModel(new Block(sIF, 5, 5, 5, 2, 2, 2));
-	c.addModel(new Trunk(sIF, 2, trunkBottom, trunkTop));
+	//c.addModel(new Block(sIF, -5, -5, -5, 10, 10, 10));
+	//c.addModel(new Block(sIF, 5, 5, 5, 10, 10, 10));
+	//c.addModel(new Trunk(sIF, 20, trunkBottom, trunkTop));
+	c.addModel(new Plane(sIF, tl, tr, bl, br, color));
+	//c.addModel(new TreeTop(sIF, treetopBottom, 20, 30));
+
+
 	//c.addModel(new Tree(sIF));
 
 	double xyz[6];
