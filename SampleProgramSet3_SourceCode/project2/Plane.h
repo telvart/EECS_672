@@ -35,4 +35,33 @@ private:
 	float kd[3];
 };
 
+
+class Block : public ModelView
+{
+public:
+	Block(ShaderIF* sIF, float cx, float cy, float cz, // lower left corner
+	      float lx, float ly, float lz, vec3 color);// lengths in 3 directions
+	Block(ShaderIF* sIF, double Vdx, double Vdy, double Vdz, vec3 dir);
+	virtual ~Block();
+
+	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
+	void getMCBoundingBox(double* xyzLimits) const;
+	bool handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY);
+	void render();
+private:
+	ShaderIF* shaderIF;
+	GLuint vao[1];
+	GLuint vbo[1];
+	GLuint ebo[3];
+
+	float xmin, xmax, ymin, ymax, zmin, zmax;
+	float kd[3];
+
+	static GLuint indexList[3][4];
+
+	void defineBlock();
+	void renderBlock();
+};
+
+
 #endif

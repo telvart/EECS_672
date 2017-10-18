@@ -1,10 +1,12 @@
 // Tree.h
-/*
+
 #ifndef TREE_H
 #define TREE_H
 
 #include "ModelView.h"
 #include "ShaderIF.h"
+#include "Trunk.h"
+#include "Treetop.h"
 
 typedef float vec2[2];
 typedef float vec3[3];
@@ -13,7 +15,7 @@ class Tree : public ModelView
 {
 public:
 	// As before: you will likely want to add parameters to the constructor
-	Tree(ShaderIF* sIF);
+	Tree(ShaderIF* sIF, double bottomx, double bottomy, double bottomz, double height, double treeRadius);
 	virtual ~Tree();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -22,52 +24,23 @@ public:
 private:
 
 	void defineTree();
-  GLuint vao[1];
-  GLuint vbo[2];
+
+	TreeTop* top;
+	Trunk* trunk;
+
+  //GLuint vao[1];
+  //GLuint vbo[2];
+	float xyz[6];
+
+	cryph::AffPoint treeBottom;
+	double m_height;
+	double m_baseRadius;
 
 
 
 	ShaderIF* shaderIF;
-	int numPoints;
-	float kd[3];
-};
-
-#endif
-*/
-// Block.h
-
-#ifndef BLOCK_H
-#define BLOCK_H
-
-#include <GL/gl.h>
-
-#include "ModelView.h"
-#include "ShaderIF.h"
-
-class Block : public ModelView
-{
-public:
-	Block(ShaderIF* sIF, float cx, float cy, float cz, // lower left corner
-	      float lx, float ly, float lz);// lengths in 3 directions
-	virtual ~Block();
-
-	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
-	void getMCBoundingBox(double* xyzLimits) const;
-	bool handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY);
-	void render();
-private:
-	ShaderIF* shaderIF;
-	GLuint vao[1];
-	GLuint vbo[1];
-	GLuint ebo[3];
-
-	float xmin, xmax, ymin, ymax, zmin, zmax;
-	float kd[3];
-
-	static GLuint indexList[3][4];
-
-	void defineBlock();
-	void renderBlock();
+	//int numPoints;
+	//float kd[3];
 };
 
 #endif
