@@ -99,7 +99,11 @@ int main(int argc, char* argv[])
 
   //c.addModel(new Plane(sIF, tl, tr, bl, br, color));
 	//c.addModel(new Block(sIF, -10, -10, 0, 20, 20, 20));
+
+	//NOTE: Block is defined in Plane.h/Plane.c++
 	c.addModel(new Block(sIF, -200, -200, -1, 400, 400, 1, color));
+
+
 //	c.addModel(new Trunk(sIF, 5, trunkBottom, trunkTop));
 //	c.addModel(new TreeTop(sIF, treetopBottom, 20, 50));
 

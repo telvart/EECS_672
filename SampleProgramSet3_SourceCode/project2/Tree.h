@@ -28,8 +28,6 @@ private:
 	TreeTop* top;
 	Trunk* trunk;
 
-  //GLuint vao[1];
-  //GLuint vbo[2];
 	float xyz[6];
 
 	cryph::AffPoint treeBottom;
@@ -37,10 +35,8 @@ private:
 	double m_baseRadius;
 
 
-
 	ShaderIF* shaderIF;
-	//int numPoints;
-	//float kd[3];
+
 };
 
 #endif

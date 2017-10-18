@@ -146,8 +146,6 @@ void Plane::render()
 	// ...
 }
 
-
-
 // index lists for the three faces that can't be drawn with glDrawArrays
 GLuint Block::indexList[3][4] = {
 	{ 6, 7, 0, 1 }, // xmin face
