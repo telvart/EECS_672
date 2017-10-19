@@ -12,7 +12,7 @@ class TreeTop : public ModelView
 {
 public:
 	// As before: you will likely want to add parameters to the constructor
-	TreeTop(ShaderIF* sIF, cryph::AffPoint bottom, double baseRadius, double height);
+	TreeTop(ShaderIF* sIF, cryph::AffPoint bottom, double baseRadius, double height, vec3 color);
 	virtual ~TreeTop();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}

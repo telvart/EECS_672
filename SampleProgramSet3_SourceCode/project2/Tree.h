@@ -15,7 +15,7 @@ class Tree : public ModelView
 {
 public:
 	// As before: you will likely want to add parameters to the constructor
-	Tree(ShaderIF* sIF, double bottomx, double bottomy, double bottomz, double height, double treeRadius);
+	Tree(ShaderIF* sIF, double bottomx, double bottomy, double bottomz, double height, double treeRadius, vec3 color);
 	virtual ~Tree();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -27,6 +27,7 @@ private:
 
 	TreeTop* top;
 	Trunk* trunk;
+	vec3 topColor;
 
 	float xyz[6];
 

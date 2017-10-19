@@ -1,14 +1,29 @@
 
 #include "House.h"
 
-House::House(ShaderIF* sIF) : shaderIF(sIF)
+House::House(ShaderIF* sIF, cryph::AffPoint houseBottom, float width, float length, float height)
+ : shaderIF(sIF)
 {
-	// DON'T FORGET TO SET INSTANCE VARIABLE "kd", PERHAPS USING
-	// SOME CONSTRUCTOR PARAMETERS
+	this->width = width;
+	this->length = length;
+	this->height = height;
+	m_bottom = houseBottom;
 }
 
 House::~House()
 {
+}
+
+
+
+void House::defineHouse()
+{
+	xyz[0] = m_bottom.x - (width/2);
+	xyz[1] = m_bottom.x + (width/2);
+	xyz[2] = m_bottom.y - (length/2);
+	xyz[3] = m_bottom.y + (length/2);
+	xyz[4] = m_bottom.z;
+	xyz[5] = m_bottom.z + height;
 }
 
 // xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}

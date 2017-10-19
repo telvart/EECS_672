@@ -1,12 +1,13 @@
 
 #include "Tree.h"
 
-Tree::Tree(ShaderIF* sIF, double bottomx, double bottomy, double bottomz, double height, double treeRadius)
+Tree::Tree(ShaderIF* sIF, double bottomx, double bottomy, double bottomz, double height, double treeRadius, vec3 color)
 : shaderIF(sIF)
 {
 	treeBottom = cryph::AffPoint(bottomx, bottomy, bottomz);
 	m_height = height;
 	m_baseRadius = treeRadius;
+	topColor[0] = color[0]; topColor[1] = color[1]; topColor[2] = color[2];
 	defineTree();
 }
 
@@ -25,7 +26,7 @@ void Tree::defineTree()
 	cryph::AffPoint trunkTop(treeBottom.x, treeBottom.y, treeBottom.z + trunkHeight);
 
 	trunk = new Trunk(shaderIF, trunkRadius, treeBottom, trunkTop);
-	top = new TreeTop(shaderIF, trunkTop, m_baseRadius, topHeight);
+	top = new TreeTop(shaderIF, trunkTop, m_baseRadius, topHeight, topColor);
 
 }
 

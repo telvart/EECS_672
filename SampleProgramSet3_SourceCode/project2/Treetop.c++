@@ -2,10 +2,11 @@
 
 #include "Treetop.h"
 
-TreeTop::TreeTop(ShaderIF* sIF, cryph::AffPoint bottom, double baseRadius, double height)
+TreeTop::TreeTop(ShaderIF* sIF, cryph::AffPoint bottom, double baseRadius, double height, vec3 color)
 :PointsAroundBase(20), radius(baseRadius), shaderIF(sIF)
 {
-	kd[0] = 0.004; kd[1] = 0.475; kd[2] = 0.435;
+	kd[0] = color[0]; kd[1] = color[1]; kd[2] = color[2];
+	//kd[0] = 0.004; kd[1] = 0.475; kd[2] = 0.435;
 	m_bottom = bottom;
 	m_top.x = bottom.x;
 	m_top.y = bottom.y;
