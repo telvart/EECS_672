@@ -65,10 +65,10 @@ void Tetrahedron::defineTetrahedron(const cryph::AffPoint verts[])
 
 	//int bufferSize = 6 * sizeof(cryph::AffPoint);
 	int bufferSize = 6 * 3 * sizeof(double);
-
-	glBufferData(GL_ARRAY_BUFFER, bufferSize, verts, GL_STATIC_DRAW);
-	glVertexAttribPointer(shaderIF->pvaLoc("mcPosition"), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(shaderIF->pvaLoc("mcPosition"));
+	// 
+	// glBufferData(GL_ARRAY_BUFFER, bufferSize, vtx, GL_STATIC_DRAW);
+	// glVertexAttribPointer(shaderIF->pvaLoc("mcPosition"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	// glEnableVertexAttribArray(shaderIF->pvaLoc("mcPosition"));
 	//std::cout << "Tetrahedron::defineTetrahedron: create/fill VBOs. You will see errors until you do so.\n";
 }
 

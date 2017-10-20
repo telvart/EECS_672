@@ -25,7 +25,7 @@ void Tree::defineTree()
 	double topHeight = m_height - trunkHeight;
 	cryph::AffPoint trunkTop(treeBottom.x, treeBottom.y, treeBottom.z + trunkHeight);
 
-	trunk = new Trunk(shaderIF, trunkRadius, treeBottom, trunkTop);
+	trunk = new Trunk(shaderIF, treeBottom, trunkRadius, trunkHeight);
 	top = new TreeTop(shaderIF, trunkTop, m_baseRadius, topHeight, topColor);
 
 }
@@ -37,23 +37,17 @@ void Tree::getMCBoundingBox(double* xyzLimits) const
 	double* temp2 = new double[6];
 	trunk->getMCBoundingBox(temp);
 	top->getMCBoundingBox(temp2);
-	xyzLimits[0] = temp2[0];
-	xyzLimits[1] = temp2[1];
-	xyzLimits[2] = temp2[2];
-	xyzLimits[3] = temp2[3];
-	xyzLimits[4] = temp[4];
-	xyzLimits[5] = temp2[5];
+	xyzLimits[0] = temp2[0]; xyzLimits[1] = temp2[1];
+	xyzLimits[2] = temp2[2]; xyzLimits[3] = temp2[3];
+	xyzLimits[4] =  temp[4]; xyzLimits[5] = temp2[5];
 
 	delete[] temp;
 	delete[] temp2;
-
 
 }
 
 void Tree::render()
 {
-
 	trunk->render();
 	top->render();
-
 }

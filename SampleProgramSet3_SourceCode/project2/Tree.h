@@ -6,7 +6,7 @@
 #include "ModelView.h"
 #include "ShaderIF.h"
 #include "Trunk.h"
-#include "Treetop.h"
+#include "TreeTop.h"
 
 typedef float vec2[2];
 typedef float vec3[3];

@@ -5,15 +5,14 @@ cryph::AffVector dir;
 
 typedef float vec3[3];
 
-Trunk::Trunk(ShaderIF* sIF, float radius, const cryph::AffPoint& b, const cryph::AffPoint& t)
+Trunk::Trunk(ShaderIF* sIF, cryph::AffPoint bottom, float radius, float height)
   :PointsAroundCircle(20)
 {
   this->sIF = sIF;
 	this->radius = radius;
-	m_bottom = b;
-	m_top = t;
-	dir = (m_top - m_bottom);
-	dir.normalize();
+	m_bottom = bottom;
+  m_top = cryph::AffPoint(m_bottom.x, m_bottom.y, m_bottom.z+height);
+	//dir.normalize();
 
 	defineTrunk();
 
@@ -35,44 +34,33 @@ void Trunk::getMCBoundingBox(double* xyzLimits) const
 
 void Trunk::defineTrunk()
 {
-	xyz[0] = m_bottom.x 	- radius;
-	xyz[1] = m_bottom.x 	+ radius;
-	xyz[2] = m_bottom.y 	- radius;
-	xyz[3] = m_top.y 		+ radius;
-	xyz[4] = m_bottom.z 	- radius;
-	xyz[5] = m_bottom.z 	+ radius;
-
-	double 	theta 	= 0.0;
-	double 	dTheta 	= 2.0 * M_PI / PointsAroundCircle;
+	xyz[0] = m_bottom.x - radius; xyz[1] = m_bottom.x + radius;
+	xyz[2] = m_bottom.y - radius;	xyz[3] = m_bottom.y + radius;
+	xyz[4] = m_bottom.z - radius;	xyz[5] = m_bottom.z + radius;
 
 	int 	nPoints = 2 * (PointsAroundCircle + 1);
-	vec3 	coords[nPoints];
-	vec3 	normals[nPoints];
+	vec3* 	coords = new vec3[nPoints];
+	vec3* 	normals = new vec3[nPoints];
 
-	cryph::AffVector toPoint 			= cryph::AffVector(dir.dx - 1, dir.dy, dir.dz + 1).cross(dir);
-	cryph::AffPoint  b 				= m_bottom 	+ radius * toPoint;
-	cryph::AffPoint  t 				= m_top 		+ radius * toPoint;
-
-	cryph::AffVector bPerpendicular = (b - m_bottom).cross(t - b).cross(t - b);
+  double 	theta 	= 0.0;
+  double 	dTheta 	= 2.0 * M_PI / PointsAroundCircle;
+  cryph::AffVector U(1, 0, 0); //x-axis
+  cryph::AffVector V(0, 1, 0); //y-axis
 
 	for (int i=0 ; i <= PointsAroundCircle ; i++)
 	{
-		/* Set the values for the new coordinates after moving to the next point */
-		coords[2*i][0] = b.x; coords[2*i][1] = b.y; coords[2*i][2] = b.z;
-		coords[2*i+1][0] = t.x; coords[2*i+1][1] = t.y; coords[2*i+1][2] = t.z;
+    cryph::AffPoint b = m_bottom + radius * (cos(theta)*U + sin(theta)*V);
+    cryph::AffPoint t = m_top    + radius * (cos(theta)*U + sin(theta)*V);
+    theta += dTheta;
+    int j = 2*i;
 
-		/* Set the values for the normal vectors */
-		normals[2*i][0] = bPerpendicular.dx; normals[2*i][1] = bPerpendicular.dy; normals[2*i][2] = bPerpendicular.dz;
-		normals[2*i+1][0] = bPerpendicular.dx; normals[2*i+1][1] = bPerpendicular.dy; normals[2*i+1][2] = bPerpendicular.dz;
+    b.aCoords(coords, j);
+    t.aCoords(coords, j+1);
 
-		b = m_bottom 	+ ((radius * cos(dTheta)) * toPoint + ((radius * sin(dTheta)) * dir.cross(toPoint)));
-		t = m_top + ((radius * cos(dTheta)) * toPoint + ((radius * sin(dTheta)) * dir.cross(toPoint)));
-		toPoint = (b - m_bottom);
-		toPoint.normalize();
-
-		cryph::AffVector helperV = (b - m_bottom).cross(t - b);
-		bPerpendicular = helperV.cross(t - b);
-
+    cryph::AffVector norm = b - m_bottom;
+    norm.normalize();
+    normals[j][0] = norm.dx; normals[j][1] = norm.dy; normals[j][2] = norm.dz;
+    normals[j+1][0] = norm.dx; normals[j+1][1] = norm.dy; normals[j+1][2] = norm.dz;
 	}
 
 	glGenVertexArrays(1, vao);
@@ -103,8 +91,6 @@ void Trunk::render()
 	float mat[16];
 	glUniformMatrix4fv(sIF->ppuLoc("mc_ec"), 	1, false, mc_ec.	extractColMajor(mat));
 	glUniformMatrix4fv(sIF->ppuLoc("ec_lds"), 	1, false, ec_lds.	extractColMajor(mat));
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glUniform3fv(sIF->ppuLoc("kd"), 1, kd);
 	glBindVertexArray(vao[0]);

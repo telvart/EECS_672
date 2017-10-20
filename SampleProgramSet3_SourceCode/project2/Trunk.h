@@ -10,8 +10,7 @@ class Trunk : public ModelView
 {
 public:
 
-  Trunk(ShaderIF* sIF, float radius, const cryph::AffPoint& bottom_midpoint,
-     const cryph::AffPoint& top_midpoint);
+  Trunk(ShaderIF* sIF, cryph::AffPoint bottom, float radius, float height);
 
   virtual ~Trunk();
 

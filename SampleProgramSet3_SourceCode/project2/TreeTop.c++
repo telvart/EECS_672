@@ -1,6 +1,6 @@
 // TreeTop.c++
 
-#include "Treetop.h"
+#include "TreeTop.h"
 
 TreeTop::TreeTop(ShaderIF* sIF, cryph::AffPoint bottom, double baseRadius, double height, vec3 color)
 :PointsAroundBase(20), radius(baseRadius), shaderIF(sIF)

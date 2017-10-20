@@ -17,6 +17,9 @@ Pyramid::Pyramid(ShaderIF* sIF, cryph::AffPoint bottom, float height, float widt
 
 Pyramid::~Pyramid()
 {
+	glDeleteBuffers(4,ebo);
+	glDeleteBuffers(1, vbo);
+	glDeleteVertexArrays(1, vao);
 }
 
 void Pyramid::definePyramid()
@@ -62,11 +65,7 @@ void Pyramid::definePyramid()
 
 	glDisableVertexAttribArray(shaderIF->pvaLoc("mcNormal"));
 
-
 	delete[] coords;
-
-
-
 
 }
 
@@ -144,24 +143,6 @@ void Pyramid::render()
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), n.dx, n.dy, n.dz);
 	glDrawElements(GL_TRIANGLE_STRIP, 3, GL_UNSIGNED_INT, nullptr);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	glUseProgram(pgm);
-
-
 
 }

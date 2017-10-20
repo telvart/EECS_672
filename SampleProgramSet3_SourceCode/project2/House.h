@@ -14,7 +14,8 @@ class House : public ModelView
 {
 public:
 	// As before: you will likely want to add parameters to the constructor
-	House(ShaderIF* sIF, cryph::AffPoint houseBottom, float width, float length, float height, float roofHeight);
+	House(ShaderIF* sIF, cryph::AffPoint houseBottom, float width, float length, float height,
+		 float roofHeight, bool isDog);
 	virtual ~House();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -26,21 +27,15 @@ private:
 
 	void renderRoof(cryph::AffVector n);
 
-	GLuint vao[1];
-	GLuint vbo[2];
-
-
-
 	ShaderIF* shaderIF;
-
+	cryph::AffPoint m_bottom;
 	Block *floor1, *wall1, *wall2, *wall3, *wall4, *door, *doorKnob;
 	Pyramid* roof;
 
-	float width, length, height, roofHeight;
-	const float wallWidth;
-	cryph::AffPoint m_bottom;
+	bool dogHouse;
 
-	float kd[3];
+	const float wallWidth;
+	float width, length, height, roofHeight;
 	float xyz[6];
 };
 

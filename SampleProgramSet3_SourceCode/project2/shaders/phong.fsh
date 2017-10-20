@@ -34,6 +34,7 @@ vec4 evaluateLightingModel()
 	vec3 liHat = vec3(0.0, 0.0, 1.0);
 	vec3 liStrength = vec3(1.0, 1.0, 1.0);
 	float factor = abs(dot(liHat, pvaIn.ecUnitNormal));
+	//float factor = dot(liHat, pvaIn.ecUnitNormal);
 
 	return vec4(factor * kd * liStrength, 1.0);
 }
