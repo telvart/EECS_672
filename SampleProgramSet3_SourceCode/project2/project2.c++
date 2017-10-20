@@ -95,17 +95,19 @@ int main(int argc, char* argv[])
 	ShaderIF* sIF = new ShaderIF("shaders/basic.vsh", "shaders/phong.fsh");
 
 	//NOTE: Block is defined in Plane.h/Plane.c++
-	//c.addModel(new Block(sIF, -200, -200, -1, 400, 400, 1, grass)); //green underlay
+	c.addModel(new Block(sIF, -200, -200, -1, 400, 400, 1, grass)); //green underlay
 	c.addModel(new Block(sIF, -12.5, -200, 1, 25, 150, 1, gray)); //sidewalk
 
-	//c.addModel(new Tree(sIF, 75, 150, 0, 100, 20, yellow));
-	//c.addModel(new Tree(sIF, -100, -75, 0, 75, 10, orange));
-	//c.addModel(new Tree(sIF, -140, 120, 0, 75, 30, pine));
+	c.addModel(new Tree(sIF, 75, 150, 0, 100, 20, yellow));
+	c.addModel(new Tree(sIF, -100, -75, 0, 75, 10, orange));
+	c.addModel(new Tree(sIF, -140, 120, 0, 75, 30, pine));
 
-	//c.addModel(new House(sIF, origin, 75, 75, 50, 40, false));
-	//c.addModel(new House(sIF, dogHouse, 30, 30, 30, 10, true));
+	c.addModel(new House(sIF, origin, 75, 75, 50, 40, false));
+	c.addModel(new House(sIF, dogHouse, 30, 30, 30, 10, true));
 
-	c.addModel(new Trunk(sIF, origin, 20, 50));
+	c.addModel(new PicnicTable(sIF, table, 40, 60, 40));
+
+	//c.addModel(new Trunk(sIF, origin, 20, 50));
 	double xyz[6];
 	c.getOverallMCBoundingBox(xyz);
 	set3DViewingInformation(xyz);

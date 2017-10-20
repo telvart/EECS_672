@@ -6,11 +6,13 @@
 #include "ModelView.h"
 #include "ShaderIF.h"
 
+typedef float vec3[3];
+
 class Trunk : public ModelView
 {
 public:
 
-  Trunk(ShaderIF* sIF, cryph::AffPoint bottom, float radius, float height);
+  Trunk(ShaderIF* sIF, cryph::AffPoint bottom, float radius, float height, vec3 color);
 
   virtual ~Trunk();
 

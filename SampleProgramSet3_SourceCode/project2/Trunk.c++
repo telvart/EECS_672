@@ -1,18 +1,13 @@
 
 #include "Trunk.h"
 
-cryph::AffVector dir;
-
-typedef float vec3[3];
-
-Trunk::Trunk(ShaderIF* sIF, cryph::AffPoint bottom, float radius, float height)
+Trunk::Trunk(ShaderIF* sIF, cryph::AffPoint bottom, float radius, float height, vec3 color)
   :PointsAroundCircle(20)
 {
   this->sIF = sIF;
 	this->radius = radius;
 	m_bottom = bottom;
   m_top = cryph::AffPoint(m_bottom.x, m_bottom.y, m_bottom.z+height);
-	//dir.normalize();
 
 	defineTrunk();
 
@@ -77,6 +72,9 @@ void Trunk::defineTrunk()
 	glBufferData(GL_ARRAY_BUFFER, nPoints * sizeof(vec3), normals, GL_DYNAMIC_DRAW);
 	glVertexAttribPointer(sIF->pvaLoc("mcNormal"), 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(sIF->pvaLoc("mcNormal"));
+
+  delete[] coords;
+  delete[] normals;
 
 }
 
