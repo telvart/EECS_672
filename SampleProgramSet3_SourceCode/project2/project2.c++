@@ -45,7 +45,7 @@ void set3DViewingInformation(double xyz[6])
 
 	// 2:
 	double distEyeCenter = 2 * maxDelta;
-	cryph::AffVector dir(-2, -20, 10);
+	cryph::AffVector dir(0, -20, 10);
 	dir.normalize();
 	cryph::AffPoint eye = center + distEyeCenter*(dir);
 	// 3:
@@ -83,6 +83,7 @@ int main(int argc, char* argv[])
 	cryph::AffPoint tr(100, 100, -20);
 	cryph::AffPoint	bl(-100, -100, -20);
 	cryph::AffPoint br(100, -100, -20);
+	cryph::AffPoint origin(0, 0, 0);
 	cryph::AffVector dir(1,1,0);
 
 	vec3 grass = {0.486, 0.988, 0};
@@ -107,9 +108,9 @@ int main(int argc, char* argv[])
 	//c.addModel(new Block(sIF, -10, -10, 0, 20, 20, 20));
 
 	//NOTE: Block is defined in Plane.h/Plane.c++
-	c.addModel(new Block(sIF, -200, -200, -1, 400, 400, 1, grass));
-	c.addModel(new Block(sIF, -50, -50, 0, 100, 100, 50, house));
-	c.addModel(new Block(sIF, -12.5, -200, 1, 25, 150, 1, gray));
+	c.addModel(new Block(sIF, -200, -200, -1, 400, 400, 1, grass)); //green underlay
+	//c.addModel(new Block(sIF, -50, -50, 0, 100, 100, 50, house));
+	c.addModel(new Block(sIF, -12.5, -200, 1, 25, 150, 1, gray)); //sidewalk
 
 
 //	c.addModel(new Trunk(sIF, 5, trunkBottom, trunkTop));
@@ -118,6 +119,9 @@ int main(int argc, char* argv[])
 	c.addModel(new Tree(sIF, 75, 150, 0, 100, 20, yellow));
 	c.addModel(new Tree(sIF, -100, -75, 0, 75, 10, orange));
 	c.addModel(new Tree(sIF, -140, 120, 0, 75, 30, pine));
+
+	c.addModel(new House(sIF, origin, 75, 75, 50, 40));
+
 	//c.addModel(new DirBlock(0, 0, 0, ));
 
 
