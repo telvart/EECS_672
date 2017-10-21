@@ -161,6 +161,8 @@ Block::Block(ShaderIF* sIF, float cx, float cy, float cz, float lx, float ly, fl
 	zmin = cz; zmax = cz + lz;
 
 	kd[0] = color[0]; kd[1] = color[1]; kd[2] = color[2];
+	ka[0] = color[0]; ka[1] = color[1]; ka[2] = color[2];
+
 	defineBlock();
 }
 
@@ -219,6 +221,8 @@ void Block::renderBlock()
 {
 	glBindVertexArray(vao[0]);
 	glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
+  //glUniform3fv(shaderIF->ppuLoc("ka"), 1, ka);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// The three faces that can be drawn with glDrawArrays
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, 0.0, 1.0);

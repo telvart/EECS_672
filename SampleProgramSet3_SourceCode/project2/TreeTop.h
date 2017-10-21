@@ -37,6 +37,7 @@ private:
 
 	ShaderIF* shaderIF;
 	float kd[3];
+	float ka[3];
 };
 
 #endif

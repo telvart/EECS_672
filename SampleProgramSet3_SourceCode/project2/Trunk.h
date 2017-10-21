@@ -29,7 +29,7 @@ private:
 
   const int PointsAroundCircle;
   cryph::AffPoint m_bottom, m_top;
-  float xyz[6], kd[3], radius;
+  float xyz[6], kd[3], ka[3], radius;
   ShaderIF* sIF;
 
 };

@@ -41,7 +41,7 @@ class Block : public ModelView
 public:
 	Block(ShaderIF* sIF, float cx, float cy, float cz, // lower left corner
 	      float lx, float ly, float lz, vec3 color);// lengths in 3 directions
-	Block(ShaderIF* sIF, double Vdx, double Vdy, double Vdz, vec3 dir);
+	//Block(ShaderIF* sIF, double Vdx, double Vdy, double Vdz, vec3 dir);
 	virtual ~Block();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -56,6 +56,7 @@ private:
 
 	float xmin, xmax, ymin, ymax, zmin, zmax;
 	float kd[3];
+	float ka[3];
 
 	static GLuint indexList[3][4];
 

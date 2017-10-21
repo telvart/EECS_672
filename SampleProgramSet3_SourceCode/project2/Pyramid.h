@@ -34,6 +34,7 @@ private:
 	float height, width;
 	ShaderIF* shaderIF;
 	float kd[3];
+	float ka[3];
 };
 
 #endif

@@ -7,6 +7,7 @@
 #include "ShaderIF.h"
 #include "Plane.h"
 #include "Pyramid.h"
+#include <vector>
 
 typedef float vec3[3];
 
@@ -31,6 +32,7 @@ private:
 	cryph::AffPoint m_bottom;
 	Block *floor1, *wall1, *wall2, *wall3, *wall4, *door, *doorKnob;
 	Pyramid* roof;
+	std::vector<ModelView*> models;
 
 	bool dogHouse;
 

@@ -11,7 +11,8 @@ Trunk::Trunk(ShaderIF* sIF, cryph::AffPoint bottom, float radius, float height, 
 
 	defineTrunk();
 
-  kd[0] = 0.32; kd[1] = 0.2; kd[2] = 0.039;
+  kd[0] = color[0]; kd[1] = color[1]; kd[2] = color[2];
+  ka[0] = color[0]; ka[1] = color[1]; ka[2] = color[2];
 }
 
 Trunk::~Trunk()
@@ -90,7 +91,10 @@ void Trunk::render()
 	glUniformMatrix4fv(sIF->ppuLoc("mc_ec"), 	1, false, mc_ec.	extractColMajor(mat));
 	glUniformMatrix4fv(sIF->ppuLoc("ec_lds"), 	1, false, ec_lds.	extractColMajor(mat));
 
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	glUniform3fv(sIF->ppuLoc("kd"), 1, kd);
+  //glUniform3fv(sIF->ppuLoc("ka"), 1, ka);
 	glBindVertexArray(vao[0]);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*(PointsAroundCircle+1));
 

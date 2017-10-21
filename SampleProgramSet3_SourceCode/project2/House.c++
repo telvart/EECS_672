@@ -16,13 +16,10 @@ House::House(ShaderIF* sIF, cryph::AffPoint houseBottom, float width, float leng
 
 House::~House()
 {
-  delete floor1;
-  delete wall1;
-  delete wall2;
-  delete wall3;
-  delete wall4;
-  delete door;
-  delete roof;
+
+  for(int i=0; i<models.size(); i++)
+    delete models[i];
+
   if(!dogHouse) {delete doorKnob;}
 }
 
@@ -43,14 +40,14 @@ void House::defineHouse()
 
   cryph::AffPoint floorLoc(m_bottom.x-(width/2), m_bottom.y-(length/2), m_bottom.z);
   cryph::AffPoint wall1Loc(m_bottom.x-(width/2), m_bottom.y-(length/2), m_bottom.z+1);
-  cryph::AffPoint wall2Loc(m_bottom.x-(width/2), m_bottom.y+(length/2), m_bottom.z+1);
+  cryph::AffPoint wall2Loc(m_bottom.x-(width/2), m_bottom.y+(length/2)-wallWidth, m_bottom.z+1);
   cryph::AffPoint wall3Loc((m_bottom.x+(width/2))-wallWidth, m_bottom.y-(length/2), m_bottom.z+1);
 
-  floor1 = new Block(shaderIF, floorLoc.x, floorLoc.y, floorLoc.z, width, length, 1, gray); //floor
-  wall1 = new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, wallWidth, length, height, house); //leftWall
-  wall2 = new Block(shaderIF, wall2Loc.x, wall2Loc.y, wall2Loc.z, width, wallWidth, height, house); //rear wall
-  wall3 = new Block(shaderIF, wall3Loc.x, wall3Loc.y, wall3Loc.z, wallWidth, length, height, house); //right wall
-  wall4 = new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, width, wallWidth, height, house); //front wall
+   models.push_back(new Block(shaderIF, floorLoc.x, floorLoc.y, floorLoc.z, width, length, 1, gray)); //floor
+   models.push_back(new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, wallWidth, length, height, house)); //leftWall
+   models.push_back(new Block(shaderIF, wall2Loc.x, wall2Loc.y, wall2Loc.z, width, wallWidth, height, house)); //rear wall
+   models.push_back(new Block(shaderIF, wall3Loc.x, wall3Loc.y, wall3Loc.z, wallWidth, length, height, house)); //right wall
+   models.push_back(new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, width, wallWidth, height, house)); //front wall
 
   float thirdWidth = width / 3;
   float thirdHeight = height / 3;
@@ -60,15 +57,15 @@ void House::defineHouse()
   if(!dogHouse)
   {
     doorKnob = new Block(shaderIF, knobLoc.x, knobLoc.y, knobLoc.z, 0.2*thirdWidth, -1*(0.2*thirdWidth), 0.2*thirdHeight, black);
-    door = new Block(shaderIF, door1Loc.x, door1Loc.y, door1Loc.z, thirdWidth, 1, 2*thirdHeight, red);
+    models.push_back(new Block(shaderIF, door1Loc.x, door1Loc.y, door1Loc.z, thirdWidth, 1, 2*thirdHeight, red));
   }
   else
   {
-    door = new Block(shaderIF, door1Loc.x, door1Loc.y, door1Loc.z, thirdWidth, 1, 2*thirdHeight, black);
+    models.push_back(new Block(shaderIF, door1Loc.x, door1Loc.y, door1Loc.z, thirdWidth, 1, 2*thirdHeight, black));
   }
 
   cryph::AffPoint roofBottom(m_bottom.x, m_bottom.y, m_bottom.z+height);
-  roof = new Pyramid(shaderIF, roofBottom, roofHeight, width, brick);
+  models.push_back(new Pyramid(shaderIF, roofBottom, roofHeight, width, brick));
 }
 
 void House::getMCBoundingBox(double* xyzLimits) const
@@ -80,13 +77,17 @@ void House::getMCBoundingBox(double* xyzLimits) const
 
 void House::render()
 {
-  floor1 -> render();
-  wall1 -> render();
-  wall2 -> render();
-  wall3 -> render();
-  wall4 -> render();
-  door  -> render();
-  roof -> render();
+  // floor1 -> render();
+  // wall1 -> render();
+  // wall2 -> render();
+  // wall3 -> render();
+  // wall4 -> render();
+  // door  -> render();
+  // roof -> render();
+
+  for(int i=0; i<models.size(); i++)
+    models[i] -> render();
+
   if(!dogHouse)
   {
     doorKnob -> render();

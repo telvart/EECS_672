@@ -6,6 +6,7 @@ TreeTop::TreeTop(ShaderIF* sIF, cryph::AffPoint bottom, double baseRadius, doubl
 :PointsAroundBase(20), radius(baseRadius), shaderIF(sIF)
 {
 	kd[0] = color[0]; kd[1] = color[1]; kd[2] = color[2];
+	ka[0] = color[0]; ka[1] = color[1]; ka[2] = color[2];
 	//kd[0] = 0.004; kd[1] = 0.475; kd[2] = 0.435;
 	m_bottom = bottom;
 	m_top.x = bottom.x;
@@ -109,9 +110,10 @@ void TreeTop::render()
 	glUniformMatrix4fv(shaderIF->ppuLoc("mc_ec"), 	1, false, mc_ec.	extractColMajor(mat));
 	glUniformMatrix4fv(shaderIF->ppuLoc("ec_lds"), 	1, false, ec_lds.	extractColMajor(mat));
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
+  //glUniform3fv(shaderIF->ppuLoc("ka"), 1, ka);
 	glBindVertexArray(vao[0]);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, PointsAroundBase+2);
 

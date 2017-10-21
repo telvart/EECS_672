@@ -20,7 +20,7 @@ Tree::~Tree()
 void Tree::defineTree()
 {
 	vec3 brown = {0.32, 0.2, 0.039};
-	double trunkHeight = 0.25 * m_height;
+	double trunkHeight = 0.33 * m_height;
 	double trunkRadius = 0.25 * m_baseRadius;
 	double topHeight = m_height - trunkHeight;
 	cryph::AffPoint trunkTop(treeBottom.x, treeBottom.y, treeBottom.z + trunkHeight);
