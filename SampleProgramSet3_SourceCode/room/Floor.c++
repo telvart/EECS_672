@@ -22,8 +22,10 @@ void Floor::defineInitialGeometry()
 {
 	float mcPosition[4][3] =
 	{
-		{ xyz[0], xyz[2], 0.0 }, { xyz[0], xyz[3], 0.0 },
-		{ xyz[1], xyz[2], 0.0 }, { xyz[1], xyz[3], 0.0 }
+		{ static_cast<float>(xyz[0]), static_cast<float>(xyz[2]), 0.0 },
+		{ static_cast<float>(xyz[0]), static_cast<float>(xyz[3]), 0.0 },
+		{ static_cast<float>(xyz[1]), static_cast<float>(xyz[2]), 0.0 },
+		{ static_cast<float>(xyz[1]), static_cast<float>(xyz[3]), 0.0 }
 	};
 
 	glGenVertexArrays(1, &vao);

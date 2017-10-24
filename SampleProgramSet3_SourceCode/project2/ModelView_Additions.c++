@@ -26,7 +26,7 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 {
 	// TODO: Delete or comment out the following std::cout statement when
 	//       everything else is done here.
-	//std::cout << "In project 2, you must implement ModelView::getMatrices in ModelView_Additions.c++\n";
+	std::cout << "In project 2, you must implement ModelView::getMatrices in ModelView_Additions.c++\n";
 	// 1. Create the mc_ec matrix:
 	//    Create a local variable of type Matrix4x4 called M_ECu from the eye,
 	//    center, and up. Recall that those values are initialized in the main
@@ -51,37 +51,22 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	//    Use the mcRegionOfInterest. (As with eye, center, up, the mcRegionOfInterest
 	//    is initialized in main and is subject to modification at any time while
 	//    processing events. Its current values are also stored in protected class
-	//    variables that you directly access.
+	//    variables that you can directly access.
 
-	//    2.a. Determine the maximum of delta_mcX, delta_mcY, and delta_mcZ. (For
-	//         example, delta_mcX = mcRegionOfInterest[1] - mcRegionOfInterest[0].)
-	//         Suppose you store the maximum of these delta_mc* values in "maxDelta".
-
-
-	double deltaMCs[3];
-	double* xyz = ModelView::mcRegionOfInterest;
-
-	deltaMCs[0] = xyz[1] - xyz[0];
-	deltaMCs[1] = xyz[3] - xyz[2];
-	deltaMCs[2] = xyz[5] - xyz[4];
-	double maxDelta = deltaMCs[0]; // TODO: compute this as just described.
-	for(int i=1; i<3; i++)
-	{
-		if (deltaMCs[i] > maxDelta)
-			maxDelta = deltaMCs[i];
-	}
-
-	double halfWidth = 0.5 * maxDelta;
-	//    2.b. In project 3 & 4: Scale "halfWidth" by "dynamic_zoomScale"
-	//    2.c. initialize the XY direction of the view volume as:
-	last_ecXmin = -halfWidth; last_ecXmax = halfWidth; // instance variables; see...
-	last_ecYmin = -halfWidth; last_ecYmax = halfWidth; // ... ModelView.h
-	// TODO: 2.d. Use ModelView::matchAspectRatio to alter one of these pairs.
-
-	double vAR = Controller::getCurrentController() -> getViewportAspectRatio();
-	ModelView::matchAspectRatio(last_ecXmin, last_ecXmax, last_ecYmin, last_ecYmax, vAR);
-
-
+	//    2.a. Set the ECx and ECy extents of the view frustum on the projection plane.
+	//         One strategy is to use the radius of the sphere that circumscribes the
+	//         MC Bounding Box.
+	double circumscribingSphereRadius = 0.0; // Don't use 0.0; compute it!!!
+	//    2.b. In project 3 & 4: Scale "circumscribingSphereRadius" by "dynamic_zoomScale"
+	//    2.c. initialize the XY direction of the view volume as follows.
+	//    NOTE: last_ecXmin, et al. are ModelView class variables. See ModelView.h.
+	//    BE SURE YOU UNDERSTAND WHY THE FOLLOWING INITIALIZATIONS WORK. REVIEW YOUR NOTES.
+	//    YOU CAN BE PRETTY CONFIDENT YOU WILL BE ASKED A QUESTION AT LEAST RELATED TO THIS
+	//    ON AN EXAM!
+	last_ecXmin = -circumscribingSphereRadius; last_ecXmax = circumscribingSphereRadius;
+	last_ecYmin = -circumscribingSphereRadius; last_ecYmax = circumscribingSphereRadius;
+	// TODO:
+	//    2.d. Use ModelView::matchAspectRatio.
 
 	if (ModelView::projType == ORTHOGONAL)
 		ec_lds = cryph::Matrix4x4::orthogonal(last_ecXmin, last_ecXmax, last_ecYmin, last_ecYmax,

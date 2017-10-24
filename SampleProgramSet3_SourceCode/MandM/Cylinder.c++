@@ -44,22 +44,6 @@ void Cylinder::defineCylinder()
 		theta += dTheta;
 	}
 
-	glGenVertexArrays(1, vao);
-	glGenBuffers(2, vbo);
-
-	glBindVertexArray(vao[0]);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-
-	glBufferData(GL_ARRAY_BUFFER, nPoints * sizeof(vec3), coords, GL_STATIC_DRAW);
-	glVertexAttribPointer(shaderIF->pvaLoc("mcPosition"), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(shaderIF->pvaLoc("mcPosition"));
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-
-	glBufferData(GL_ARRAY_BUFFER, nPoints * sizeof(vec3), normals, GL_STATIC_DRAW);
-	glVertexAttribPointer(shaderIF->pvaLoc("mcNormal"), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(shaderIF->pvaLoc("mcNormal"));
-
 	// ************************************************************************
 	// EXERCISE: Create/fill VAOs and VBOs here.
 	//           Also use glVertexAttribPointer and glEnableVertexAttribArray

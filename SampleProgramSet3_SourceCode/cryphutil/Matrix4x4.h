@@ -145,6 +145,14 @@ public:
 	static Matrix4x4 generalRotationRadians(const AffPoint& B,
 		const AffVector& axis, double angle);
 
+	/** Factory method to create a 4x4 matrix that mirrors geometry about
+	 *  a general plane in 3D space.
+	 *  @param B a 3D point on the desired mirror plane
+	 *  @param n a 3D vector perpendicular to the plane
+	 *  @return the constructed 4x4 matrix
+	 */
+	static Matrix4x4 mirror(const AffPoint& B, const AffVector& n);
+
 	/** Factory method to create a 4x4 matrix that performs a rotation about
 	 *  the x-axis.
 	 *  @param angle the desired rotation angle in degrees
@@ -192,6 +200,14 @@ public:
 	 *  @return the constructed 4x4 matrix
 	 */
 	static Matrix4x4 translation(const AffVector& trans);
+
+	/** Factory method to create a 4x4 matrix that performs a translation
+	 *  @param dx the x component of the desired translation vector
+	 *  @param dy the y component of the desired translation vector
+	 *  @param dz the z component of the desired translation vector
+	 *  @return the constructed 4x4 matrix
+	 */
+	static Matrix4x4 translation(double dx, double dy, double dz);
 
 	/** Factory method to create a 4x4 matrix that performs a non-uniform
 	 *  scale transformation.

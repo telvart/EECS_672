@@ -477,6 +477,12 @@ Matrix4x4 Matrix4x4::lookAt(const cryph::AffPoint& eye,
 	                 0.0,  0.0,  0.0, 1.0);
 }
 
+Matrix4x4 Matrix4x4::mirror(const AffPoint& B, const AffVector& n)
+{
+	Matrix3x3 m3x3 = Matrix3x3::mirrorMatrix(n);
+	return Matrix4x4(m3x3, B);
+}
+
 void Matrix4x4::multiply(const double a[], double b[], int nElements) const
 {
 	if (nElements < 1)
@@ -780,6 +786,15 @@ Matrix4x4 Matrix4x4::translation(const AffVector& translation)
 	M.mElem[0][3] = translation[DX];
 	M.mElem[1][3] = translation[DY];
 	M.mElem[2][3] = translation[DZ];
+	return M;
+}
+
+Matrix4x4 Matrix4x4::translation(double dx, double dy, double dz)
+{
+	Matrix4x4 M;
+	M.mElem[0][3] = dx;
+	M.mElem[1][3] = dy;
+	M.mElem[2][3] = dz;
 	return M;
 }
 

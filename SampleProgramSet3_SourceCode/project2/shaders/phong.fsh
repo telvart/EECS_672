@@ -11,9 +11,8 @@ in PVA
 out vec4 fragmentColor;
 
 // Phong material properties (just kd for now; you will add the rest later):
-// "kd" - diffuse reflectivity; basic object color
-
-uniform vec3 kd = vec3(0.8, 0.0, 0.0); // default: darkish red
+uniform vec3 kd = // "kd" - diffuse reflectivity; basic object color
+	vec3(0.8, 0.0, 0.0); // default: darkish red
 
 vec4 evaluateLightingModel()
 {
@@ -25,29 +24,16 @@ vec4 evaluateLightingModel()
 	// 2. We assume it will be "full strength" (see liStrength).
 	//
 	// In project 3, both #1 and #2 will be generalized by introducing uniform
-	// arrays ("vec4 p_ecLightSourcePos" and "vec3 ecLightSourceStrength") and+
+	// arrays ("vec4 p_ecLightSourcePos" and "vec3 ecLightSourceStrength") and
 	// using them INSTEAD OF the liHat and liStrength you see here.
 	//
 	// 3. The use of "abs" here is a temporary hack. As we study the Phong
 	//    lighting model more carefully, you will REMOVE "abs" since it will
 	//    no longer be appropriate.
 
-	vec3 liHat = vec3(0, 0, 1);
+	vec3 liHat = vec3(0.0, 0.0, 1.0);
 	vec3 liStrength = vec3(1.0, 1.0, 1.0);
-	vec3 norm = pvaIn.ecUnitNormal;
-	vec3 ka = vec3(kd);
-
-	vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
-
-	 if(dot(normalize(liHat), norm) < 0)
-	 {
-	 	norm = norm*-1;
-	 }
-
-	 //NOTE: I realize there is more to the simple phong lighting model
-
-	//float factor = abs(dot(liHat, norm));
-	float factor = dot(liHat, norm);
+	float factor = abs(dot(liHat, pvaIn.ecUnitNormal));
 
 	return vec4(factor * kd * liStrength, 1.0);
 }

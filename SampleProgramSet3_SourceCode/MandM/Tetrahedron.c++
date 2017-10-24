@@ -57,19 +57,7 @@ void Tetrahedron::defineTetrahedron(const cryph::AffPoint verts[])
 	//              be set face-by-face (i.e., on a per-primitive basis)
 	//              in Tetrahedron::renderTetrahedron
 	// ******************************************************************
-	glGenBuffers(1, vbo);
-	glGenVertexArrays(1, vao);
-
-	glBindVertexArray(vao[0]);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-
-	//int bufferSize = 6 * sizeof(cryph::AffPoint);
-	int bufferSize = 6 * 3 * sizeof(double);
-	// 
-	// glBufferData(GL_ARRAY_BUFFER, bufferSize, vtx, GL_STATIC_DRAW);
-	// glVertexAttribPointer(shaderIF->pvaLoc("mcPosition"), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	// glEnableVertexAttribArray(shaderIF->pvaLoc("mcPosition"));
-	//std::cout << "Tetrahedron::defineTetrahedron: create/fill VBOs. You will see errors until you do so.\n";
+	std::cout << "Tetrahedron::defineTetrahedron: create/fill VBOs. You will see errors until you do so.\n";
 }
 
 void Tetrahedron::getMCBoundingBox(double* xyzLimits) const

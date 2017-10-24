@@ -50,14 +50,10 @@ void set3DViewingInformation(double xyz[6])
 	ModelView::setMCRegionOfInterest(xyz);
 
 	// Two common computations to help determine a reasonable initial view:
-	// (i) Find the maximum of the three MC deltas
-	double maxDelta = xyz[1] - xyz[0];
-	double delta = xyz[3] - xyz[2];
-	if (delta > maxDelta)
-		maxDelta = delta;
-	delta = xyz[5] - xyz[4];
-	if (delta > maxDelta)
-		maxDelta = delta;
+	// (i) Find the diameter of the sphere that circumscribes the bounding
+	//     box currently stored in "xyz".
+	// The following computation is NOT RIGHT; fixing it is left as an exercise.
+	double diameter = xyz[1] - xyz[0];
 	// (ii) Determine the center of the created scene:
 	double xmid = 0.5 * (xyz[0] + xyz[1]);
 	double ymid = 0.5 * (xyz[2] + xyz[3]);
@@ -67,7 +63,7 @@ void set3DViewingInformation(double xyz[6])
 	// Create the line of sight through the center of the scene:
 	// 1) Make the center of attention be the center of the bounding box.
 	// 2) Move the eye away along some direction - here (0,0,1) - so that the
-	//    distance between the eye and the center is (2*max scene dimension).
+	//    distance between the eye and the center is some multiple of "diameter".
 	// 3) Set the "up" direction vector to orient the 3D view
 	// NOTE: ModelView::getMatrices - used during display callbacks -
 	//       implicitly assumes the line of sight passes through what we want
@@ -77,7 +73,7 @@ void set3DViewingInformation(double xyz[6])
 	cryph::AffPoint center(xmid, ymid, zmid);
 
 	// 2:
-	double distEyeCenter = 2.0 * maxDelta;
+	double distEyeCenter = 2.0 * diameter;
 	cryph::AffPoint eye(xmid, ymid, zmid + distEyeCenter);
 
 	// 3:
@@ -93,12 +89,13 @@ void set3DViewingInformation(double xyz[6])
 	// 1) zpp < 0
 	// 2) zmin < zmax < 0
 	// For non-perspective projections, it is only necessary that zmin < zmax.
-	double zpp = -(distEyeCenter - 0.5*maxDelta);
-	ModelView::setProjectionPlaneZ(zpp);
-	double zmin = zpp - 1.5*maxDelta;
-	double zmax = zpp + 0.5*maxDelta;
-	ModelView::setECZminZmax(zmin, zmax);
+	double ecZpp = -(distEyeCenter - 0.5*diameter);
+	double ecZmin = ecZpp - 1.5*diameter;
+	double ecZmax = ecZpp + 0.5*diameter;
+
 	ModelView::setProjection(PERSPECTIVE);
+	ModelView::setECZminZmax(ecZmin, ecZmax);
+	ModelView::setProjectionPlaneZ(ecZpp);
 }
 
 int main(int argc, char* argv[])
