@@ -8,7 +8,7 @@ void ModelView::addToGlobalPan(double dxInLDS, double dyInLDS, double dzInLDS)
 	//       everything else is done here.
 		double dxInECMC = (0.5 * dxInLDS) * (last_ecXmax - last_ecXmin);
 		double dyInECMC = (0.5 * dyInLDS) * (last_ecYmax - last_ecYmin);
-		
+
 		cryph::AffVector vec(dxInECMC, dyInECMC, dzInLDS);
 		cryph::Matrix4x4 trans = cryph::Matrix4x4::translation(vec);
 		dynamic_view = trans * dynamic_view;
@@ -50,8 +50,14 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	cryph::Matrix4x4 M_ECu = cryph::Matrix4x4::lookAt(ModelView::eye,
 			ModelView::center, ModelView::up);
 
-	//cryph::AffVector vec((eye.x-center.x), (eye.y - center.y), (eye.z - center.z));
-	cryph::AffVector vec(-(center.x - eye.x), -(center.y - eye.y), -(center.z - eye.z));
+	//cryph::AffVector vec(-(eye.x-center.x), -(eye.y - center.y), -(eye.z - center.z));
+	//cryph::AffVector vec((center.x - eye.x), (center.y - eye.y), (center.z - eye.z));
+
+	//std::cout<<"Eye: ("<<eye.x<<", "<<eye.y<<", "<<eye.z<<")\n";
+	//std::cout<<"Center: ("<<center.x<<", "<<center.y<<", "<<center.z<<")\n\n";
+
+	//cryph::AffVector vec(-200, -200, 1);
+	cryph::AffVector vec(-center.x, -center.y, -center.z);
 	//vec.normalize();
 	cryph::Matrix4x4 preTrans = cryph::Matrix4x4::translation(vec);
 	cryph::Matrix4x4 postTrans = cryph::Matrix4x4::translation(-vec);
@@ -104,6 +110,7 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	//    2.b. In project 3 & 4: Scale "halfWidth" by "dynamic_zoomScale"
 	//    2.c. initialize the XY direction of the view volume as:
 
+	//standard distance formula
 	double sphereRad = sqrt( pow(xyz[1] - xyz[0], 2) + pow(xyz[3] - xyz[2], 2) + pow(xyz[5]-xyz[4],2)) * dynamic_zoomScale;
 
 	last_ecXmin = xmid - sphereRad;
