@@ -6,7 +6,13 @@ void ModelView::addToGlobalPan(double dxInLDS, double dyInLDS, double dzInLDS)
 {
 	// TODO: Delete or comment out the following std::cout statement when
 	//       everything else is done here.
-	std::cout << "In project 3, you will implement ModelView::addToPan in ModelView_Additions.c++\n";
+		double dxInECMC = (0.5 * dxInLDS) * (last_ecXmax - last_ecXmin);
+		double dyInECMC = (0.5 * dyInLDS) * (last_ecYmax - last_ecYmin);
+		
+		cryph::AffVector vec(dxInECMC, dyInECMC, dzInLDS);
+		cryph::Matrix4x4 trans = cryph::Matrix4x4::translation(vec);
+		dynamic_view = trans * dynamic_view;
+
 	// TODO: 1. Use last_ecXmin, et al. with dxInLDS, et al. to translate the LDS
 	//          pan vector to an EC pan vector.
 	//       2. UPDATE dynamic_view
@@ -17,9 +23,16 @@ void ModelView::addToGlobalRotationDegrees(double rx, double ry, double rz)
 {
 	// TODO: Delete or comment out the following std::cout statement when
 	//       everything else is done here.
-	std::cout << "In project 3, you will implement ModelView::addToGlobalRotationDegrees in ModelView_Additions.c++\n";
+	//std::cout << "In project 3, you will implement ModelView::addToGlobalRotationDegrees in ModelView_Additions.c++\n";
 	// TODO: 1. UPDATE dynamic_view
 	// TODO: 2. The updated dynamic_view will be used in ModelView::getMatrices
+
+	cryph::Matrix4x4 xRotation = cryph::Matrix4x4::xRotationDegrees(rx);
+	cryph::Matrix4x4 yRotation = cryph::Matrix4x4::yRotationDegrees(ry);
+	cryph::Matrix4x4 zRotation = cryph::Matrix4x4::zRotationDegrees(rz);
+
+	dynamic_view = xRotation * yRotation * zRotation * dynamic_view;
+
 }
 
 void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
@@ -37,8 +50,16 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	cryph::Matrix4x4 M_ECu = cryph::Matrix4x4::lookAt(ModelView::eye,
 			ModelView::center, ModelView::up);
 
+	//cryph::AffVector vec((eye.x-center.x), (eye.y - center.y), (eye.z - center.z));
+	cryph::AffVector vec(-(center.x - eye.x), -(center.y - eye.y), -(center.z - eye.z));
+	//vec.normalize();
+	cryph::Matrix4x4 preTrans = cryph::Matrix4x4::translation(vec);
+	cryph::Matrix4x4 postTrans = cryph::Matrix4x4::translation(-vec);
+
 	//    For project 2:
-	mc_ec = M_ECu;
+	mc_ec = postTrans * dynamic_view * preTrans * M_ECu;
+
+
 
 	//    For project 3: Either:
 	//        mc_ec = dynamic_view * M_ECu (if rotations are to be about the eye)
@@ -64,6 +85,11 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	deltaMCs[0] = xyz[1] - xyz[0];
 	deltaMCs[1] = xyz[3] - xyz[2];
 	deltaMCs[2] = xyz[5] - xyz[4];
+
+	double xmid = (xyz[0] + xyz[1]) / 2;
+	double ymid = (xyz[2] + xyz[3]) / 2;
+	double zmid = (xyz[4] + xyz[5]) / 2;
+
 	double maxDelta = deltaMCs[0]; // TODO: compute this as just described.
 	for(int i=1; i<3; i++)
 	{
@@ -72,16 +98,22 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	}
 
 	double halfWidth = 0.5 * maxDelta;
+	double distEyeCenter = 2 * maxDelta;
+
+
 	//    2.b. In project 3 & 4: Scale "halfWidth" by "dynamic_zoomScale"
 	//    2.c. initialize the XY direction of the view volume as:
-	last_ecXmin = -halfWidth; last_ecXmax = halfWidth; // instance variables; see...
-	last_ecYmin = -halfWidth; last_ecYmax = halfWidth; // ... ModelView.h
-	// TODO: 2.d. Use ModelView::matchAspectRatio to alter one of these pairs.
+
+	double sphereRad = sqrt( pow(xyz[1] - xyz[0], 2) + pow(xyz[3] - xyz[2], 2) + pow(xyz[5]-xyz[4],2)) * dynamic_zoomScale;
+
+	last_ecXmin = xmid - sphereRad;
+	last_ecXmax = xmid + sphereRad;
+	last_ecYmin = ymid - sphereRad;
+	last_ecYmax = ymid + sphereRad;
+
 
 	double vAR = Controller::getCurrentController() -> getViewportAspectRatio();
 	ModelView::matchAspectRatio(last_ecXmin, last_ecXmax, last_ecYmin, last_ecYmax, vAR);
-
-
 
 	if (ModelView::projType == ORTHOGONAL)
 		ec_lds = cryph::Matrix4x4::orthogonal(last_ecXmin, last_ecXmax, last_ecYmin, last_ecYmax,
@@ -108,6 +140,13 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 
 void ModelView::scaleGlobalZoom(double multiplier)
 {
-	dynamic_zoomScale *= multiplier;
+	if(multiplier !=0)
+	{
+		dynamic_zoomScale *= multiplier;
+	}
+
+
+
+	//std::cout<<"Zoom Scale\n";
 	// TODO: Project 3: Use dynamic_zoomScale in ModelView::getMatrices
 }
