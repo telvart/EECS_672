@@ -4,6 +4,7 @@
 #define HOUSE_H
 
 #include "ModelView.h"
+#include "SceneElement.h"
 #include "ShaderIF.h"
 #include "Plane.h"
 #include "Pyramid.h"
@@ -11,12 +12,12 @@
 
 typedef float vec3[3];
 
-class House : public ModelView
+class House : public SceneElement
 {
 public:
 	// As before: you will likely want to add parameters to the constructor
 	House(ShaderIF* sIF, cryph::AffPoint houseBottom, float width, float length, float height,
-		 float roofHeight, bool isDog);
+		 float roofHeight, bool isDog, PhongMaterial& mat);
 	virtual ~House();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -26,9 +27,6 @@ public:
 	void defineHouse();
 private:
 
-	void renderRoof(cryph::AffVector n);
-
-	ShaderIF* shaderIF;
 	cryph::AffPoint m_bottom;
 	Block *floor1, *wall1, *wall2, *wall3, *wall4, *door, *doorKnob;
 	Pyramid* roof;

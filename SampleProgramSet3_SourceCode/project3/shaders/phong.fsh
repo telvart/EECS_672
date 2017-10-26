@@ -10,10 +10,21 @@ in PVA
 
 out vec4 fragmentColor;
 
+const int MAX_LIGHTS = 3;
+
 // Phong material properties (just kd for now; you will add the rest later):
 // "kd" - diffuse reflectivity; basic object color
 
+uniform int numLights;
+uniform int projectionType;
+uniform vec4 p_ecLightPositions[MAX_LIGHTS];
+uniform vec3 lightStrengths[MAX_LIGHTS];
+uniform vec3 globalAmbient = vec3(0.5, 0.5, 0.5);
 uniform vec3 kd = vec3(0.8, 0.0, 0.0); // default: darkish red
+uniform vec3 ka = vec3(0.8, 0.0, 0.0);
+uniform vec3 ks = vec3(0.8, 0.0, 0.0);
+uniform float shininess;
+
 
 vec4 evaluateLightingModel()
 {

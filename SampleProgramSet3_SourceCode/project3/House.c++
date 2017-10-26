@@ -2,8 +2,8 @@
 #include "House.h"
 
 House::House(ShaderIF* sIF, cryph::AffPoint houseBottom, float width, float length, float height,
-   float roofHeight, bool isDog)
-  :shaderIF(sIF), wallWidth(5)
+   float roofHeight, bool isDog, PhongMaterial& mat)
+  :wallWidth(5), SceneElement(sIF, mat)
 {
 	this->width = width;
 	this->length = length;
