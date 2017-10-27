@@ -32,7 +32,7 @@ uniform float alpha;
 
 
 
-vec4 evaluateLightingModel()
+vec4 evaluateLightingModel(in vec3 Q, in vec3 normal)
 {
 	// THIS IS JUST A PLACEHOLDER FOR A LIGHTING MODEL.
 	// It only currently implements simple Lambert shading.
@@ -48,6 +48,26 @@ vec4 evaluateLightingModel()
 	// 3. The use of "abs" here is a temporary hack. As we study the Phong
 	//    lighting model more carefully, you will REMOVE "abs" since it will
 	//    no longer be appropriate.
+
+	vec3 ambientTotal;
+	vec3 diffuseTotal;
+	vec3 specularTotal;
+	//
+	vec3 v_hat;
+	//
+	if(projectionType == PERSPECTIVE)
+	{
+		//vHat = -(normalize(Q));
+	}
+	// else if(projectionType == ORTHOGONAL)
+	// {
+	//
+	// }
+	// else if(projectionType == OBLIQUE)
+	// {
+	//
+	// }
+
 
 	vec3 liHat = vec3(0, 0, 1);
 	vec3 liStrength = vec3(1.0, 1.0, 1.0);
@@ -68,5 +88,6 @@ vec4 evaluateLightingModel()
 
 void main ()
 {
-	fragmentColor = evaluateLightingModel();
+
+	fragmentColor = evaluateLightingModel(pvaIn.ecPosition.xyz, pvaIn.ecUnitNormal);
 }
