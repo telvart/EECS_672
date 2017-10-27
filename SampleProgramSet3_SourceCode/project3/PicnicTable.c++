@@ -23,8 +23,9 @@ void PicnicTable::definePT()
 	xyz[0] = m_bottom.x - (length/2); xyz[0] = m_bottom.x + (length/2);
 	xyz[0] = m_bottom.z; xyz[5] = m_bottom.z + height;
 
-	vec3 brown = {0.32, 0.2, 0.039};
-	vec3 wood = {0.41, 0.086, 0.086};
+	//vec3 brown = {0.32, 0.2, 0.039};
+	//vec3 wood = {0.41, 0.086, 0.086};
+	PhongMaterial wood(0.41, 0.086, 0.086, 0.41, 0.086, 0.086, 0.41, 0.086, 0.086, 10, 1);
 
 	float legRadius = width / 16;
 	float benchWidth = width/6;
@@ -72,5 +73,5 @@ void PicnicTable::render()
 {
 	for(int i=0; i<models.size(); i++)
 		models[i] -> render();
-	
+
 }

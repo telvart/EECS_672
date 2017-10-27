@@ -16,6 +16,8 @@
 #include "ShaderIF.h"
 
 static const int MAX_NUM_LIGHTS = 3; // MUST BE KEPT SAME AS IN the shader program
+typedef float vec3[3];
+typedef float vec4[4];
 
 class SceneElement : public ModelView
 {

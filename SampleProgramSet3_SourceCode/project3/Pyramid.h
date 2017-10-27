@@ -3,16 +3,16 @@
 #ifndef Pyramid_H
 #define Pyramid_H
 
-#include "ModelView.h"
+#include "SceneElement.h"
 #include "ShaderIF.h"
 
 typedef float vec3[3];
 
-class Pyramid : public ModelView
+class Pyramid : public SceneElement
 {
 public:
 	// As before: you will likely want to add parameters to the constructor
-	Pyramid(ShaderIF* sIF, cryph::AffPoint bottom, float height, float width, vec3 color);
+	Pyramid(ShaderIF* sIF, cryph::AffPoint bottom, float height, float width, PhongMaterial& mat);
 	virtual ~Pyramid();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -32,9 +32,6 @@ private:
 
 	float xyz[6];
 	float height, width;
-	ShaderIF* shaderIF;
-	float kd[3];
-	float ka[3];
 };
 
 #endif

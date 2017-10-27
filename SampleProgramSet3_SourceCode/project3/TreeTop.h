@@ -3,19 +3,17 @@
 #ifndef TreeTop_H
 #define TreeTop_H
 
-#include "ModelView.h"
+#include "SceneElement.h"
 #include "ShaderIF.h"
 
 typedef float vec3[3];
 
-class TreeTop : public ModelView
+class TreeTop : public SceneElement
 {
 public:
-	// As before: you will likely want to add parameters to the constructor
-	TreeTop(ShaderIF* sIF, cryph::AffPoint bottom, double baseRadius, double height, vec3 color);
+	TreeTop(ShaderIF* sIF, cryph::AffPoint bottom, double baseRadius, double height, PhongMaterial& mat);
 	virtual ~TreeTop();
 
-	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
 	void getMCBoundingBox(double* xyzLimitsF) const;
 	void render();
 private:
@@ -29,15 +27,10 @@ private:
 
 	float xyz[6];
 
-
 	cryph::AffPoint m_bottom;
 	cryph::AffPoint m_top;
 	cryph::AffVector axis;
 
-
-	ShaderIF* shaderIF;
-	float kd[3];
-	float ka[3];
 };
 
 #endif

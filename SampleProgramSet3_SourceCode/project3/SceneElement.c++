@@ -3,20 +3,10 @@
 #include "SceneElement.h"
 #include "ImageReader.h"
 
-float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
-	{
-		0.25, 0.5, 1.0, 0.0,
-		0.0, 0.0, 0.0, 1.0,
-		-0.25, 0.5, 1.0, 0.0
-	};
-
 // Are coordinates in "lightPos" stored in MC or EC?
 bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
 	{ false, false, false };
-// The following is the buffer actually sent to GLSL. It will contain a copy of
-// the (x,y,z,w) for light sources defined in EC; it will contain the coordinates
-// after transformation to EC if the position was originally specified in MC.
-float posToGLSL[4*MAX_NUM_LIGHTS];
+
 
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
@@ -24,6 +14,20 @@ float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 		0.5, 0.5, 0.5,
 		0.6, 0.6, 0.6
 	};
+
+
+float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
+	{
+		0.0, 0.0, 100.0, 0.0,
+		0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0, 0.0, 0.0
+	};
+// The following is the buffer actually sent to GLSL. It will contain a copy of
+// the (x,y,z,w) for light sources defined in EC; it will contain the coordinates
+// after transformation to EC if the position was originally specified in MC.
+float posToGLSL[4*MAX_NUM_LIGHTS];
+
+
 
 float SceneElement::globalAmbient[] = { 0.2, 0.2, 0.2 };
 
@@ -39,13 +43,20 @@ SceneElement::~SceneElement()
 
 void SceneElement::establishLightingEnvironment()
 {
-	// This should set:
-	// "actualNumLights", "ecLightPosition", "lightStrength", "globalAmbient"
+	int actualNumLights = 1;
+	glUniform1i(shaderIF->ppuLoc("numLights"), actualNumLights);
+	glUniform3fv(shaderIF->ppuLoc("lightStrengths"), actualNumLights, lightStrength);
+	glUniform3fv(shaderIF->ppuLoc("globalAmbient"), actualNumLights, globalAmbient);
+	glUniform4fv(shaderIF->ppuLoc("p_ecLightPositions"), actualNumLights, lightPos);
 }
 
 void SceneElement::establishMaterial()
 {
 	glUniform3fv(shaderIF->ppuLoc("kd"), 1, matl.kd);
+	glUniform3fv(shaderIF->ppuLoc("ka"), 1, matl.ka);
+	glUniform3fv(shaderIF->ppuLoc("ks"), 1, matl.ks);
+	glUniform1f(shaderIF->ppuLoc("alpha"), matl.alpha);
+	glUniform1f(shaderIF->ppuLoc("spec_m"), matl.shininess);
 }
 
 void SceneElement::establishTexture()
@@ -68,6 +79,19 @@ void SceneElement::establishView()
 	float m[16];
 	glUniformMatrix4fv(shaderIF->ppuLoc("mc_ec"), 1, false, mc_ec.extractColMajor(m));
 	glUniformMatrix4fv(shaderIF->ppuLoc("ec_lds"), 1, false, ec_lds.extractColMajor(m));
+
+	switch(ModelView::projType)
+	{
+		case PERSPECTIVE:
+			glUniform1i(shaderIF->ppuLoc("projType"), 1);
+			break;
+		case ORTHOGONAL:
+			glUniform1i(shaderIF->ppuLoc("projType"), 2);
+			break;
+		case OBLIQUE:
+			glUniform1i(shaderIF->ppuLoc("projType"), 3);
+			break;
+	}
 }
 
 bool SceneElement::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)

@@ -1,18 +1,14 @@
 
 #include "Trunk.h"
 
-Trunk::Trunk(ShaderIF* sIF, cryph::AffPoint bottom, float radius, float height, vec3 color)
-  :PointsAroundCircle(20)
+Trunk::Trunk(ShaderIF* sIF, cryph::AffPoint bottom, float radius, float height, PhongMaterial& mat)
+  :PointsAroundCircle(20), SceneElement(sIF, mat)
 {
-  this->sIF = sIF;
 	this->radius = radius;
 	m_bottom = bottom;
   m_top = cryph::AffPoint(m_bottom.x, m_bottom.y, m_bottom.z+height);
 
 	defineTrunk();
-
-  kd[0] = color[0]; kd[1] = color[1]; kd[2] = color[2];
-  ka[0] = color[0]; ka[1] = color[1]; ka[2] = color[2];
 }
 
 Trunk::~Trunk()
@@ -66,13 +62,13 @@ void Trunk::defineTrunk()
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 	glBufferData(GL_ARRAY_BUFFER, nPoints * sizeof(vec3), coords, GL_DYNAMIC_DRAW);
-	glVertexAttribPointer(sIF->pvaLoc("mcPosition"), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(sIF->pvaLoc("mcPosition"));
+	glVertexAttribPointer(shaderIF->pvaLoc("mcPosition"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(shaderIF->pvaLoc("mcPosition"));
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
 	glBufferData(GL_ARRAY_BUFFER, nPoints * sizeof(vec3), normals, GL_DYNAMIC_DRAW);
-	glVertexAttribPointer(sIF->pvaLoc("mcNormal"), 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(sIF->pvaLoc("mcNormal"));
+	glVertexAttribPointer(shaderIF->pvaLoc("mcNormal"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(shaderIF->pvaLoc("mcNormal"));
 
   delete[] coords;
   delete[] normals;
@@ -83,18 +79,14 @@ void Trunk::render()
 {
 	GLint pgm;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &pgm);
-	glUseProgram(sIF->getShaderPgmID());
+	glUseProgram(shaderIF->getShaderPgmID());
 
-	cryph::Matrix4x4 mc_ec, ec_lds;
-	getMatrices(mc_ec, ec_lds);
-	float mat[16];
-	glUniformMatrix4fv(sIF->ppuLoc("mc_ec"), 	1, false, mc_ec.	extractColMajor(mat));
-	glUniformMatrix4fv(sIF->ppuLoc("ec_lds"), 	1, false, ec_lds.	extractColMajor(mat));
+  establishView();
+  establishMaterial();
+  establishLightingEnvironment();
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	glUniform3fv(sIF->ppuLoc("kd"), 1, kd);
-  //glUniform3fv(sIF->ppuLoc("ka"), 1, ka);
 	glBindVertexArray(vao[0]);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*(PointsAroundCircle+1));
 

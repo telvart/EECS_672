@@ -6,7 +6,7 @@
 #include "ModelView.h"
 #include "SceneElement.h"
 #include "ShaderIF.h"
-#include "Plane.h"
+#include "Block.h"
 #include "Pyramid.h"
 #include <vector>
 
@@ -28,8 +28,7 @@ public:
 private:
 
 	cryph::AffPoint m_bottom;
-	Block *floor1, *wall1, *wall2, *wall3, *wall4, *door, *doorKnob;
-	Pyramid* roof;
+	Block *doorKnob;
 	std::vector<ModelView*> models;
 
 	bool dogHouse;

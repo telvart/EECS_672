@@ -32,11 +32,10 @@ void House::defineHouse()
 	xyz[4] = m_bottom.z;
 	xyz[5] = m_bottom.z + height + roofHeight;
 
-  vec3 gray = {0.86, 0.86, 0.86};
-  vec3 house = {0.862, 0.752, 0.415};
-  vec3 red = {1, 0, 0.125};
-  vec3 black = {0, 0, 0};
-  vec3 brick = {0.796, 0.255, 0.329};
+	PhongMaterial gray(0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 10, 1);
+  PhongMaterial red(1, 0, 0.125, 1, 0, 0.125, 1, 0, 0.125, 10, 1);
+  PhongMaterial black(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1);
+  PhongMaterial brick(0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 20, 1);
 
   cryph::AffPoint floorLoc(m_bottom.x-(width/2), m_bottom.y-(length/2), m_bottom.z);
   cryph::AffPoint wall1Loc(m_bottom.x-(width/2), m_bottom.y-(length/2), m_bottom.z+1);
@@ -44,10 +43,10 @@ void House::defineHouse()
   cryph::AffPoint wall3Loc((m_bottom.x+(width/2))-wallWidth, m_bottom.y-(length/2), m_bottom.z+1);
 
    models.push_back(new Block(shaderIF, floorLoc.x, floorLoc.y, floorLoc.z, width, length, 1, gray)); //floor
-   models.push_back(new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, wallWidth, length, height, house)); //leftWall
-   models.push_back(new Block(shaderIF, wall2Loc.x, wall2Loc.y, wall2Loc.z, width, wallWidth, height, house)); //rear wall
-   models.push_back(new Block(shaderIF, wall3Loc.x, wall3Loc.y, wall3Loc.z, wallWidth, length, height, house)); //right wall
-   models.push_back(new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, width, wallWidth, height, house)); //front wall
+   models.push_back(new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, wallWidth, length, height, matl)); //leftWall
+   models.push_back(new Block(shaderIF, wall2Loc.x, wall2Loc.y, wall2Loc.z, width, wallWidth, height, matl)); //rear wall
+   models.push_back(new Block(shaderIF, wall3Loc.x, wall3Loc.y, wall3Loc.z, wallWidth, length, height, matl)); //right wall
+   models.push_back(new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, width, wallWidth, height, matl)); //front wall
 
   float thirdWidth = width / 3;
   float thirdHeight = height / 3;
@@ -77,13 +76,6 @@ void House::getMCBoundingBox(double* xyzLimits) const
 
 void House::render()
 {
-  // floor1 -> render();
-  // wall1 -> render();
-  // wall2 -> render();
-  // wall3 -> render();
-  // wall4 -> render();
-  // door  -> render();
-  // roof -> render();
 
   for(int i=0; i<models.size(); i++)
     models[i] -> render();

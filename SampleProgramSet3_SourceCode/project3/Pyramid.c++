@@ -2,15 +2,13 @@
 
 #include "Pyramid.h"
 
-Pyramid::Pyramid(ShaderIF* sIF, cryph::AffPoint bottom, float height, float width, vec3 color)
-: shaderIF(sIF)
+Pyramid::Pyramid(ShaderIF* sIF, cryph::AffPoint bottom, float height, float width, PhongMaterial& mat)
+: SceneElement(sIF, mat)
 {
 	m_bottom = bottom;
 	m_top = cryph::AffPoint(bottom.x, bottom.y, bottom.z+height);
 	this->height = height;
 	this->width = width;
-	kd[0] = color[0]; kd[1] = color[1]; kd[2] = color[2];
-	ka[0] = color[0]; ka[1] = color[1]; ka[2] = color[2];
 	definePyramid();
 }
 
@@ -68,7 +66,6 @@ void Pyramid::definePyramid()
 
 }
 
-// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
 void Pyramid::getMCBoundingBox(double* xyzLimits) const
 {
 	xyzLimits[0] = xyz[0]; xyzLimits[1] = xyz[1];
@@ -91,16 +88,10 @@ void Pyramid::render()
 	glUseProgram(shaderIF->getShaderPgmID());
 
 	glBindVertexArray(vao[0]);
-	glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd);
-  //glUniform3fv(shaderIF->ppuLoc("ka"), 1, ka);
 
-	cryph::Matrix4x4 mc_ec, ec_lds;
-	getMatrices(mc_ec, ec_lds);
-	float mat[16];
-	glUniformMatrix4fv(shaderIF->ppuLoc("mc_ec"), 1, false, mc_ec.extractColMajor(mat));
-	glUniformMatrix4fv(shaderIF->ppuLoc("ec_lds"), 1, false, ec_lds.extractColMajor(mat));
-
-  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	establishMaterial();
+	establishView();
+	establishLightingEnvironment();
 
 	cryph::AffVector temp, temp2, n;
 	temp = m_tl - m_bl;

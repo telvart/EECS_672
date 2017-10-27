@@ -23,7 +23,6 @@ void ModelView::addToGlobalRotationDegrees(double rx, double ry, double rz)
 {
 	// TODO: Delete or comment out the following std::cout statement when
 	//       everything else is done here.
-	//std::cout << "In project 3, you will implement ModelView::addToGlobalRotationDegrees in ModelView_Additions.c++\n";
 	// TODO: 1. UPDATE dynamic_view
 	// TODO: 2. The updated dynamic_view will be used in ModelView::getMatrices
 
@@ -92,20 +91,17 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	}
 
 	double halfWidth = 0.5 * maxDelta;
-	double distEyeCenter = 2 * maxDelta;
-
 
 	//    2.b. In project 3 & 4: Scale "halfWidth" by "dynamic_zoomScale"
 	//    2.c. initialize the XY direction of the view volume as:
 
 	//standard distance formula
-	double sphereRad = sqrt( pow(xyz[1] - xyz[0], 2) + pow(xyz[3] - xyz[2], 2) + pow(xyz[5]-xyz[4],2)) * dynamic_zoomScale;
+	double sphereRad = sqrt( pow(xyz[1] - xyz[0], 2) + pow(xyz[3] - xyz[2], 2) + pow(xyz[5]-xyz[4], 2)) * dynamic_zoomScale;
 
 	last_ecXmin = xmid - sphereRad;
 	last_ecXmax = xmid + sphereRad;
 	last_ecYmin = ymid - sphereRad;
 	last_ecYmax = ymid + sphereRad;
-
 
 	double vAR = Controller::getCurrentController() -> getViewportAspectRatio();
 	ModelView::matchAspectRatio(last_ecXmin, last_ecXmax, last_ecYmin, last_ecYmax, vAR);

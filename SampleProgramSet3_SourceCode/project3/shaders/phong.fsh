@@ -1,5 +1,9 @@
 #version 410 core
 
+
+#define PERSPECTIVE 1
+#define ORTHOGANAL  2
+#define OBLIQUE     3
 // phong.fsh - a fragment shader that implements a Phong Lighting model.
 
 in PVA
@@ -15,15 +19,17 @@ const int MAX_LIGHTS = 3;
 // Phong material properties (just kd for now; you will add the rest later):
 // "kd" - diffuse reflectivity; basic object color
 
+uniform vec3 kd = vec3(0.8, 0.0, 0.0); // default: darkish red
+uniform vec3 ka = vec3(0.8, 0.0, 0.0);
+uniform vec3 ks = vec3(0.8, 0.0, 0.0);
 uniform int numLights;
 uniform int projectionType;
 uniform vec4 p_ecLightPositions[MAX_LIGHTS];
 uniform vec3 lightStrengths[MAX_LIGHTS];
-uniform vec3 globalAmbient = vec3(0.5, 0.5, 0.5);
-uniform vec3 kd = vec3(0.8, 0.0, 0.0); // default: darkish red
-uniform vec3 ka = vec3(0.8, 0.0, 0.0);
-uniform vec3 ks = vec3(0.8, 0.0, 0.0);
-uniform float shininess;
+uniform vec3 globalAmbient = vec3(0.6, 0.6, 0.6);
+uniform float spec_m;
+uniform float alpha;
+
 
 
 vec4 evaluateLightingModel()
@@ -46,7 +52,6 @@ vec4 evaluateLightingModel()
 	vec3 liHat = vec3(0, 0, 1);
 	vec3 liStrength = vec3(1.0, 1.0, 1.0);
 	vec3 norm = pvaIn.ecUnitNormal;
-	vec3 ka = vec3(kd);
 
 	vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
 
@@ -54,8 +59,6 @@ vec4 evaluateLightingModel()
 	 {
 	 	norm = norm*-1;
 	 }
-
-	 //NOTE: I realize there is more to the simple phong lighting model
 
 	//float factor = abs(dot(liHat, norm));
 	float factor = dot(liHat, norm);

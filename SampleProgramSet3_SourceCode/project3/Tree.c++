@@ -1,13 +1,12 @@
 
 #include "Tree.h"
 
-Tree::Tree(ShaderIF* sIF, double bottomx, double bottomy, double bottomz, double height, double treeRadius, vec3 color)
-: shaderIF(sIF)
+Tree::Tree(ShaderIF* sIF, double bottomx, double bottomy, double bottomz, double height, double treeRadius, PhongMaterial& top)
+: shaderIF(sIF), topMat(top)
 {
 	treeBottom = cryph::AffPoint(bottomx, bottomy, bottomz);
 	m_height = height;
 	m_baseRadius = treeRadius;
-	topColor[0] = color[0]; topColor[1] = color[1]; topColor[2] = color[2];
 	defineTree();
 }
 
@@ -19,18 +18,16 @@ Tree::~Tree()
 
 void Tree::defineTree()
 {
-	vec3 brown = {0.32, 0.2, 0.039};
+	PhongMaterial brown(0.32, 0.2, 0.039, 0.32, 0.2, 0.039, 0.32, 0.2, 0.039, 10, 1);
 	double trunkHeight = 0.33 * m_height;
 	double trunkRadius = 0.25 * m_baseRadius;
 	double topHeight = m_height - trunkHeight;
 	cryph::AffPoint trunkTop(treeBottom.x, treeBottom.y, treeBottom.z + trunkHeight);
 
 	trunk = new Trunk(shaderIF, treeBottom, trunkRadius, trunkHeight, brown);
-	top = new TreeTop(shaderIF, trunkTop, m_baseRadius, topHeight, topColor);
-
+	top = new TreeTop(shaderIF, trunkTop, m_baseRadius, topHeight, topMat);
 }
 
-// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
 void Tree::getMCBoundingBox(double* xyzLimits) const
 {
 	double* temp = new double[6];
