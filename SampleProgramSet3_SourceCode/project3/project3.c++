@@ -79,8 +79,8 @@ int main(int argc, char* argv[])
 	 c.addModel(new Tree(sIF, 150, 100, 0, 150, 25, pine));
 	 c.addModel(new Tree(sIF, -150, 20, 0, 75, 20, yellow));
 	//
-	//  c.addModel(new House(sIF, origin, 75, 75, 50, 40, false));
-	//  c.addModel(new House(sIF, dogHouse, 30, 30, 30, 10, true));
+  //c.addModel(new House(sIF, origin, 75, 75, 50, 40, false));
+  //c.addModel(new House(sIF, dogHouse, 30, 30, 30, 10, true));
 	// //
 	 c.addModel(new PicnicTable(sIF, table, 40, 80, 40));
 	 c.addModel(new PicnicTable(sIF, table2, 40, 130, 40));

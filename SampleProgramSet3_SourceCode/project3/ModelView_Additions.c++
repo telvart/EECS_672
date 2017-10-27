@@ -39,7 +39,6 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 {
 	// TODO: Delete or comment out the following std::cout statement when
 	//       everything else is done here.
-	//std::cout << "In project 2, you must implement ModelView::getMatrices in ModelView_Additions.c++\n";
 	// 1. Create the mc_ec matrix:
 	//    Create a local variable of type Matrix4x4 called M_ECu from the eye,
 	//    center, and up. Recall that those values are initialized in the main
@@ -50,22 +49,11 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	cryph::Matrix4x4 M_ECu = cryph::Matrix4x4::lookAt(ModelView::eye,
 			ModelView::center, ModelView::up);
 
-	//cryph::AffVector vec(-(eye.x-center.x), -(eye.y - center.y), -(eye.z - center.z));
-	//cryph::AffVector vec((center.x - eye.x), (center.y - eye.y), (center.z - eye.z));
-
-	//std::cout<<"Eye: ("<<eye.x<<", "<<eye.y<<", "<<eye.z<<")\n";
-	//std::cout<<"Center: ("<<center.x<<", "<<center.y<<", "<<center.z<<")\n\n";
-
-	//cryph::AffVector vec(-200, -200, 1);
-	cryph::AffVector vec(-center.x, -center.y, -center.z);
-	//vec.normalize();
+	cryph::AffVector vec(0, 0, ModelView::distEyeCenter);
 	cryph::Matrix4x4 preTrans = cryph::Matrix4x4::translation(vec);
 	cryph::Matrix4x4 postTrans = cryph::Matrix4x4::translation(-vec);
 
-	//    For project 2:
 	mc_ec = postTrans * dynamic_view * preTrans * M_ECu;
-
-
 
 	//    For project 3: Either:
 	//        mc_ec = dynamic_view * M_ECu (if rotations are to be about the eye)
@@ -151,9 +139,4 @@ void ModelView::scaleGlobalZoom(double multiplier)
 	{
 		dynamic_zoomScale *= multiplier;
 	}
-
-
-
-	//std::cout<<"Zoom Scale\n";
-	// TODO: Project 3: Use dynamic_zoomScale in ModelView::getMatrices
 }
