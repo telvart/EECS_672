@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 	c.getOverallMCBoundingBox(xyz);
 	set3DViewingInformation(xyz);
 
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClearColor(0, 0.09, 0.28, 1.0);
 	c.run();
 
 	delete sIF;

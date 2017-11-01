@@ -5,31 +5,27 @@
 
 // Are coordinates in "lightPos" stored in MC or EC?
 bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
-	{ false, false, false };
-
+	{ true, true, false };
 
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
-		0.8, 0.8, 0.8,
-		0.5, 0.5, 0.5,
+		0.8, 0.2, 0.2,
+		0.2, 0.8, 0.2,
 		0.6, 0.6, 0.6
 	};
 
-
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
-		0.0, 0.0, 100.0, 0.0,
-		0.0, 0.0, 0.0, 0.0,
-		0.0, 0.0, 0.0, 0.0
+		100.0, 25.0, 30.0, 0.0,
+		-50.0, -50.0, 25.0, 0.0,
+		0.0, 0.0, 0.0, 1.0
 	};
 // The following is the buffer actually sent to GLSL. It will contain a copy of
 // the (x,y,z,w) for light sources defined in EC; it will contain the coordinates
 // after transformation to EC if the position was originally specified in MC.
 float posToGLSL[4*MAX_NUM_LIGHTS];
 
-
-
-float SceneElement::globalAmbient[] = { 0.2, 0.2, 0.2 };
+float SceneElement::globalAmbient[] = { 0.6, 0.6, 0.6};
 
 SceneElement::SceneElement(ShaderIF* sIF, const PhongMaterial& matlIn) :
 	shaderIF(sIF), matl(matlIn), texID(0), colorGenerationMode(-1),
@@ -44,6 +40,17 @@ SceneElement::~SceneElement()
 void SceneElement::establishLightingEnvironment()
 {
 	int actualNumLights = 1;
+	cryph::Matrix4x4 mc_ec, ec_lds;
+	getMatrices(mc_ec, ec_lds);
+	for(int i=0; i<actualNumLights; i++) //transforming to eye coordinates if necessary
+	{
+		if(posInModelCoordinates[i] == true)
+		{
+			//cryph::ProjPoint p(lightPos[i], lightPos[i+1], lightPos[i+2], lightPos[i+3]);
+			//cryph::ProjPoint p;//(1.0, 2.0, 3.0, 4.0);
+		}
+	}
+
 	glUniform1i(shaderIF->ppuLoc("numLights"), actualNumLights);
 	glUniform3fv(shaderIF->ppuLoc("lightStrengths"), actualNumLights, lightStrength);
 	glUniform3fv(shaderIF->ppuLoc("globalAmbient"), actualNumLights, globalAmbient);
@@ -83,13 +90,13 @@ void SceneElement::establishView()
 	switch(ModelView::projType)
 	{
 		case PERSPECTIVE:
-			glUniform1i(shaderIF->ppuLoc("projType"), 1);
+			glUniform1i(shaderIF->ppuLoc("projectionType"), 1);
 			break;
 		case ORTHOGONAL:
-			glUniform1i(shaderIF->ppuLoc("projType"), 2);
+			glUniform1i(shaderIF->ppuLoc("projectionType"), 2);
 			break;
 		case OBLIQUE:
-			glUniform1i(shaderIF->ppuLoc("projType"), 3);
+			glUniform1i(shaderIF->ppuLoc("projectionType"), 3);
 			break;
 	}
 }

@@ -1,38 +1,39 @@
 #version 410 core
 
-
 #define PERSPECTIVE 1
 #define ORTHOGANAL  2
-#define OBLIQUE     3
 // phong.fsh - a fragment shader that implements a Phong Lighting model.
 
 in PVA
 {
 	vec3 ecPosition;
 	vec3 ecUnitNormal;
+	vec3 obliqueVhat;
 } pvaIn;
 
 out vec4 fragmentColor;
 
 const int MAX_LIGHTS = 3;
 
-// Phong material properties (just kd for now; you will add the rest later):
-// "kd" - diffuse reflectivity; basic object color
+// Phong lighting model values
 
 uniform vec3 kd = vec3(0.8, 0.0, 0.0); // default: darkish red
-uniform vec3 ka = vec3(0.8, 0.0, 0.0);
-uniform vec3 ks = vec3(0.8, 0.0, 0.0);
+uniform vec3 ka = vec3(0.8, 0.0, 0.0); // " "      " "     " "
+uniform vec3 ks = vec3(0.8, 0.0, 0.0); // " "      " "     " "
 uniform int numLights;
 uniform int projectionType;
 uniform vec4 p_ecLightPositions[MAX_LIGHTS];
 uniform vec3 lightStrengths[MAX_LIGHTS];
-uniform vec3 globalAmbient = vec3(0.6, 0.6, 0.6);
+uniform vec3 globalAmbient;
 uniform float spec_m;
 uniform float alpha;
 
+float attenuation(vec3 light, vec3 mcPos)
+{
+		return 1/distance(light, mcPos);
+}
 
-
-vec4 evaluateLightingModel(in vec3 Q, in vec3 normal)
+vec4 evaluateLightingModel()
 {
 	// THIS IS JUST A PLACEHOLDER FOR A LIGHTING MODEL.
 	// It only currently implements simple Lambert shading.
@@ -49,45 +50,74 @@ vec4 evaluateLightingModel(in vec3 Q, in vec3 normal)
 	//    lighting model more carefully, you will REMOVE "abs" since it will
 	//    no longer be appropriate.
 
-	vec3 ambientTotal;
+	vec3 normal = pvaIn.ecUnitNormal; // unit normal vector to Q
+	vec3 Q = pvaIn.ecPosition; //point of evaluation
+
+	vec3 ambientTotal = ka * globalAmbient;
 	vec3 diffuseTotal;
 	vec3 specularTotal;
-	//
-	vec3 v_hat;
-	//
+
+	vec3 v_hat; // unit vector towards eye
+
 	if(projectionType == PERSPECTIVE)
-	{
-		//vHat = -(normalize(Q));
-	}
-	// else if(projectionType == ORTHOGONAL)
-	// {
-	//
-	// }
-	// else if(projectionType == OBLIQUE)
-	// {
-	//
-	// }
+		v_hat = -(normalize(Q));
+
+	else if(projectionType == ORTHOGANAL)
+		v_hat = vec3(0.0, 0.0, 1.0);
+
+	else //must be oblique
+		v_hat = pvaIn.obliqueVhat;
+
+	if(dot(normal, v_hat) < 0)
+		normal = -normal;
+
+	 for(int i = 0; i<numLights; i++) //for each light source
+	 {
+	 		vec3 li_hat;
+		 	vec4 currentLightPos = p_ecLightPositions[i];
+
+			if(currentLightPos.w == 0.0) //directional light
+			{
+				li_hat = normalize(currentLightPos.xyz);
+			}
+			else //positional light
+			{
+				li_hat = normalize(currentLightPos.xyz - Q);
+			}
+			vec3 usedinboth = attenuation(currentLightPos.xyz, Q) * lightStrengths[i];
+			if(dot(li_hat, normal) > 0)
+			{
+				//diffuseTotal += usedinboth * kd * dot(li_hat, normal);
+				diffuseTotal += kd * dot(li_hat, normal);
+
+			}
+
+			vec3 ri_hat = normalize(reflect(li_hat, normal));
+			//vec3 rdotv = dot(ri_hat, v_hat);
+			if(dot(ri_hat, v_hat) > 0)
+			{
+				//vec3 rdotv = normalize(dot(ri_hat, v_hat));
+				//specularTotal += usedinboth * ks * pow(dot(ri_hat, v_hat), spec_m)
+			}
+	 }
 
 
 	vec3 liHat = vec3(0, 0, 1);
 	vec3 liStrength = vec3(1.0, 1.0, 1.0);
-	vec3 norm = pvaIn.ecUnitNormal;
 
-	vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
-
-	 if(dot(normalize(liHat), norm) < 0)
+	 if(dot(normalize(liHat), normal) < 0)
 	 {
-	 	norm = norm*-1;
+	// 	normal = normal*-1;
 	 }
 
 	//float factor = abs(dot(liHat, norm));
-	float factor = dot(liHat, norm);
+	float factor = dot(liHat, normal);
 
-	return vec4(factor * kd * liStrength, 1.0);
+	//return vec4(ambientTotal + (factor * kd * liStrength), alpha);
+	return vec4(ambientTotal + diffuseTotal + specularTotal, alpha);
 }
 
 void main ()
 {
-
-	fragmentColor = evaluateLightingModel(pvaIn.ecPosition.xyz, pvaIn.ecUnitNormal);
+	fragmentColor = evaluateLightingModel();
 }

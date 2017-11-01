@@ -35,6 +35,7 @@ out PVA
 {
 	vec3 ecPosition;
 	vec3 ecUnitNormal;
+	vec3 obliqueVhat;
 } pvaOut;
 
 void main ()
@@ -45,6 +46,9 @@ void main ()
 	mat3 normalMatrix = transpose( inverse( mat3x3(mc_ec) ) );
 	pvaOut.ecUnitNormal = normalize(normalMatrix * mcNormal);
 
+	//used for lighting model
+	vec3 temp = vec3((-ec_lds[0][2])/ec_lds[0][0], (-ec_lds[1][2])/ec_lds[1][1], 1.0);
+	pvaOut.obliqueVhat = normalize(temp);
 	// OpenGL expects us to set "gl_Position" to the projective space
 	// representation of the 3D logical device space coordinates of the
 	// input vertex:
