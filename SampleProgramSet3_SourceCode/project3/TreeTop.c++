@@ -3,12 +3,10 @@
 #include "TreeTop.h"
 
 TreeTop::TreeTop(ShaderIF* sIF, cryph::AffPoint bottom, double baseRadius, double height, PhongMaterial& mat)
-:PointsAroundBase(20), radius(baseRadius), SceneElement(sIF, mat)
+:PointsAroundBase(40), radius(baseRadius), SceneElement(sIF, mat)
 {
 	m_bottom = bottom;
-	m_top.x = bottom.x;
-	m_top.y = bottom.y;
-	m_top.z = bottom.z + height;
+	m_top = cryph::AffPoint(bottom.x, bottom.y, bottom.z+height);
 	axis = m_bottom - m_top;
 	axis.normalize();
 	defineTreeTop();
@@ -26,7 +24,7 @@ void TreeTop::defineTreeTop()
 	xyz[2] = m_bottom.y - radius; xyz[3] = m_bottom.y + radius;
 	xyz[4] = m_bottom.z; 					xyz[5] = m_top.z;
 
-	int totalPoints = PointsAroundBase + 2;
+	int totalPoints = 2 * (PointsAroundBase + 1);
 
 	vec3* verticies = new vec3[totalPoints];
 	vec3* normals = new vec3[totalPoints];
@@ -37,34 +35,33 @@ void TreeTop::defineTreeTop()
 	cryph::AffVector U(1, 0, 0); //x-axis
 	cryph::AffVector V(0, 1, 0); //y-axis
 
-	cryph::AffPoint first = m_bottom + radius * (cos(theta)*U + sin(theta)*V);
-	cryph::AffVector first2 = first - m_bottom;
-	first2.normalize();
+	// cryph::AffPoint first = m_bottom + radius * (cos(theta)*U + sin(theta)*V);
+	// cryph::AffVector first2 = first - m_bottom;
+	// first2.normalize();
+	//
+	// m_top.aCoords(verticies, 0);
+	// first.aCoords(verticies, totalPoints-1);
+	//
+	// normals[0][0] = axis.dx; normals[0][1] = axis.dy; normals [0][2] = axis.dz;
+	// normals[totalPoints-1][0] = first2.dx; normals[totalPoints-1][1] = first2.dy; normals[totalPoints-1][2] = first2.dz;
 
-	m_top.aCoords(verticies, 0);
-	first.aCoords(verticies, totalPoints-1);
 
-	normals[0][0] = axis.dx; normals[0][1] = axis.dy; normals [0][2] = axis.dz;
-	normals[totalPoints-1][0] = first2.dx; normals[totalPoints-1][1] = first2.dy; normals[totalPoints-1][2] = first2.dz;
-
-
-	for(int i=1; i<=PointsAroundBase; i++)
+	for (int i=0 ; i <= PointsAroundBase ; i++)
 	{
-		cryph::AffPoint p = m_bottom + radius * (cos(theta)*U + sin(theta)*V);
+    cryph::AffPoint b = m_bottom + radius * (cos(theta)*U + sin(theta)*V);
+    cryph::AffPoint t = m_top    + 0.1 * (cos(theta)*U + sin(theta)*V);
+    theta += dTheta;
+    int j = 2*i;
 
-		p.aCoords(verticies, i);
+    b.aCoords(verticies, j);
+    t.aCoords(verticies, j+1);
 
-		theta += dTheta;
-
-		cryph::AffVector Vhat = m_top - p;
-		cryph::AffVector VParallel = (axis.dot(Vhat)) * axis;
-		cryph::AffVector vPerp = Vhat - VParallel;
-
-		vPerp.normalize();
-		normals[i][0] = vPerp.dx;
-		normals[i][1] = vPerp.dy;
-		normals[i][2] = vPerp.dz;
+    cryph::AffVector norm = b - m_bottom;
+    norm.normalize();
+    normals[j][0] = norm.dx; normals[j][1] = norm.dy; normals[j][2] = norm.dz;
+    normals[j+1][0] = norm.dx; normals[j+1][1] = norm.dy; normals[j+1][2] = norm.dz;
 	}
+
 
 	glGenVertexArrays(1, vao);
 	glGenBuffers(2, vbo);
@@ -108,7 +105,7 @@ void TreeTop::render()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glBindVertexArray(vao[0]);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, PointsAroundBase+2);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*(PointsAroundBase+1));
 
 	glUseProgram(program);
 

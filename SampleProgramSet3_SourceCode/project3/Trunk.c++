@@ -17,12 +17,6 @@ Trunk::~Trunk()
 	glDeleteVertexArrays(1, vao);
 }
 
-void Trunk::getMCBoundingBox(double* xyzLimits) const
-{
-	xyzLimits[0] = xyz[0]; xyzLimits[1] = xyz[1];
-	xyzLimits[2] = xyz[2]; xyzLimits[3] = xyz[3];
-	xyzLimits[4] = xyz[4]; xyzLimits[5] = xyz[5];
-}
 
 void Trunk::defineTrunk()
 {
@@ -74,6 +68,14 @@ void Trunk::defineTrunk()
   delete[] normals;
 
 }
+
+void Trunk::getMCBoundingBox(double* xyzLimits) const
+{
+	xyzLimits[0] = xyz[0]; xyzLimits[1] = xyz[1];
+	xyzLimits[2] = xyz[2]; xyzLimits[3] = xyz[3];
+	xyzLimits[4] = xyz[4]; xyzLimits[5] = xyz[5];
+}
+
 
 void Trunk::render()
 {

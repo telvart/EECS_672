@@ -2,7 +2,7 @@
 
 #include "SceneElement.h"
 #include "ImageReader.h"
-
+#include "ProjPoint.h"
 // Are coordinates in "lightPos" stored in MC or EC?
 bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
 	{ true, true, false };
@@ -10,14 +10,14 @@ bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
 		0.2, 0.2, 0.9,
-		0.2, 0.8, 0.2,
+		0.2, 0.9, 0.2,
 		0.6, 0.6, 0.6
 	};
 
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
 		-100.0, 25.0, 30.0, 0.0,
-		-50.0, -50.0, 25.0, 0.0,
+		50.0, 50.0, 25.0, 0.0,
 		0.0, 0.0, 0.0, 1.0
 	};
 // The following is the buffer actually sent to GLSL. It will contain a copy of
@@ -42,12 +42,18 @@ void SceneElement::establishLightingEnvironment()
 	int actualNumLights = 1;
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
-	for(int i=0; i<actualNumLights; i++) //transforming to eye coordinates if necessary
+	float lightECs[actualNumLights*4];
+
+	for(int i=0; i<(actualNumLights*4); i+=4) //transforming to eye coordinates if necessary
 	{
-		if(posInModelCoordinates[i] == true)
+		if(posInModelCoordinates[i/4] == true)
 		{
-			//cryph::ProjPoint p(lightPos[i], lightPos[i+1], lightPos[i+2], lightPos[i+3]);
-			//cryph::ProjPoint p;//(1.0, 2.0, 3.0, 4.0);
+			cryph::AffPoint p(lightPos[i], lightPos[i+1], lightPos[i+2]);
+
+			std::cout<<"Pos in MC: ("<<p.x<<", "<<p.y<<", "<<p.z<<")\n";//<<", "<<p.w<<")\n";
+			p = mc_ec * p;
+			std::cout<<"Pos in EC: ("<<p.x<<", "<<p.y<<", "<<p.z<<")\n";//<<", "<<p.w<<")\n";
+			lightECs[i/4] = p.x; lightECs[(i/4)+1] = p.y; lightECs[(i/4)+2] = p.z; lightECs[(i/4)+3] = lightPos[i+3];
 		}
 	}
 

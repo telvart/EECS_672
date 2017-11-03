@@ -93,11 +93,11 @@ vec4 evaluateLightingModel()
 			}
 
 			vec3 ri_hat = normalize(reflect(li_hat, normal));
-			//vec3 rdotv = dot(ri_hat, v_hat);
+			float rdotv = dot(ri_hat, v_hat);
 			if(dot(ri_hat, v_hat) > 0)
 			{
 				//vec3 rdotv = normalize(dot(ri_hat, v_hat));
-				//specularTotal += usedinboth * ks * pow(dot(ri_hat, v_hat), spec_m)
+				specularTotal += ks * lightStrengths[i] * pow(rdotv, spec_m);
 			}
 	 }
 
