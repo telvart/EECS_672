@@ -88,6 +88,7 @@ void Pyramid::render()
 	glUseProgram(shaderIF->getShaderPgmID());
 
 	glBindVertexArray(vao[0]);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	establishMaterial();
 	establishView();

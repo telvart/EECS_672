@@ -84,11 +84,11 @@ vec4 evaluateLightingModel()
 			{
 				li_hat = normalize(currentLightPos.xyz - Q);
 			}
-			vec3 usedinboth = attenuation(currentLightPos.xyz, Q) * lightStrengths[i];
+			//vec3 usedinboth = attenuation(currentLightPos.xyz, Q) * lightStrengths[i];
 			if(dot(li_hat, normal) > 0)
 			{
 				//diffuseTotal += usedinboth * kd * dot(li_hat, normal);
-				diffuseTotal += kd * dot(li_hat, normal);
+				diffuseTotal += kd * lightStrengths[i] * dot(li_hat, normal);
 
 			}
 

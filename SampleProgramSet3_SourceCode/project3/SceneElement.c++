@@ -9,14 +9,14 @@ bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
 
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
-		0.8, 0.2, 0.2,
+		0.2, 0.2, 0.9,
 		0.2, 0.8, 0.2,
 		0.6, 0.6, 0.6
 	};
 
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
-		100.0, 25.0, 30.0, 0.0,
+		-100.0, 25.0, 30.0, 0.0,
 		-50.0, -50.0, 25.0, 0.0,
 		0.0, 0.0, 0.0, 1.0
 	};
@@ -25,7 +25,7 @@ float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 // after transformation to EC if the position was originally specified in MC.
 float posToGLSL[4*MAX_NUM_LIGHTS];
 
-float SceneElement::globalAmbient[] = { 0.6, 0.6, 0.6};
+float SceneElement::globalAmbient[] = { 0.5, 0.5, 0.5};
 
 SceneElement::SceneElement(ShaderIF* sIF, const PhongMaterial& matlIn) :
 	shaderIF(sIF), matl(matlIn), texID(0), colorGenerationMode(-1),
