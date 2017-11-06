@@ -4,7 +4,6 @@
 #define TreeTop_H
 
 #include "SceneElement.h"
-#include "ShaderIF.h"
 
 typedef float vec3[3];
 

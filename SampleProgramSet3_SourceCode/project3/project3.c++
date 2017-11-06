@@ -55,12 +55,12 @@ int main(int argc, char* argv[])
 	cryph::AffPoint table(100, -110, 0);
 	cryph::AffPoint table2(-100, -100, 0);
 
-	PhongMaterial house(0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 10, 1);
+	PhongMaterial house(0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 5, 1);
 	PhongMaterial pine(0.004, 0.475, 0.435, 0.004, 0.475, 0.435, 0.004, 0.475, 0.435, 10, 1);
-	PhongMaterial yellow(1, 1, 0, 1, 1, 0, 1, 1, 0, 10, 1);
-	PhongMaterial orange(1, 0.27, 0, 1, 0.27, 0, 1, 0.27, 0, 25, 1);
-	PhongMaterial grass(0.486, 0.988, 0, 0.486, 0.988, 0, 0.486, 0.988, 0, 10, 1);
-	PhongMaterial sidewalk(0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 10, 1);
+	PhongMaterial yellow(1, 1, 0, 1, 1, 0, 1, 1, 0, 15, 1);
+	PhongMaterial orange(1, 0.27, 0, 1, 0.27, 0, 1, 0.27, 0, 45, 1);
+	PhongMaterial grass(0.486, 0.988, 0, 0.486, 0.988, 0, 0.3, 0.5, 0.3, 10, 1);
+	PhongMaterial sidewalk(0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 5, 1);
 
 	GLFWController c("Project 3", MVC_USE_DEPTH_BIT);
 	c.reportVersions(std::cout);

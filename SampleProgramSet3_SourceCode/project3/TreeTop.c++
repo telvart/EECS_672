@@ -7,7 +7,7 @@ TreeTop::TreeTop(ShaderIF* sIF, cryph::AffPoint bottom, double baseRadius, doubl
 {
 	m_bottom = bottom;
 	m_top = cryph::AffPoint(bottom.x, bottom.y, bottom.z+height);
-	axis = m_bottom - m_top;
+	axis = m_top - m_bottom;
 	axis.normalize();
 	defineTreeTop();
 }
@@ -35,16 +35,6 @@ void TreeTop::defineTreeTop()
 	cryph::AffVector U(1, 0, 0); //x-axis
 	cryph::AffVector V(0, 1, 0); //y-axis
 
-	// cryph::AffPoint first = m_bottom + radius * (cos(theta)*U + sin(theta)*V);
-	// cryph::AffVector first2 = first - m_bottom;
-	// first2.normalize();
-	//
-	// m_top.aCoords(verticies, 0);
-	// first.aCoords(verticies, totalPoints-1);
-	//
-	// normals[0][0] = axis.dx; normals[0][1] = axis.dy; normals [0][2] = axis.dz;
-	// normals[totalPoints-1][0] = first2.dx; normals[totalPoints-1][1] = first2.dy; normals[totalPoints-1][2] = first2.dz;
-
 
 	for (int i=0 ; i <= PointsAroundBase ; i++)
 	{
@@ -56,8 +46,11 @@ void TreeTop::defineTreeTop()
     b.aCoords(verticies, j);
     t.aCoords(verticies, j+1);
 
-    cryph::AffVector norm = b - m_bottom;
-    norm.normalize();
+
+		cryph::AffVector eHat = b - t;
+
+    cryph::AffVector norm = axis -(axis.dot(eHat) * eHat);
+		norm.normalize();
     normals[j][0] = norm.dx; normals[j][1] = norm.dy; normals[j][2] = norm.dz;
     normals[j+1][0] = norm.dx; normals[j+1][1] = norm.dy; normals[j+1][2] = norm.dz;
 	}

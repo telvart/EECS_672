@@ -35,7 +35,7 @@ void House::defineHouse()
 	PhongMaterial gray(0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 10, 1);
   PhongMaterial red(1, 0, 0.125, 1, 0, 0.125, 1, 0, 0.125, 10, 1);
   PhongMaterial black(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1);
-  PhongMaterial brick(0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 20, 1);
+  PhongMaterial brick(0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 5, 1);
 
   cryph::AffPoint floorLoc(m_bottom.x-(width/2), m_bottom.y-(length/2), m_bottom.z);
   cryph::AffPoint wall1Loc(m_bottom.x-(width/2), m_bottom.y-(length/2), m_bottom.z+1);

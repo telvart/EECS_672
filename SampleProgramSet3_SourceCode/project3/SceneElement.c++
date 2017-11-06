@@ -9,15 +9,15 @@ bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
 
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
-		0.2, 0.2, 0.9,
-		0.2, 0.9, 0.2,
+		0.8, 0.8, 0.8,
+		1.0, 0.0, 0.0,
 		0.6, 0.6, 0.6
 	};
 
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
-		-100.0, 25.0, 30.0, 0.0,
-		50.0, 50.0, 25.0, 0.0,
+		0.0, 0.0, 200.0, 0.0,
+		0.0, -100.0, 3.0, 1.0,
 		0.0, 0.0, 0.0, 1.0
 	};
 // The following is the buffer actually sent to GLSL. It will contain a copy of
@@ -40,8 +40,10 @@ SceneElement::~SceneElement()
 void SceneElement::establishLightingEnvironment()
 {
 	int actualNumLights = 1;
+
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
+
 	float lightECs[actualNumLights*4];
 
 	for(int i=0; i<(actualNumLights*4); i+=4) //transforming to eye coordinates if necessary
@@ -49,18 +51,25 @@ void SceneElement::establishLightingEnvironment()
 		if(posInModelCoordinates[i/4] == true)
 		{
 			cryph::AffPoint p(lightPos[i], lightPos[i+1], lightPos[i+2]);
-
-			std::cout<<"Pos in MC: ("<<p.x<<", "<<p.y<<", "<<p.z<<")\n";//<<", "<<p.w<<")\n";
+			//std::cout<<"Pos in MC: "<<p.x<<", "<<p.y<<", "<<p.z<<" "<<lightPos[i+3]<<"\nPos in EC: ";//<<", "<<p.w<<")\n"
 			p = mc_ec * p;
-			std::cout<<"Pos in EC: ("<<p.x<<", "<<p.y<<", "<<p.z<<")\n";//<<", "<<p.w<<")\n";
-			lightECs[i/4] = p.x; lightECs[(i/4)+1] = p.y; lightECs[(i/4)+2] = p.z; lightECs[(i/4)+3] = lightPos[i+3];
+			//std::cout<<"Pos in EC: ("<<p.x<<", "<<p.y<<", "<<p.z<<")\n";//<<", "<<p.w<<")\n";
+			lightECs[i] = p.x; lightECs[i+1] = p.y; lightECs[i+2] = p.z; lightECs[i+3] = lightPos[i+3];
+			//std::cout<<lightECs[i/4]<<" "<<lightECs[(i/4)+1]<<" "<<lightECs[(i/4)+2]<<" "<<lightECs[(i/4)+3]<<"\n\n";
+		}
+		else
+		{
+			lightECs[i] = lightPos[i];
+			lightECs[i+1] = lightPos[i+1];
+			lightECs[i+2] = lightPos[i+2];
+			lightECs[i+3] = lightPos[i+3];
 		}
 	}
 
 	glUniform1i(shaderIF->ppuLoc("numLights"), actualNumLights);
 	glUniform3fv(shaderIF->ppuLoc("lightStrengths"), actualNumLights, lightStrength);
 	glUniform3fv(shaderIF->ppuLoc("globalAmbient"), actualNumLights, globalAmbient);
-	glUniform4fv(shaderIF->ppuLoc("p_ecLightPositions"), actualNumLights, lightPos);
+	glUniform4fv(shaderIF->ppuLoc("p_ecLightPositions"), actualNumLights, lightECs);
 }
 
 void SceneElement::establishMaterial()
