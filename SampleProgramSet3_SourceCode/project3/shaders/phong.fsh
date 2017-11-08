@@ -30,7 +30,7 @@ uniform float alpha;
 
 float attenuation(vec3 light, vec3 mcPos)
 {
-		return 1 / distance(light, mcPos);
+		return 1 / ( 0.5 * distance(light, mcPos));
 }
 
 vec4 evaluateLightingModel()
@@ -98,7 +98,7 @@ vec4 evaluateLightingModel()
 					diffuseTotal += atten * kd * lightStrengths[i] * dot(li_hat, normal);
 			}
 
-			vec3 ri_hat = normalize(reflect(li_hat, normal));
+			vec3 ri_hat = normalize(reflect(-li_hat, normal));
 			if(dot(ri_hat, v_hat) > 0)
 			{
 				float rdotv = dot(ri_hat, v_hat);

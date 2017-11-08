@@ -2,22 +2,22 @@
 
 #include "SceneElement.h"
 #include "ImageReader.h"
-#include "ProjPoint.h"
+
 // Are coordinates in "lightPos" stored in MC or EC?
 bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
-	{ true, true, false };
+	{ false, true, false };
 
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
-		0.8, 0.8, 0.8,
-		1.0, 0.0, 0.0,
+		0.4, 0.4, 0.4,
+		1.0, 0.125, 0.161,
 		0.6, 0.6, 0.6
 	};
 
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
 		0.0, 0.0, 200.0, 0.0,
-		0.0, -100.0, 3.0, 1.0,
+		-80.0, 75.0, 20.0, 1.0,
 		0.0, 0.0, 0.0, 1.0
 	};
 // The following is the buffer actually sent to GLSL. It will contain a copy of
@@ -25,7 +25,7 @@ float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 // after transformation to EC if the position was originally specified in MC.
 float posToGLSL[4*MAX_NUM_LIGHTS];
 
-float SceneElement::globalAmbient[] = { 0.5, 0.5, 0.5};
+float SceneElement::globalAmbient[] = { 0.1, 0.1, 0.1};
 
 SceneElement::SceneElement(ShaderIF* sIF, const PhongMaterial& matlIn) :
 	shaderIF(sIF), matl(matlIn), texID(0), colorGenerationMode(-1),
@@ -39,7 +39,7 @@ SceneElement::~SceneElement()
 
 void SceneElement::establishLightingEnvironment()
 {
-	int actualNumLights = 1;
+	int actualNumLights = 2;
 
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
@@ -66,9 +66,9 @@ void SceneElement::establishLightingEnvironment()
 		}
 	}
 
-	glUniform1i(shaderIF->ppuLoc("numLights"), actualNumLights);
+	glUniform1i (shaderIF->ppuLoc("numLights"), actualNumLights);
 	glUniform3fv(shaderIF->ppuLoc("lightStrengths"), actualNumLights, lightStrength);
-	glUniform3fv(shaderIF->ppuLoc("globalAmbient"), actualNumLights, globalAmbient);
+	glUniform3fv(shaderIF->ppuLoc("globalAmbient"), 1, globalAmbient);
 	glUniform4fv(shaderIF->ppuLoc("p_ecLightPositions"), actualNumLights, lightECs);
 }
 

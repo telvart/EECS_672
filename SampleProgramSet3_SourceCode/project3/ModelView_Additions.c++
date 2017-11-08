@@ -103,6 +103,13 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	last_ecYmin = ymid - sphereRad;
 	last_ecYmax = ymid + sphereRad;
 
+	// last_ecXmin = - sphereRad;
+	// last_ecXmax = sphereRad;
+	// last_ecYmin = - sphereRad;
+	// last_ecYmax = sphereRad;
+
+
+
 	double vAR = Controller::getCurrentController() -> getViewportAspectRatio();
 	ModelView::matchAspectRatio(last_ecXmin, last_ecXmax, last_ecYmin, last_ecYmax, vAR);
 

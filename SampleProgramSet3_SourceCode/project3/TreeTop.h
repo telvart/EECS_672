@@ -26,6 +26,9 @@ private:
 
 	float xyz[6];
 
+	BasicShape* theCone;
+	BasicShapeRenderer* theConeR;
+
 	cryph::AffPoint m_bottom;
 	cryph::AffPoint m_top;
 	cryph::AffVector axis;
