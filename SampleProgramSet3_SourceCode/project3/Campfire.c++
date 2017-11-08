@@ -42,18 +42,29 @@ void Campfire::defineCampFire()
   cryph::AffPoint vert7(location.x, location.y-dist, location.z);
   cryph::AffPoint vert8(location.x, location.y+dist, location.z);
 
-  logs[0] = BasicShape::makeBoundedCylinder(vert1, vert2, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
+  logs[0] = BasicShape::makeBoundedCylinder(vert1, fireTop, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
   logsR[0] = new BasicShapeRenderer(shaderIF, logs[0]);
 
-  logs[1] = BasicShape::makeBoundedCylinder(vert3, vert4, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
+  logs[1] = BasicShape::makeBoundedCylinder(vert2, fireTop, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
   logsR[1] = new BasicShapeRenderer(shaderIF, logs[1]);
 
-  logs[2] = BasicShape::makeBoundedCylinder(vert5, vert6, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
+  logs[2] = BasicShape::makeBoundedCylinder(vert3, fireTop, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
   logsR[2] = new BasicShapeRenderer(shaderIF, logs[2]);
 
-  logs[3] = BasicShape::makeBoundedCylinder(vert7, vert8, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
+  logs[3] = BasicShape::makeBoundedCylinder(vert4, fireTop, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
   logsR[3] = new BasicShapeRenderer(shaderIF, logs[3]);
 
+  logs[4] = BasicShape::makeBoundedCylinder(vert5, fireTop, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
+  logsR[4] = new BasicShapeRenderer(shaderIF, logs[4]);
+
+  logs[5] = BasicShape::makeBoundedCylinder(vert6, fireTop, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
+  logsR[5] = new BasicShapeRenderer(shaderIF, logs[5]);
+
+  logs[6] = BasicShape::makeBoundedCylinder(vert7, fireTop, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
+  logsR[6] = new BasicShapeRenderer(shaderIF, logs[6]);
+
+  logs[7] = BasicShape::makeBoundedCylinder(vert8, fireTop, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
+  logsR[7] = new BasicShapeRenderer(shaderIF, logs[7]);
 }
 
 
@@ -85,6 +96,10 @@ void Campfire::render()
   logsR[1] -> drawShape();
   logsR[2] -> drawShape();
   logsR[3] -> drawShape();
+  logsR[4] -> drawShape();
+  logsR[5] -> drawShape();
+  logsR[6] -> drawShape();
+  logsR[7] -> drawShape();
 
   	glUseProgram(program);
 

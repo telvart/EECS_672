@@ -10,13 +10,13 @@ bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
 		0.4, 0.4, 0.4,
-		1.0, 0.125, 0.161,
+		1.0, 0.0, 0.0,
 		0.6, 0.6, 0.6
 	};
 
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
-		0.0, 0.0, 200.0, 0.0,
+		0.0, 0.0, 1.0, 0.0,
 		-80.0, 75.0, 20.0, 1.0,
 		0.0, 0.0, 0.0, 1.0
 	};

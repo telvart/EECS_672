@@ -57,12 +57,12 @@ int main(int argc, char* argv[])
 	cryph::AffPoint fireLoc(-80.0, 75.0, 4.0);
 
 	PhongMaterial house(0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 5, 1);
-	PhongMaterial pine(0.004, 0.475, 0.435, 0.004, 0.475, 0.435, 0.004, 0.475, 0.435, 10, 1);
+	PhongMaterial pine(0.004, 0.475, 0.435, 0.004, 0.475, 0.435, 0.300, 0.275, 0.435, 10, 1);
 	PhongMaterial yellow(1, 1, 0, 1, 1, 0, 1, 1, 0, 10, 1);
 	PhongMaterial orange(1, 0.27, 0, 1, 0.27, 0, 1, 0.27, 0, 10, 1);
 	PhongMaterial grass(0.386, 0.998, 0, 0.486, 0.988, 0, 0.3, 0.5, 0.3, 5, 1);
 	PhongMaterial sidewalk(0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 5, 1);
-	PhongMaterial brown(0.32, 0.2, 0.039, 0.32, 0.2, 0.039, 0.32, 0.2, 0.039, 10, 1);
+	PhongMaterial brown(0.32, 0.2, 0.039, 0.32, 0.2, 0.039, 0.32, 0.2, 0.039, 1, 1);
 
 	GLFWController c("House and Trees, but with PHONG!", MVC_USE_DEPTH_BIT);
 	c.reportVersions(std::cout);
@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 	c.addModel(new PicnicTable(sIF, table, 40, 80, 40));
 	c.addModel(new PicnicTable(sIF, table2, 40, 130, 40));
 
-	c.addModel(new Campfire(sIF, fireLoc, 5, 10, 2, brown));
+	c.addModel(new Campfire(sIF, fireLoc, 10, 10, 2, brown));
 
 	double xyz[6];
 	c.getOverallMCBoundingBox(xyz);

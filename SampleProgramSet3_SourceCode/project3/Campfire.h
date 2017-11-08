@@ -27,8 +27,8 @@ private:
   float fireHeight;
   float xyz[6];
 
-  BasicShape* logs[4];
-  BasicShapeRenderer* logsR[4];
+  BasicShape* logs[8];
+  BasicShapeRenderer* logsR[8];
 
 
 
