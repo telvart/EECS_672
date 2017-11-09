@@ -8,8 +8,13 @@ in PVA
 {
 	vec3 ecPosition;
 	vec3 ecUnitNormal;
-	vec3 obliqueVhat;
 } pvaIn;
+
+uniform mat4 ec_lds = // (W-V map) * (projection matrix)
+	mat4(1.0, 0.0, 0.0, 0.0, // initialize to (almost) identity matrix
+	     0.0, 1.0, 0.0, 0.0, // ==> ORTHOGONAL projection -AND- EC = LDS
+	     0.0, 0.0, -1.0, 0.0,
+	     0.0, 0.0, 0.0, 1.0);
 
 out vec4 fragmentColor;
 
@@ -66,7 +71,9 @@ vec4 evaluateLightingModel()
 		v_hat = vec3(0.0, 0.0, 1.0);
 
 	else //must be oblique
-		v_hat = pvaIn.obliqueVhat;
+		v_hat = normalize(vec3((-ec_lds[0][2])/ec_lds[0][0], (-ec_lds[1][2])/ec_lds[1][1], 1.0));
+		//v_hat = normalize(temp);
+
 
 	if(dot(normal, v_hat) < 0) //check if normal in right direction
 		normal = -normal;

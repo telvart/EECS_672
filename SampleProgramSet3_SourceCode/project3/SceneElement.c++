@@ -5,11 +5,11 @@
 
 // Are coordinates in "lightPos" stored in MC or EC?
 bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
-	{ false, true, false };
+	{ true, true, false };
 
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
-		0.4, 0.4, 0.4,
+		0.3, 0.3, 0.3,
 		1.0, 0.0, 0.0,
 		0.6, 0.6, 0.6
 	};
@@ -50,12 +50,18 @@ void SceneElement::establishLightingEnvironment()
 	{
 		if(posInModelCoordinates[i/4] == true)
 		{
-			cryph::AffPoint p(lightPos[i], lightPos[i+1], lightPos[i+2]);
-			//std::cout<<"Pos in MC: "<<p.x<<", "<<p.y<<", "<<p.z<<" "<<lightPos[i+3]<<"\nPos in EC: ";//<<", "<<p.w<<")\n"
-			p = mc_ec * p;
-			//std::cout<<"Pos in EC: ("<<p.x<<", "<<p.y<<", "<<p.z<<")\n";//<<", "<<p.w<<")\n";
-			lightECs[i] = p.x; lightECs[i+1] = p.y; lightECs[i+2] = p.z; lightECs[i+3] = lightPos[i+3];
-			//std::cout<<lightECs[i/4]<<" "<<lightECs[(i/4)+1]<<" "<<lightECs[(i/4)+2]<<" "<<lightECs[(i/4)+3]<<"\n\n";
+			if(lightPos[i+3] == 1)
+			{
+				cryph::AffPoint p(lightPos[i], lightPos[i+1], lightPos[i+2]);
+				p = mc_ec * p;
+				lightECs[i] = p.x; lightECs[i+1] = p.y; lightECs[i+2] = p.z; lightECs[i+3] = lightPos[i+3];
+			}
+			else
+			{
+				cryph::AffVector v(lightPos[i], lightPos[i+1], lightPos[i+2]);
+				v = mc_ec * v;
+				lightECs[i] = v.dx; lightECs[i+1] = v.dy; lightECs[i+2] = v.dz; lightECs[i+3] = lightPos[i+3];
+			}
 		}
 		else
 		{
