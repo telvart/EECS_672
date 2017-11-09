@@ -10,20 +10,17 @@ bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
 		0.3, 0.3, 0.3,
-		1.0, 0.0, 0.0,
+		1.0, 0.2, 0.2,
 		0.6, 0.6, 0.6
 	};
 
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
-		0.0, 0.0, 1.0, 0.0,
+		-10.0, 5.0, 20.0, 0.0,
 		-80.0, 75.0, 20.0, 1.0,
 		0.0, 0.0, 0.0, 1.0
 	};
-// The following is the buffer actually sent to GLSL. It will contain a copy of
-// the (x,y,z,w) for light sources defined in EC; it will contain the coordinates
-// after transformation to EC if the position was originally specified in MC.
-float posToGLSL[4*MAX_NUM_LIGHTS];
+
 
 float SceneElement::globalAmbient[] = { 0.1, 0.1, 0.1};
 
@@ -44,6 +41,9 @@ void SceneElement::establishLightingEnvironment()
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
 
+	// The following is the buffer actually sent to GLSL. It will contain a copy of
+	// the (x,y,z,w) for light sources defined in EC; it will contain the coordinates
+	// after transformation to EC if the position was originally specified in MC.
 	float lightECs[actualNumLights*4];
 
 	for(int i=0; i<(actualNumLights*4); i+=4) //transforming to eye coordinates if necessary
