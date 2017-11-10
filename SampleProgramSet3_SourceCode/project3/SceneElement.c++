@@ -5,20 +5,20 @@
 
 // Are coordinates in "lightPos" stored in MC or EC?
 bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
-	{ true, true, false };
+	{ true, true, true };
 
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
 		0.3, 0.3, 0.3,
 		1.0, 0.2, 0.2,
-		0.6, 0.6, 0.6
+		1.0, 0.2, 0.2
 	};
 
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
-		-10.0, 5.0, 20.0, 0.0,
-		-80.0, 75.0, 20.0, 1.0,
-		0.0, 0.0, 0.0, 1.0
+		 0.0, -40.0, 40.0, 0.0,
+		-80.0, 75.0, 40.0, 1.0,
+		 150.0, 0.0, 20.0, 1.0
 	};
 
 
@@ -36,7 +36,7 @@ SceneElement::~SceneElement()
 
 void SceneElement::establishLightingEnvironment()
 {
-	int actualNumLights = 2;
+	int actualNumLights = 3;
 
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
@@ -46,7 +46,7 @@ void SceneElement::establishLightingEnvironment()
 	// after transformation to EC if the position was originally specified in MC.
 	float lightECs[actualNumLights*4];
 
-	for(int i=0; i<(actualNumLights*4); i+=4) //transforming to eye coordinates if necessary
+	for(int i=0; i<(actualNumLights*4); i+=4)
 	{
 		if(posInModelCoordinates[i/4] == true)
 		{

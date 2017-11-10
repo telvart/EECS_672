@@ -9,7 +9,7 @@ void ModelView::addToGlobalPan(double dxInLDS, double dyInLDS, double dzInLDS)
 		double dxInECMC = (0.5 * dxInLDS) * (last_ecXmax - last_ecXmin);
 		double dyInECMC = (0.5 * dyInLDS) * (last_ecYmax - last_ecYmin);
 
-		cryph::AffVector vec(dxInECMC, dyInECMC, dzInLDS);
+		cryph::AffVector vec(dxInECMC, dyInECMC, dzInLDS); //NOTE: dzInLDS will always be 0
 		cryph::Matrix4x4 trans = cryph::Matrix4x4::translation(vec);
 		dynamic_view = trans * dynamic_view;
 
@@ -28,10 +28,9 @@ void ModelView::addToGlobalRotationDegrees(double rx, double ry, double rz)
 
 	cryph::Matrix4x4 xRotation = cryph::Matrix4x4::xRotationDegrees(rx);
 	cryph::Matrix4x4 yRotation = cryph::Matrix4x4::yRotationDegrees(ry);
-	cryph::Matrix4x4 zRotation = cryph::Matrix4x4::zRotationDegrees(rz);
+	cryph::Matrix4x4 zRotation = cryph::Matrix4x4::zRotationDegrees(rz); //NOTE: this will always be 0
 
 	dynamic_view = xRotation * yRotation * zRotation * dynamic_view;
-
 }
 
 void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
@@ -94,20 +93,12 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 
 	//    2.b. In project 3 & 4: Scale "halfWidth" by "dynamic_zoomScale"
 	//    2.c. initialize the XY direction of the view volume as:
-
-	//standard distance formula
 	double sphereRad = sqrt( pow(xyz[1] - xyz[0], 2) + pow(xyz[3] - xyz[2], 2) + pow(xyz[5]-xyz[4], 2)) * dynamic_zoomScale;
 
 	last_ecXmin = xmid - sphereRad;
 	last_ecXmax = xmid + sphereRad;
 	last_ecYmin = ymid - sphereRad;
 	last_ecYmax = ymid + sphereRad;
-
-	// last_ecXmin = - sphereRad;
-	// last_ecXmax = sphereRad;
-	// last_ecYmin = - sphereRad;
-	// last_ecYmax = sphereRad;
-
 
 
 	double vAR = Controller::getCurrentController() -> getViewportAspectRatio();

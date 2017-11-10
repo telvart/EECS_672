@@ -39,7 +39,7 @@ void set3DViewingInformation(double xyz[6])
 
 	double ecZpp = -(distEyeCenter - 0.3*maxDelta);
 	double ecZmin = ecZpp - maxDelta;
-	double ecZmax = ecZpp + 0.3*maxDelta;
+	double ecZmax = ecZpp + 0.5*maxDelta;
 
 	// Set values for ecZpp, ecZmin, ecZmax that make sense in the context of
 	// the EC system established above, then:
@@ -54,7 +54,8 @@ int main(int argc, char* argv[])
 	cryph::AffPoint dogHouse(70, 10, 0);
 	cryph::AffPoint table(100, -110, 0);
 	cryph::AffPoint table2(-100, -100, 0);
-	cryph::AffPoint fireLoc(-80.0, 75.0, 4.0);
+	cryph::AffPoint fireLoc(-80.0, 75.0, 0.0);
+	cryph::AffPoint fire2Loc(150.0, 0.0, 0.0);
 
 	PhongMaterial house(0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 5, 1);
 	PhongMaterial pine(0.004, 0.475, 0.435, 0.004, 0.475, 0.435, 0.300, 0.275, 0.435, 10, 1);
@@ -86,6 +87,7 @@ int main(int argc, char* argv[])
 	c.addModel(new PicnicTable(sIF, table2, 40, 130, 40));
 
 	c.addModel(new Campfire(sIF, fireLoc, 10, 10, 2, brown));
+	c.addModel(new Campfire(sIF, fire2Loc, 15, 15, 2, brown));
 
 	double xyz[6];
 	c.getOverallMCBoundingBox(xyz);

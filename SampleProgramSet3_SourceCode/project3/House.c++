@@ -16,7 +16,6 @@ House::House(ShaderIF* sIF, cryph::AffPoint houseBottom, float width, float leng
 
 House::~House()
 {
-
   for(int i=0; i<models.size(); i++)
     delete models[i];
 
@@ -64,7 +63,7 @@ void House::defineHouse()
   }
 
   cryph::AffPoint roofBottom(m_bottom.x, m_bottom.y, m_bottom.z+height);
-  models.push_back(new Pyramid(shaderIF, roofBottom, roofHeight, width, brick));
+  models.push_back(new Pyramid(shaderIF, roofBottom, roofHeight, width + (0.1*width), brick));
 }
 
 void House::getMCBoundingBox(double* xyzLimits) const

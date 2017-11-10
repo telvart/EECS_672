@@ -12,10 +12,13 @@ Campfire::Campfire(ShaderIF* sIF, cryph::AffPoint location, float height, float 
 
 Campfire::~Campfire()
 {
+  for(int i=0; i<9; i++)
+  {
+    delete logs[i];
+    delete logsR[i];
+  }
+  delete fire;
 }
-
-
-// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
 
 void Campfire::defineCampFire()
 {
@@ -27,18 +30,15 @@ void Campfire::defineCampFire()
   xyz[5] = location.z + fireHeight;
 
   cryph::AffPoint fireTop(location.x, location.y, location.z + fireHeight);
+  cryph::AffPoint flameTop(fireTop.x, fireTop.y, fireTop.z + (0.25 * fireHeight));
 
   cryph::AffPoint vert1(location.x - fireRadius, location.y - fireRadius, location.z);
+  double dist = location.distanceTo(vert1);
   cryph::AffPoint vert2(location.x + fireRadius, location.y + fireRadius, location.z);
-
   cryph::AffPoint vert3(location.x - fireRadius, location.y + fireRadius, location.z);
   cryph::AffPoint vert4(location.x + fireRadius, location.y - fireRadius, location.z);
-
-  double dist = location.distanceTo(vert1);
-
   cryph::AffPoint vert5(location.x - dist, location.y, location.z);
   cryph::AffPoint vert6(location.x + dist, location.y, location.z);
-
   cryph::AffPoint vert7(location.x, location.y-dist, location.z);
   cryph::AffPoint vert8(location.x, location.y+dist, location.z);
 
@@ -65,6 +65,12 @@ void Campfire::defineCampFire()
 
   logs[7] = BasicShape::makeBoundedCylinder(vert8, fireTop, logR, 20, 2, BasicShape::CAP_AT_NEITHER);
   logsR[7] = new BasicShapeRenderer(shaderIF, logs[7]);
+
+  logs[8] = BasicShape::makeBoundedCone(location, fireTop, fireRadius-(2*logR), 0.1, 35, 2, BasicShape::CAP_AT_NEITHER);
+  logsR[8] = new BasicShapeRenderer(shaderIF, logs[8]);
+
+  fire = BasicShape::makeBoundedCone(fireTop, flameTop, 2*logR, 0.1, 35, 2, BasicShape::CAP_AT_NEITHER);
+  logsR[8] = new BasicShapeRenderer(shaderIF, fire);
 }
 
 
@@ -77,46 +83,32 @@ void Campfire::getMCBoundingBox(double* xyzLimits) const
 
 void Campfire::render()
 {
-	// 1. Save current and establish new current shader program
-	// ...
 
   GLint program;
   glGetIntegerv(GL_CURRENT_PROGRAM, &program);
   glUseProgram(shaderIF->getShaderPgmID());
 
-
   establishMaterial();
   establishLightingEnvironment();
   establishView();
 
-
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-  logsR[0] -> drawShape();
-  logsR[1] -> drawShape();
-  logsR[2] -> drawShape();
-  logsR[3] -> drawShape();
-  logsR[4] -> drawShape();
-  logsR[5] -> drawShape();
-  logsR[6] -> drawShape();
-  logsR[7] -> drawShape();
+  for(int i=0; i<8; i++)
+  {
+    logsR[i] -> drawShape();
+  }
 
-  	glUseProgram(program);
+  float ka[3] = {1.0, 0.0, 0.0};
+  float kd[3] = {1.0, 0.0, 0.0};
+  float ks[3] = {1.0, 0.0, 0.0};
 
-	// 2. Establish "mc_ec" and "ec_lds" matrices
-	//    call SceneElement::establishView(); to do this
+  glUniform3fv(shaderIF->ppuLoc("kd"), 1, kd); //need different color to draw the fire cone on top
+  glUniform3fv(shaderIF->ppuLoc("ka"), 1, ka);
+  glUniform3fv(shaderIF->ppuLoc("ks"), 1, ks);
 
-	// 3. Set GLSL's "kd" variable using this object's "kd" instance variable
-	//    complete the implementation of SceneElement::establishMaterial and then
-	//    call it from here.
+  logsR[8] ->drawShape();
 
-	// 4. Establish any other attributes and make one or more calls to
-	//    glDrawArrays and/or glDrawElements
-	//    If all or part of this model involves texture mapping, complete the
-	//    implementation of SceneElement::establishTexture and call it from
-	//    here as needed immediately before any glDrawArrays and/or glDrawElements
-	//    calls to which texture is to be applied.
+	glUseProgram(program);
 
-	// 5. Reestablish previous shader program
-	// ...
 }

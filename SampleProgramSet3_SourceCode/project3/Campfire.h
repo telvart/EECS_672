@@ -19,27 +19,21 @@ public:
 	void render();
 private:
 
-
-
+  void defineCampFire();
 
   float fireRadius;
   float logR;
   float fireHeight;
   float xyz[6];
 
-  BasicShape* logs[8];
-  BasicShapeRenderer* logsR[8];
+  BasicShape* logs[9];
+  BasicShapeRenderer* logsR[9];
 
+	BasicShape* fire;
 
 
   cryph::AffPoint location;
 
-  void defineCampFire();
-	// IMPORTANT NOTE:
-	// The ShaderIF and kd (and other) material properties will be
-	// stored with the SceneElement piece of this object instance.
-	// You only need add instance variables here that are unique
-	// to the new subclass you are creating.
 };
 
 #endif

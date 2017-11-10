@@ -1,8 +1,9 @@
 #version 410 core
 
+// phong.fsh - a fragment shader that implements the Phong Lighting model.
+
 #define PERSPECTIVE 1
 #define ORTHOGANAL  2
-// phong.fsh - a fragment shader that implements a Phong Lighting model.
 
 in PVA
 {
@@ -21,17 +22,16 @@ out vec4 fragmentColor;
 const int MAX_LIGHTS = 3;
 
 // Phong lighting model values
-
 uniform vec3 kd = vec3(0.8, 0.0, 0.0); // default: darkish red
 uniform vec3 ka = vec3(0.8, 0.0, 0.0); // " "      " "     " "
 uniform vec3 ks = vec3(0.8, 0.0, 0.0); // " "      " "     " "
-uniform int numLights;
-uniform int projectionType;
-uniform vec4 p_ecLightPositions[MAX_LIGHTS];
 uniform vec3 lightStrengths[MAX_LIGHTS];
 uniform vec3 globalAmbient;
+uniform vec4 p_ecLightPositions[MAX_LIGHTS];
 uniform float spec_m;
 uniform float alpha;
+uniform int numLights;
+uniform int projectionType;
 
 float attenuation(vec3 light, vec3 mcPos)
 {
@@ -40,20 +40,6 @@ float attenuation(vec3 light, vec3 mcPos)
 
 vec4 evaluateLightingModel()
 {
-	// THIS IS JUST A PLACEHOLDER FOR A LIGHTING MODEL.
-	// It only currently implements simple Lambert shading.
-
-	// NOTES:
-	// 1. We assume for now a single directional light source defined in EC (liHat).
-	// 2. We assume it will be "full strength" (see liStrength).
-	//
-	// In project 3, both #1 and #2 will be generalized by introducing uniform
-	// arrays ("vec4 p_ecLightSourcePos" and "vec3 ecLightSourceStrength") and+
-	// using them INSTEAD OF the liHat and liStrength you see here.
-	//
-	// 3. The use of "abs" here is a temporary hack. As we study the Phong
-	//    lighting model more carefully, you will REMOVE "abs" since it will
-	//    no longer be appropriate.
 
 	vec3 normal = pvaIn.ecUnitNormal; // unit normal vector to Q
 	vec3 Q = pvaIn.ecPosition; //point of evaluation
@@ -71,62 +57,58 @@ vec4 evaluateLightingModel()
 		v_hat = vec3(0.0, 0.0, 1.0);
 
 	else //must be oblique
-		v_hat = normalize(vec3((-ec_lds[0][2])/ec_lds[0][0], (-ec_lds[1][2])/ec_lds[1][1], 1.0));
-		//v_hat = normalize(temp);
-
+		v_hat = normalize(vec3((-ec_lds[2][0])/ec_lds[0][0], (-ec_lds[2][1])/ec_lds[1][1], 1.0)); //COLUMN MAJOR IS ANNOYING
 
 	if(dot(normal, v_hat) < 0) //check if normal in right direction
 		normal = -normal;
 
 	bool isPositional = false;
 
-	 for(int i = 0; i<numLights; i++) //for each light source
-	 {
-		 	vec4 currentLightPos = p_ecLightPositions[i];
-			vec3 li_hat;
+ for(int i = 0; i<numLights; i++) //for each light source
+ {
+	 	vec4 currentLightPos = p_ecLightPositions[i];
+		vec3 li_hat;
 
-			if(currentLightPos.w == 0.0) //directional light
-			{
-				li_hat = normalize(currentLightPos.xyz);
-			}
-			else //positional light
-			{
-				li_hat = normalize(currentLightPos.xyz - Q);
-				isPositional = true;
-			}
+		if(currentLightPos.w == 0.0) //directional light
+		{
+			li_hat = normalize(currentLightPos.xyz);
+		}
+		else //positional light
+		{
+			li_hat = normalize(currentLightPos.xyz - Q);
+			isPositional = true;
+		}
 
-			float atten = attenuation(currentLightPos.xyz, Q) * 20;
+		float atten = attenuation(currentLightPos.xyz, Q) * 20;
 
-			if(dot(li_hat, normal) > 0)
-			{
-				if(!isPositional)
-					diffuseTotal += kd * lightStrengths[i] * dot(li_hat, normal);
-				else
-					diffuseTotal += atten * kd * lightStrengths[i] * dot(li_hat, normal);
-			}
+		if(dot(li_hat, normal) > 0)
+		{
+			if(!isPositional)
+				diffuseTotal += kd * lightStrengths[i] * dot(li_hat, normal);
+			else
+				diffuseTotal += atten * kd * lightStrengths[i] * dot(li_hat, normal);
+		}
 
-			vec3 ri_hat = normalize(reflect(-li_hat, normal));
-			if(dot(ri_hat, v_hat) > 0)
-			{
-				float rdotv = dot(ri_hat, v_hat);
+		vec3 ri_hat = normalize(reflect(-li_hat, normal));
 
-				if(!isPositional)
-					specularTotal += ks * lightStrengths[i] * pow(rdotv, spec_m);
+		if(dot(ri_hat, v_hat) > 0)
+		{
+			if(!isPositional)
+				specularTotal += ks * lightStrengths[i] * pow(dot(ri_hat, v_hat), spec_m);
 
-				else
-					specularTotal += atten * ks * lightStrengths[i] * pow(rdotv, spec_m);
+			else
+				specularTotal += atten * ks * lightStrengths[i] * pow(dot(ri_hat, v_hat), spec_m);
+		}
+ }
 
-			}
-	 }
-
-	vec3 totalLight = ambientTotal + diffuseTotal + specularTotal;
+	vec3 Iq = ambientTotal + diffuseTotal + specularTotal;
 
 	for(int i=0; i<3; i++)
-		if(totalLight[i] >= 1.0)
-			totalLight[i] = 1.0;
+		if(Iq[i] >= 1.0)
+			Iq[i] = 1.0;
 
 	//return vec4(ambientTotal + (factor * kd * liStrength), alpha);
-	return vec4(totalLight, alpha);
+	return vec4(Iq, alpha);
 }
 
 void main ()
