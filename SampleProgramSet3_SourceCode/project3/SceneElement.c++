@@ -21,7 +21,6 @@ float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 		 150.0, 0.0, 20.0, 1.0
 	};
 
-
 float SceneElement::globalAmbient[] = { 0.1, 0.1, 0.1};
 
 SceneElement::SceneElement(ShaderIF* sIF, const PhongMaterial& matlIn) :

@@ -17,7 +17,6 @@ Trunk::~Trunk()
 	glDeleteVertexArrays(1, vao);
 }
 
-
 void Trunk::defineTrunk()
 {
 	xyz[0] = m_bottom.x - radius; xyz[1] = m_bottom.x + radius;
@@ -75,7 +74,6 @@ void Trunk::getMCBoundingBox(double* xyzLimits) const
 	xyzLimits[2] = xyz[2]; xyzLimits[3] = xyz[3];
 	xyzLimits[4] = xyz[4]; xyzLimits[5] = xyz[5];
 }
-
 
 void Trunk::render()
 {

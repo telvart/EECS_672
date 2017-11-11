@@ -56,8 +56,6 @@ void TreeTop::defineTreeTop()
 	// }
 
 	//NOTE: The basic shape utilities are very helpful
-	cryph::AffVector dir(20,20,0);
-
 	theCone = BasicShape::makeBoundedCone(m_bottom, m_top, radius, 0.1, 35, 2, BasicShape::CAP_AT_NEITHER);
 	theConeR = new BasicShapeRenderer(shaderIF, theCone);
 

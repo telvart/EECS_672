@@ -7,11 +7,14 @@
 #include "ShaderIF.h"
 #include "BasicShapeRenderer.h"
 
+typedef float vec3[3];
+
 class Campfire : public SceneElement
 {
 
 public:
-	Campfire(ShaderIF* sIF, cryph::AffPoint location, float height, float radius, float logRadius, PhongMaterial& matl);
+	Campfire(ShaderIF* sIF, cryph::AffPoint location, float height, float radius,
+		 float logRadius, float smokeH, PhongMaterial& matl);
 	virtual ~Campfire();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -26,11 +29,14 @@ private:
   float fireHeight;
   float xyz[6];
 
-  BasicShape* logs[9];
+	int numPointsinSmoke;
+	float smokeH;
+
+	GLuint vao[1];
+	GLuint vbo[2];
+
+  BasicShape* logs[9], *fire;
   BasicShapeRenderer* logsR[9];
-
-	BasicShape* fire;
-
 
   cryph::AffPoint location;
 

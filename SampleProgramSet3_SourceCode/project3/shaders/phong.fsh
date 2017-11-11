@@ -33,9 +33,9 @@ uniform float alpha;
 uniform int numLights;
 uniform int projectionType;
 
-float attenuation(vec3 light, vec3 mcPos)
+float attenuation(vec3 light, vec3 ecPos)
 {
-		return 1 / ( 0.5 * distance(light, mcPos));
+		return 1 / ( 0.5 * distance(light, ecPos));
 }
 
 vec4 evaluateLightingModel()

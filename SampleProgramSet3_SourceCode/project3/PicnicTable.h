@@ -20,7 +20,6 @@ public:
 	void getMCBoundingBox(double* xyzLimitsF) const;
 	void render();
 
-
 private:
 
 	void definePT();

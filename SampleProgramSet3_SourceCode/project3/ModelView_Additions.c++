@@ -93,13 +93,15 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 
 	//    2.b. In project 3 & 4: Scale "halfWidth" by "dynamic_zoomScale"
 	//    2.c. initialize the XY direction of the view volume as:
-	double sphereRad = sqrt( pow(xyz[1] - xyz[0], 2) + pow(xyz[3] - xyz[2], 2) + pow(xyz[5]-xyz[4], 2)) * dynamic_zoomScale;
+	//double sphereRad = sqrt( pow(xyz[1] - xyz[0], 2) + pow(xyz[3] - xyz[2], 2) + pow(xyz[5]-xyz[4], 2)) * dynamic_zoomScale;
 
-	last_ecXmin = xmid - sphereRad;
-	last_ecXmax = xmid + sphereRad;
-	last_ecYmin = ymid - sphereRad;
-	last_ecYmax = ymid + sphereRad;
+	// last_ecXmin = xmid - sphereRad;
+	// last_ecXmax = xmid + sphereRad;
+	// last_ecYmin = ymid - sphereRad;
+	// last_ecYmax = ymid + sphereRad;
 
+	last_ecXmin = last_ecYmin = -halfWidth * dynamic_zoomScale;
+	last_ecXmax = last_ecYmax =  halfWidth * dynamic_zoomScale;
 
 	double vAR = Controller::getCurrentController() -> getViewportAspectRatio();
 	ModelView::matchAspectRatio(last_ecXmin, last_ecXmax, last_ecYmin, last_ecYmax, vAR);

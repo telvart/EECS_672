@@ -21,6 +21,7 @@ void set3DViewingInformation(double xyz[6])
 	double xmid = 0.5 * (xyz[0] + xyz[1]);
 	double ymid = 0.5 * (xyz[2] + xyz[3]);
 	double zmid = 0.5 * (xyz[4] + xyz[5]);
+	double halfWidth = 0.5 * maxDelta;
 
 	cryph::AffPoint center(xmid, ymid, zmid);
 
@@ -37,9 +38,9 @@ void set3DViewingInformation(double xyz[6])
 	// Notify the ModelView of our MC->EC viewing requests:
 	ModelView::setEyeCenterUp(eye, center, up);
 
-	double ecZpp = -(distEyeCenter - 0.3*maxDelta);
-	double ecZmin = ecZpp - maxDelta;
-	double ecZmax = ecZpp + 0.5*maxDelta;
+	double ecZpp = -(distEyeCenter - halfWidth);
+	double ecZmin = ecZpp - 2*maxDelta;
+	double ecZmax = ecZpp + halfWidth;
 
 	// Set values for ecZpp, ecZmin, ecZmax that make sense in the context of
 	// the EC system established above, then:
@@ -59,7 +60,7 @@ int main(int argc, char* argv[])
 
 	PhongMaterial house(0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 5, 1);
 	PhongMaterial pine(0.004, 0.475, 0.435, 0.004, 0.475, 0.435, 0.300, 0.275, 0.435, 10, 1);
-	PhongMaterial yellow(1, 1, 0, 1, 1, 0, 1, 1, 0, 10, 1);
+	PhongMaterial yellow(1, 1, 0, 1, 1, 0, 1, 1, 0, 5, 1);
 	PhongMaterial orange(1, 0.27, 0, 1, 0.27, 0, 1, 0.27, 0, 10, 1);
 	PhongMaterial grass(0.386, 0.998, 0, 0.486, 0.988, 0, 0.3, 0.5, 0.3, 5, 1);
 	PhongMaterial sidewalk(0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 5, 1);
@@ -73,7 +74,8 @@ int main(int argc, char* argv[])
 	c.addModel(new Block(sIF, -200, -200, -1, 400, 400, 1, grass)); //green underlay
 	c.addModel(new Block(sIF, -12.5, -200, 1, 25, 150, 1, sidewalk)); //sidewalk
 
-	c.addModel(new Tree(sIF, 75, 150, 0, 100, 20, yellow));
+	c.addModel(new Tree(sIF,  0, 150, 0, 100, 20, pine));
+	c.addModel(new Tree(sIF, 75, 125, 0, 125, 20, yellow));
 	c.addModel(new Tree(sIF, -75, 150, 0, 75, 20, orange));
 	c.addModel(new Tree(sIF, -175, -85, 0, 75, 15, orange));
 	c.addModel(new Tree(sIF, -140, 120, 0, 75, 30, pine));
@@ -83,19 +85,19 @@ int main(int argc, char* argv[])
   c.addModel(new House(sIF, cryph::AffPoint::origin, 75, 75, 50, 40, false, house));
   c.addModel(new House(sIF, dogHouse, 30, 30, 30, 10, true, house));
 
-	c.addModel(new PicnicTable(sIF, table, 40, 80, 40));
-	c.addModel(new PicnicTable(sIF, table2, 40, 130, 40));
+	c.addModel(new PicnicTable(sIF, table, 30, 60, 20));
+	c.addModel(new PicnicTable(sIF, table2, 30, 100, 20));
 
-	c.addModel(new Campfire(sIF, fireLoc, 10, 10, 2, brown));
-	c.addModel(new Campfire(sIF, fire2Loc, 15, 15, 2, brown));
+	c.addModel(new Campfire(sIF, fireLoc, 10, 10, 2, 90, brown));
+	c.addModel(new Campfire(sIF, fire2Loc, 15, 15, 2, 90, brown));
 
 	double xyz[6];
 	c.getOverallMCBoundingBox(xyz);
 	set3DViewingInformation(xyz);
 
-	//glClearColor(0, 0.09, 0.28, 1.0);
-	glClearColor(0, 0, 0, 0);
-	//glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClearColor(0, 0.09, 0.28, 1.0); //purpleish
+	//glClearColor(0, 0, 0, 0); //black
+	//glClearColor(1.0, 1.0, 1.0, 1.0); //white
 	c.run();
 
 	delete sIF;
