@@ -71,25 +71,26 @@ int main(int argc, char* argv[])
 
 	ShaderIF* sIF = new ShaderIF("shaders/basic.vsh", "shaders/phong.fsh");
 
-	c.addModel(new Block(sIF, -200, -200, -1, 400, 400, 1, grass)); //green underlay
-	c.addModel(new Block(sIF, -12.5, -200, 1, 25, 150, 1, sidewalk)); //sidewalk
+	c.addModel(new Block(sIF, -300, -300, -50, 600, 600, 1, grass)); //green underlay
+	//c.addModel(new Block(sIF, -12.5, -200, 1, 25, 150, 1, sidewalk)); //sidewalk
 
-	c.addModel(new Tree(sIF,  0, 150, 0, 100, 20, pine));
-	c.addModel(new Tree(sIF, 75, 125, 0, 125, 20, yellow));
-	c.addModel(new Tree(sIF, -75, 150, 0, 75, 20, orange));
-	c.addModel(new Tree(sIF, -175, -85, 0, 75, 15, orange));
-	c.addModel(new Tree(sIF, -140, 120, 0, 75, 30, pine));
-	c.addModel(new Tree(sIF, 150, 100, 0, 150, 25, pine));
-	c.addModel(new Tree(sIF, -175, 20, 0, 75, 20, yellow));
+	//c.addModel(new Tree(sIF,  0, 150, 0, 100, 20, pine));
+	//c.addModel(new Tree(sIF, 75, 125, 0, 125, 20, yellow));
+	//c.addModel(new Tree(sIF, -75, 150, 0, 75, 20, orange));
+	//c.addModel(new Tree(sIF, -175, -85, 0, 75, 15, orange));
+	//c.addModel(new Tree(sIF, -140, 120, 0, 75, 30, pine));
+	//c.addModel(new Tree(sIF, 150, 100, 0, 150, 25, pine));
+	//c.addModel(new Tree(sIF, -175, 20, 0, 75, 20, yellow));
 
-  c.addModel(new House(sIF, cryph::AffPoint::origin, 75, 75, 50, 40, false, house));
-  c.addModel(new House(sIF, dogHouse, 30, 30, 30, 10, true, house));
+  //c.addModel(new House(sIF, cryph::AffPoint::origin, 75, 75, 50, 40, false, house));
+	c.addModel(new House(sIF, house));
+	//c.addModel(new House(sIF, dogHouse, 30, 30, 30, 10, true, house));
 
-	c.addModel(new PicnicTable(sIF, table, 30, 60, 20));
-	c.addModel(new PicnicTable(sIF, table2, 30, 100, 20));
+	//c.addModel(new PicnicTable(sIF, table, 30, 60, 20));
+	//c.addModel(new PicnicTable(sIF, table2, 30, 100, 20));
 
-	c.addModel(new Campfire(sIF, fireLoc, 10, 10, 2, 90, brown));
-	c.addModel(new Campfire(sIF, fire2Loc, 15, 15, 2, 90, brown));
+	//c.addModel(new Campfire(sIF, fireLoc, 10, 10, 2, 90, brown));
+	//c.addModel(new Campfire(sIF, fire2Loc, 15, 15, 2, 90, brown));
 
 	double xyz[6];
 	c.getOverallMCBoundingBox(xyz);

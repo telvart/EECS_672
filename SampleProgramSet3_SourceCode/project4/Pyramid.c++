@@ -2,13 +2,15 @@
 
 #include "Pyramid.h"
 
-Pyramid::Pyramid(ShaderIF* sIF, cryph::AffPoint bottom, float height, float width, PhongMaterial& mat)
+Pyramid::Pyramid(ShaderIF* sIF, cryph::AffPoint bottom, float height, float width, float length,
+	 PhongMaterial& mat)
 : SceneElement(sIF, mat)
 {
 	m_bottom = bottom;
 	m_top = cryph::AffPoint(bottom.x, bottom.y, bottom.z+height);
 	this->height = height;
 	this->width = width;
+	this->length = length;
 	definePyramid();
 }
 
@@ -21,10 +23,10 @@ Pyramid::~Pyramid()
 
 void Pyramid::definePyramid()
 {
-	cryph::AffPoint bl(m_bottom.x-(width/2), m_bottom.y-(width/2), m_bottom.z);
-	cryph::AffPoint br(m_bottom.x+(width/2), m_bottom.y-(width/2), m_bottom.z);
-	cryph::AffPoint tl(m_bottom.x-(width/2), m_bottom.y+(width/2), m_bottom.z);
-	cryph::AffPoint tr(m_bottom.x+(width/2), m_bottom.y+(width/2), m_bottom.z);
+	cryph::AffPoint bl(m_bottom.x-(width/2), m_bottom.y-(length/2), m_bottom.z);
+	cryph::AffPoint br(m_bottom.x+(width/2), m_bottom.y-(length/2), m_bottom.z);
+	cryph::AffPoint tl(m_bottom.x-(width/2), m_bottom.y+(length/2), m_bottom.z);
+	cryph::AffPoint tr(m_bottom.x+(width/2), m_bottom.y+(length/2), m_bottom.z);
 
 	m_tl = tl; m_tr = tr;
 	m_bl = bl; m_br = br;

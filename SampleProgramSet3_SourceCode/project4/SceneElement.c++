@@ -9,7 +9,7 @@ bool SceneElement::posInModelCoordinates[MAX_NUM_LIGHTS] =
 
 float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 	{
-		0.3, 0.3, 0.3,
+		0.6, 0.6, 0.6,
 		1.0, 0.2, 0.2,
 		1.0, 0.2, 0.2
 	};
@@ -35,7 +35,7 @@ SceneElement::~SceneElement()
 
 void SceneElement::establishLightingEnvironment()
 {
-	int actualNumLights = 3;
+	int actualNumLights = 1;
 
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);

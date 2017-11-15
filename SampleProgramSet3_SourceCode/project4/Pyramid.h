@@ -12,7 +12,7 @@ class Pyramid : public SceneElement
 {
 public:
 	// As before: you will likely want to add parameters to the constructor
-	Pyramid(ShaderIF* sIF, cryph::AffPoint bottom, float height, float width, PhongMaterial& mat);
+	Pyramid(ShaderIF* sIF, cryph::AffPoint bottom, float height, float width, float length, PhongMaterial& mat);
 	virtual ~Pyramid();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -31,7 +31,7 @@ private:
 	static GLuint indexList[4][3];
 
 	float xyz[6];
-	float height, width;
+	float height, width, length;
 };
 
 #endif

@@ -7,10 +7,10 @@ LOCAL_UTIL_LIBRARIES = ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ..
 GL_LIB_LOC = -L/usr/lib/nvidia-375
 GL_LIBRARIES = $(GL_LIB_LOC) -lglfw -lGLU -lGL
 
-OBJS = project4.o ModelView_Additions.o PhongMaterial.o SceneElement.o Tree.o Trunk.o TreeTop.o Block.o House.o Pyramid.o PicnicTable.o Campfire.o
+OBJS = project4.o ModelView_Additions.o PhongMaterial.o SceneElement.o Tree.o Trunk.o TreeTop.o Block.o House.o Pyramid.o PicnicTable.o Campfire.o P4Controller.o TriPrism.o
 
 project3: $(OBJS) $(LOCAL_UTIL_LIBRARIES)
-	$(LINK) -o project3 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(GL_LIBRARIES)
+	$(LINK) -o project4 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(GL_LIBRARIES)
 
 ../lib/libcryph.so: ../cryphutil/AffVector.h ../cryphutil/AffVector.c++ ../cryphutil/AffPoint.h ../cryphutil/AffPoint.c++
 	(cd ../cryphutil; make)
@@ -51,5 +51,9 @@ PicnicTable.o: PicnicTable.c++
 	$(CPP) $(C_FLAGS) PicnicTable.c++
 Campfire.o: Campfire.c++
 	$(CPP) $(C_FLAGS) Campfire.c++
+P4Controller.o: P4Controller.c++
+	$(CPP) $(C_FLAGS) P4Controller.c++
+TriPrism.o: TriPrism.c++
+	$(CPP) $(C_FLAGS) TriPrism.c++
 clean:
 	rm *.o project4

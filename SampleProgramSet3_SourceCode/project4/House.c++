@@ -11,8 +11,17 @@ House::House(ShaderIF* sIF, cryph::AffPoint houseBottom, float width, float leng
   this->roofHeight = roofHeight;
 	m_bottom = houseBottom;
   dogHouse = isDog;
+  drawingCottage = false;
   defineHouse();
 }
+House::House(ShaderIF* sIF, PhongMaterial& mat)
+  : SceneElement(sIF, mat)
+{
+  drawingCottage = true;
+  dogHouse = false;
+  defineCottage();
+}
+
 
 House::~House()
 {
@@ -63,7 +72,28 @@ void House::defineHouse()
   }
 
   cryph::AffPoint roofBottom(m_bottom.x, m_bottom.y, m_bottom.z+height);
-  models.push_back(new Pyramid(shaderIF, roofBottom, roofHeight, width + (0.1*width), brick));
+  models.push_back(new Pyramid(shaderIF, roofBottom, roofHeight, width + (0.1*width), width + (0.1*width), brick));
+}
+
+void House::defineCottage()
+{
+  PhongMaterial gray(0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 10, 1);
+  PhongMaterial red(1, 0, 0.125, 1, 0, 0.125, 1, 0, 0.125, 10, 1);
+  PhongMaterial black(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1);
+  PhongMaterial brick(0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 5, 1);
+  cryph::AffPoint r(125, 12.5, 110);
+  cryph::AffPoint backEntryLoc(125, 132.5, 110);
+  cryph::AffPoint extensLoc(-105, 12.5, 111);
+
+  models.push_back(new Block(shaderIF, 50, -75, 10, 150, 175, 100, brick)); //main cabin
+  models.push_back(new Pyramid(shaderIF, r, 50, 170, 195, gray)); //roof
+  models.push_back(new Block(shaderIF, 50, -150, -50, 150, 75, 60, matl)); //front porch
+  models.push_back(new Block(shaderIF, 50, -50, 10, -200, 125, 100, red)); //extension
+  models.push_back(new Block(shaderIF, -260, -50, 10, 110, 125, 100, black)); //porch
+  models.push_back(new Block(shaderIF, 100, 100, 10, 50, 75, 100, black)); //back entry
+  models.push_back(new TriPrism(shaderIF, gray, backEntryLoc, 30, 50, 75, false));
+  models.push_back(new TriPrism(shaderIF, gray, extensLoc, 30, 310, 125, true));
+//  models.push_back(new Pyramid(shaderIF, r, 20, 50, 100, gray));
 }
 
 void House::getMCBoundingBox(double* xyzLimits) const
@@ -79,7 +109,7 @@ void House::render()
   for(int i=0; i<models.size(); i++)
     models[i] -> render();
 
-  if(!dogHouse)
+  if(!dogHouse && (!drawingCottage))
   {
     doorKnob -> render();
   }

@@ -8,6 +8,7 @@
 #include "ShaderIF.h"
 #include "Block.h"
 #include "Pyramid.h"
+#include "TriPrism.h"
 #include <vector>
 
 typedef float vec3[3];
@@ -18,6 +19,7 @@ public:
 	// As before: you will likely want to add parameters to the constructor
 	House(ShaderIF* sIF, cryph::AffPoint houseBottom, float width, float length, float height,
 		 float roofHeight, bool isDog, PhongMaterial& mat);
+	House(ShaderIF* sIF, PhongMaterial& mat);
 	virtual ~House();
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
@@ -25,6 +27,7 @@ public:
 	void render();
 
 	void defineHouse();
+	void defineCottage();
 private:
 
 	cryph::AffPoint m_bottom;
@@ -32,10 +35,12 @@ private:
 	std::vector<ModelView*> models;
 
 	bool dogHouse;
+	bool drawingCottage;
 
-	const float wallWidth;
+	float wallWidth;
 	float width, length, height, roofHeight;
 	float xyz[6];
+
 };
 
 #endif

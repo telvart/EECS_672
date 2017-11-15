@@ -32,6 +32,8 @@ uniform float spec_m;
 uniform float alpha;
 uniform int numLights;
 uniform int projectionType;
+uniform int sceneHasTransluscentObjects = 0;
+uniform int drawingOpaqueObjects = 1;
 
 float attenuation(vec3 light, vec3 ecPos)
 {
@@ -113,5 +115,21 @@ vec4 evaluateLightingModel()
 
 void main ()
 {
-	fragmentColor = evaluateLightingModel();
+	vec4 color = evaluateLightingModel();
+	if(sceneHasTransluscentObjects == 1)
+	{
+		if(drawingOpaqueObjects == 1)
+		{
+			if(color.w < 1.0)
+				discard;
+			else
+				fragmentColor = color;
+		}
+		else if(color.w < 1.0)
+			fragmentColor = color;
+		else
+			discard;
+	}
+	else
+		fragmentColor = color;
 }
