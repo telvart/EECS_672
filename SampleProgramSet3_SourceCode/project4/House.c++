@@ -14,6 +14,7 @@ House::House(ShaderIF* sIF, cryph::AffPoint houseBottom, float width, float leng
   drawingCottage = false;
   defineHouse();
 }
+
 House::House(ShaderIF* sIF, PhongMaterial& mat)
   : SceneElement(sIF, mat)
 {
@@ -50,11 +51,11 @@ void House::defineHouse()
   cryph::AffPoint wall2Loc(m_bottom.x-(width/2), m_bottom.y+(length/2)-wallWidth, m_bottom.z+1);
   cryph::AffPoint wall3Loc((m_bottom.x+(width/2))-wallWidth, m_bottom.y-(length/2), m_bottom.z+1);
 
-   models.push_back(new Block(shaderIF, floorLoc.x, floorLoc.y, floorLoc.z, width, length, 1, gray)); //floor
-   models.push_back(new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, wallWidth, length, height, matl)); //leftWall
-   models.push_back(new Block(shaderIF, wall2Loc.x, wall2Loc.y, wall2Loc.z, width, wallWidth, height, matl)); //rear wall
-   models.push_back(new Block(shaderIF, wall3Loc.x, wall3Loc.y, wall3Loc.z, wallWidth, length, height, matl)); //right wall
-   models.push_back(new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, width, wallWidth, height, matl)); //front wall
+  models.push_back(new Block(shaderIF, floorLoc.x, floorLoc.y, floorLoc.z, width, length, 1, gray)); //floor
+  models.push_back(new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, wallWidth, length, height, matl)); //leftWall
+  models.push_back(new Block(shaderIF, wall2Loc.x, wall2Loc.y, wall2Loc.z, width, wallWidth, height, matl)); //rear wall
+  models.push_back(new Block(shaderIF, wall3Loc.x, wall3Loc.y, wall3Loc.z, wallWidth, length, height, matl)); //right wall
+  models.push_back(new Block(shaderIF, wall1Loc.x, wall1Loc.y, wall1Loc.z, width, wallWidth, height, matl)); //front wall
 
   float thirdWidth = width / 3;
   float thirdHeight = height / 3;
@@ -67,9 +68,7 @@ void House::defineHouse()
     models.push_back(new Block(shaderIF, door1Loc.x, door1Loc.y, door1Loc.z, thirdWidth, 1, 2*thirdHeight, red));
   }
   else
-  {
     models.push_back(new Block(shaderIF, door1Loc.x, door1Loc.y, door1Loc.z, thirdWidth, 1, 2*thirdHeight, black));
-  }
 
   cryph::AffPoint roofBottom(m_bottom.x, m_bottom.y, m_bottom.z+height);
   models.push_back(new Pyramid(shaderIF, roofBottom, roofHeight, width + (0.1*width), width + (0.1*width), brick));
@@ -81,18 +80,67 @@ void House::defineCottage()
   PhongMaterial red(1, 0, 0.125, 1, 0, 0.125, 1, 0, 0.125, 10, 1);
   PhongMaterial black(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1);
   PhongMaterial brick(0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 5, 1);
-  cryph::AffPoint r(125, 12.5, 110);
-  cryph::AffPoint backEntryLoc(125, 132.5, 110);
-  cryph::AffPoint extensLoc(-105, 12.5, 111);
+  cryph::AffPoint r(135, 35.5, 110);
+  cryph::AffPoint backEntryLoc(125, 183.5, 110);
+  cryph::AffPoint extensLoc(-60, 32.5, 111);
 
-  models.push_back(new Block(shaderIF, 50, -75, 10, 150, 175, 100, brick)); //main cabin
-  models.push_back(new Pyramid(shaderIF, r, 50, 170, 195, gray)); //roof
-  models.push_back(new Block(shaderIF, 50, -150, -50, 150, 75, 60, matl)); //front porch
-  models.push_back(new Block(shaderIF, 50, -50, 10, -200, 125, 100, red)); //extension
-  models.push_back(new Block(shaderIF, -260, -50, 10, 110, 125, 100, black)); //porch
-  models.push_back(new Block(shaderIF, 100, 100, 10, 50, 75, 100, black)); //back entry
-  models.push_back(new TriPrism(shaderIF, gray, backEntryLoc, 30, 50, 75, false));
-  models.push_back(new TriPrism(shaderIF, gray, extensLoc, 30, 310, 125, true));
+  models.push_back(new Block(shaderIF, 50, -75, 10, 170, 220, 1, gray)); //main cabin floor
+  models.push_back(new Block(shaderIF, 50, -75, 10, 2, 220, 100, brick)); //side on extension
+  models.push_back(new Block(shaderIF, 220, -75, 10, -170, 2, 100, brick)); //side towards lake
+  models.push_back(new Block(shaderIF, 220, -75, 10, -2, 220, 100, brick)); //side on bathroom
+  models.push_back(new Block(shaderIF, 50, 145, 10, 170, 2, 100, brick));//back entrance wall
+
+  models.push_back(new Block(shaderIF, 50, -30, 10, -200, 125, 1, gray)); //extension floor
+  models.push_back(new Block(shaderIF, 50, -30, 10, -200, 2, 100, red));  //face towards lake
+  models.push_back(new Block(shaderIF, -150, -30, 10, 2, 125, 100, red)); //face towards screen porch
+  models.push_back(new Block(shaderIF, -150, 95, 10, 200, -2, 100, red)); //face towards rear entry
+
+  models.push_back(new Block(shaderIF, -260, -30, 10, 110, 125, 1, gray)); //screen porch floor
+  models.push_back(new Block(shaderIF, -260, -30, 10, 5, 5, 100, brick));  /*screen pillars */
+  models.push_back(new Block(shaderIF, -260, 95, 10, 5, -5, 100, brick));
+  models.push_back(new Block(shaderIF, -260, 30.5, 10, 5, 5, 100, brick));
+  models.push_back(new Block(shaderIF, -205, 95, 10, 5, -5, 100, brick));
+  models.push_back(new Block(shaderIF, -205, -30, 10, 5, 5, 100, brick));
+
+  models.push_back(new Block(shaderIF, 50, -150, -50, 170, 75, 60, matl)); //front porch
+  models.push_back(new Block(shaderIF, 50, -150, 10, 3, 3, 40, matl)); /* railing lines 106 - 126*/
+  models.push_back(new Block(shaderIF, 50, -112.5, 10, 3, 3, 40, matl));
+  models.push_back(new Block(shaderIF, 220, -112.5, 10, -3, 3, 40, matl));
+  models.push_back(new Block(shaderIF, 130, -150, 10, 3, 3, 40, matl));
+  models.push_back(new Block(shaderIF, 130, -190, 10, 3, 3, 40, matl));
+  models.push_back(new Block(shaderIF, 170, -190, 10, -3, 3, 40, matl));
+  models.push_back(new Block(shaderIF, 170, -150, 10, -3, 3, 40, matl));
+  models.push_back(new Block(shaderIF, 220, -150, 10, -3, 3, 40, matl));
+  models.push_back(new Block(shaderIF, 50, -150, 50, 3, 75, 3, matl));
+  models.push_back(new Block(shaderIF, 50, -150, 50, 83, 3, 3, matl));
+  models.push_back(new Block(shaderIF, 167, -150, 50, 53, 3, 3, matl));
+  models.push_back(new Block(shaderIF, 220, -150, 50, -3, 75, 3, matl));
+  models.push_back(new Block(shaderIF, 167, -190, 50, 3, 43, 3, matl));
+  models.push_back(new Block(shaderIF, 170, -190, 50, -40, 3, 3, matl));
+  models.push_back(new Block(shaderIF, 90, -150, 10, 3, 3, 40, matl));
+  models.push_back(new Block(shaderIF, 50, -150, 29, 83, 3, 3, matl));
+  models.push_back(new Block(shaderIF, 50, -150, 29, 3, 75, 3, matl));
+  models.push_back(new Block(shaderIF, 170, -150, 29, 50, 3, 3, matl));
+  models.push_back(new Block(shaderIF, 220, -150, 29, -3, 75, 3, matl));
+  models.push_back(new Block(shaderIF, 170, -150, 29, -3, -40, 3, matl));
+  models.push_back(new Block(shaderIF, 170, -190, 29, -40, 3, 3, matl));
+
+  models.push_back(new Block(shaderIF, 130, -150, 10, 40, -40, -8, red)); //stair platform
+  models.push_back(new Block(shaderIF, 130, -150, 2, 8, -8, -52, black)); /* platform posts */
+  models.push_back(new Block(shaderIF, 130, -190, 2, 8, 8, -52, black));
+  models.push_back(new Block(shaderIF, 170, -190, 2, -8, 8, -52, black));
+  models.push_back(new Block(shaderIF, 170, -150, 2, -8, -8, -52, black));
+
+
+
+
+
+
+  models.push_back(new Block(shaderIF, 100, 146, 10, 50, 75, 100, black)); //back entry
+
+  roofPieces.push_back(new TriPrism(shaderIF, gray, backEntryLoc, 15, 50, 75, false));
+  roofPieces.push_back(new TriPrism(shaderIF, gray, extensLoc, 30, 400, 155, true));
+  roofPieces.push_back(new Pyramid(shaderIF, r, 50, 185, 230, gray)); //roof
 //  models.push_back(new Pyramid(shaderIF, r, 20, 50, 100, gray));
 }
 
@@ -107,10 +155,45 @@ void House::render()
 {
 
   for(int i=0; i<models.size(); i++)
-    models[i] -> render();
+    if(models[i]->isVisible)
+      models[i] -> render();
+
+  for(int i=0; i<roofPieces.size(); i++)
+    if(roofPieces[i]->isVisible)
+      roofPieces[i] -> render();
 
   if(!dogHouse && (!drawingCottage))
   {
     doorKnob -> render();
   }
+}
+
+bool House::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)
+{
+  if(anASCIIChar == 'r')
+  {
+    std::cout<<"toggle roof\n";
+    toggleVisibility(roofPieces);
+    //GLFWController* c = dynamic_cast<GLFWController*>(Controller::getCurrentController());
+    //c->handleDisplay();
+  }
+  else if (anASCIIChar == 'O')
+    ModelView::setProjection(ORTHOGONAL);
+  else if (anASCIIChar == 'P')
+    ModelView::setProjection(PERSPECTIVE);
+  else if (anASCIIChar == 'Q')
+    ModelView::setProjection(OBLIQUE);
+  else
+    return ModelView::handleCommand(anASCIIChar, ldsX, ldsY);
+
+  Controller::getCurrentController()->redraw();
+  return true;
+}
+
+void House::toggleVisibility(std::vector<SceneElement*> models)
+{
+  for(int i = 0; i < models.size(); i++)
+    models[i]->isVisible = !models[i]->isVisible;
+
+  render();
 }

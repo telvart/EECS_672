@@ -9,6 +9,7 @@
 #include "Block.h"
 #include "Pyramid.h"
 #include "TriPrism.h"
+#include "GLFWController.h"
 #include <vector>
 
 typedef float vec3[3];
@@ -28,11 +29,16 @@ public:
 
 	void defineHouse();
 	void defineCottage();
+	bool handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY);
 private:
+
+	void toggleVisibility(std::vector<SceneElement*> models);
 
 	cryph::AffPoint m_bottom;
 	Block *doorKnob;
-	std::vector<ModelView*> models;
+
+	std::vector<SceneElement*> models;
+	std::vector<SceneElement*> roofPieces;
 
 	bool dogHouse;
 	bool drawingCottage;

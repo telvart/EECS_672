@@ -37,9 +37,12 @@ public:
 	void setTextureImage(const std::string& imgFileName, int onFace=0);
 	void setTextureSource(int source, int onFace=0);
 
+	bool isVisible;
+
 protected:
 	ShaderIF* shaderIF;
 	PhongMaterial matl;
+
 
 private:
 	GLuint texID;

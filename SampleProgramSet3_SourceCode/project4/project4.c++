@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 	PhongMaterial sidewalk(0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 5, 1);
 	PhongMaterial brown(0.32, 0.2, 0.039, 0.32, 0.2, 0.039, 0.32, 0.2, 0.039, 1, 1);
 
-	GLFWController c("House and Trees, but with PHONG!", MVC_USE_DEPTH_BIT);
+	GLFWController c("My cottage, with PHONG!", MVC_USE_DEPTH_BIT);
 	c.reportVersions(std::cout);
 
 	ShaderIF* sIF = new ShaderIF("shaders/basic.vsh", "shaders/phong.fsh");

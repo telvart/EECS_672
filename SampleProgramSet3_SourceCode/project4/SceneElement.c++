@@ -16,7 +16,7 @@ float SceneElement::lightStrength[3*MAX_NUM_LIGHTS] =
 
 float SceneElement::lightPos[4*MAX_NUM_LIGHTS] =
 	{
-		 0.0, -40.0, 40.0, 0.0,
+		 0.0, -20.0, 40.0, 0.0,
 		-80.0, 75.0, 40.0, 1.0,
 		 150.0, 0.0, 20.0, 1.0
 	};
@@ -25,7 +25,7 @@ float SceneElement::globalAmbient[] = { 0.1, 0.1, 0.1};
 
 SceneElement::SceneElement(ShaderIF* sIF, const PhongMaterial& matlIn) :
 	shaderIF(sIF), matl(matlIn), texID(0), colorGenerationMode(-1),
-	textureSource(-1)
+	textureSource(-1), isVisible(true)
 {
 }
 
