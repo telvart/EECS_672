@@ -80,8 +80,14 @@ void House::defineCottage()
   PhongMaterial red(1, 0, 0.125, 1, 0, 0.125, 1, 0, 0.125, 10, 1);
   PhongMaterial black(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1);
   PhongMaterial brick(0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 5, 1);
+
+  cryph::AffVector U(1,0,0);
+  cryph::AffVector V(0,1,0);
+  cryph::AffVector W(0,0,1);
+
+
   cryph::AffPoint r(135, 35.5, 110);
-  cryph::AffPoint backEntryLoc(125, 183.5, 110);
+  cryph::AffPoint backEntryLoc(140, 163.5, 110);
   cryph::AffPoint extensLoc(-60, 32.5, 111);
 
   models.push_back(new Block(shaderIF, 50, -75, 10, 170, 220, 1, gray)); //main cabin floor
@@ -101,6 +107,7 @@ void House::defineCottage()
   models.push_back(new Block(shaderIF, -260, 30.5, 10, 5, 5, 100, brick));
   models.push_back(new Block(shaderIF, -205, 95, 10, 5, -5, 100, brick));
   models.push_back(new Block(shaderIF, -205, -30, 10, 5, 5, 100, brick));
+  models.push_back(new Block(shaderIF, -205, -30, 10, 55, -40, -2, red));
 
   models.push_back(new Block(shaderIF, 50, -150, -50, 170, 75, 60, matl)); //front porch
   models.push_back(new Block(shaderIF, 50, -150, 10, 3, 3, 40, matl)); /* railing lines 106 - 126*/
@@ -131,14 +138,28 @@ void House::defineCottage()
   models.push_back(new Block(shaderIF, 170, -190, 2, -8, 8, -52, black));
   models.push_back(new Block(shaderIF, 170, -150, 2, -8, -8, -52, black));
 
+  models.push_back(new Block(shaderIF, 50, -190, -47, 3, 3, 40, matl));
+  cryph::AffPoint p1(51.5, -188.5, -7);
+  cryph::AffPoint p2(131.5, -48.5, 50);
+//  rail = BasicShape::makeBoundedCylinder(p1, p2, 1, 1, 25, 2, BasicShape::CAP_AT_BOTH);
+//  railR = new BasicShapeRenderer(shaderIF, rail);
+
+  models.push_back(new Block(shaderIF, 50, -150, -50, 11.4, -40, 3, matl)); /* stairs */
+  models.push_back(new Block(shaderIF, 61.4, -150, -42, 11.4, -40, 3, matl));
+  models.push_back(new Block(shaderIF, 72.8, -150, -34, 11.4, -40, 3, matl));
+  models.push_back(new Block(shaderIF, 84.2, -150, -26, 11.4, -40, 3, matl));
+  models.push_back(new Block(shaderIF, 95.6, -150, -18, 11.4, -40, 3, matl));
+  models.push_back(new Block(shaderIF, 107, -150, -10, 11.4, -40, 3, matl));
+  models.push_back(new Block(shaderIF, 118.4, -150, -2, 11.4, -40, 3, matl));
 
 
 
+  models.push_back(new Block(shaderIF, 115, 146, 10, 3, 75, 100, red)); //back entry
+  models.push_back(new Block(shaderIF, 115, 221, 10, 50, 3, 100, red));
+  models.push_back(new Block(shaderIF, 165, 221, 10, -3, -75, 100, red));
 
 
-  models.push_back(new Block(shaderIF, 100, 146, 10, 50, 75, 100, black)); //back entry
-
-  roofPieces.push_back(new TriPrism(shaderIF, gray, backEntryLoc, 15, 50, 75, false));
+  roofPieces.push_back(new TriPrism(shaderIF, gray, backEntryLoc, 15, 50, 135, false));
   roofPieces.push_back(new TriPrism(shaderIF, gray, extensLoc, 30, 400, 155, true));
   roofPieces.push_back(new Pyramid(shaderIF, r, 50, 185, 230, gray)); //roof
 //  models.push_back(new Pyramid(shaderIF, r, 20, 50, 100, gray));
@@ -176,6 +197,11 @@ bool House::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)
     toggleVisibility(roofPieces);
     //GLFWController* c = dynamic_cast<GLFWController*>(Controller::getCurrentController());
     //c->handleDisplay();
+  }
+  else if(anASCIIChar == 'w')
+  {
+    std::cout<<"toggle translucent objects\n";
+    toggleVisibility(translucents);
   }
   else if (anASCIIChar == 'O')
     ModelView::setProjection(ORTHOGONAL);

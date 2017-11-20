@@ -3,13 +3,14 @@
 #ifndef HOUSE_H
 #define HOUSE_H
 
-#include "ModelView.h"
+#include "SceneElement.h"
 #include "SceneElement.h"
 #include "ShaderIF.h"
 #include "Block.h"
 #include "Pyramid.h"
 #include "TriPrism.h"
 #include "GLFWController.h"
+#include "BasicShapeRenderer.h"
 #include <vector>
 
 typedef float vec3[3];
@@ -37,8 +38,12 @@ private:
 	cryph::AffPoint m_bottom;
 	Block *doorKnob;
 
+	BasicShape* rail;
+	BasicShapeRenderer* railR;
+
 	std::vector<SceneElement*> models;
 	std::vector<SceneElement*> roofPieces;
+	std::vector<SceneElement*> translucents;
 
 	bool dogHouse;
 	bool drawingCottage;

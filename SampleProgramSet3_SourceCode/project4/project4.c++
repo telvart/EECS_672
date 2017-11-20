@@ -1,6 +1,6 @@
 // project2.c++: Starter for EECS 672 Project 2
 
-#include "GLFWController.h"
+#include "P4Controller.h"
 #include "House.h"
 #include "Tree.h"
 #include "PicnicTable.h"
