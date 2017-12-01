@@ -20,6 +20,8 @@ uniform mat4 ec_lds = // (W-V map) * (projection matrix)
 out vec4 fragmentColor;
 
 const int MAX_LIGHTS = 3;
+uniform int sceneHasTransluscentObjects = 0;
+uniform int drawingOpaqueObjects = 1;
 
 // Phong lighting model values
 uniform vec3 kd = vec3(0.8, 0.0, 0.0); // default: darkish red
@@ -32,8 +34,7 @@ uniform float spec_m;
 uniform float alpha;
 uniform int numLights;
 uniform int projectionType;
-uniform int sceneHasTransluscentObjects = 0;
-uniform int drawingOpaqueObjects = 1;
+
 
 float attenuation(vec3 light, vec3 ecPos)
 {

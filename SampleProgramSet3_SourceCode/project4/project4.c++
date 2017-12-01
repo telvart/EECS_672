@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 	cryph::AffPoint fireLoc(-80.0, 75.0, 0.0);
 	cryph::AffPoint fire2Loc(150.0, 0.0, 0.0);
 
-	PhongMaterial house(0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 5, 1);
+	PhongMaterial house(0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 5, 0.5);
 	PhongMaterial pine(0.004, 0.475, 0.435, 0.004, 0.475, 0.435, 0.300, 0.275, 0.435, 10, 1);
 	PhongMaterial yellow(1, 1, 0, 1, 1, 0, 1, 1, 0, 5, 1);
 	PhongMaterial orange(1, 0.27, 0, 1, 0.27, 0, 1, 0.27, 0, 10, 1);
@@ -66,10 +66,11 @@ int main(int argc, char* argv[])
 	PhongMaterial sidewalk(0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 0.9607, 5, 1);
 	PhongMaterial brown(0.32, 0.2, 0.039, 0.32, 0.2, 0.039, 0.32, 0.2, 0.039, 1, 1);
 
-	GLFWController c("My cottage, with PHONG!", MVC_USE_DEPTH_BIT);
+	P4Controller c("My cottage", MVC_USE_DEPTH_BIT);
 	c.reportVersions(std::cout);
 
 	ShaderIF* sIF = new ShaderIF("shaders/basic.vsh", "shaders/phong.fsh");
+	c.setShaderIF(sIF);
 
 	c.addModel(new Block(sIF, -300, -300, -50, 600, 600, 1, grass)); //green underlay
 	//c.addModel(new Block(sIF, -12.5, -200, 1, 25, 150, 1, sidewalk)); //sidewalk
