@@ -80,6 +80,7 @@ void House::defineCottage()
   PhongMaterial red(1, 0, 0.125, 1, 0, 0.125, 1, 0, 0.125, 10, 1);
   PhongMaterial black(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1);
   PhongMaterial brick(0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 0.796, 0.255, 0.329, 5, 1);
+  PhongMaterial screen(0.27, 0.5, 0.70, 0.27, 0.5, 0.70, 0.27, 0.5, 0.70, 10, 0.4);
 
   cryph::AffVector U(1,0,0);
   cryph::AffVector V(0,1,0);
@@ -107,7 +108,11 @@ void House::defineCottage()
   models.push_back(new Block(shaderIF, -260, 30.5, 10, 5, 5, 100, brick));
   models.push_back(new Block(shaderIF, -205, 95, 10, 5, -5, 100, brick));
   models.push_back(new Block(shaderIF, -205, -30, 10, 5, 5, 100, brick));
-  models.push_back(new Block(shaderIF, -205, -30, 10, 55, -40, -2, red));
+  //models.push_back(new Block(shaderIF, -205, -30, 10, 55, -40, -2, red));
+
+  models.push_back(new Block(shaderIF, -255, -28.5, 10, 105, 2, 100, screen));/* screens */
+  models.push_back(new Block(shaderIF, -258.5, -28.5, 10, 2, 120, 100, screen));
+  models.push_back(new Block(shaderIF, -255, 91.5, 10, 105, 2, 100, screen));
 
   models.push_back(new Block(shaderIF, 50, -150, -50, 170, 75, 60, matl)); //front porch
   models.push_back(new Block(shaderIF, 50, -150, 10, 3, 3, 40, matl)); /* railing lines 106 - 126*/
@@ -160,7 +165,7 @@ void House::defineCottage()
 
 
   roofPieces.push_back(new TriPrism(shaderIF, gray, backEntryLoc, 15, 50, 135, false));
-  roofPieces.push_back(new TriPrism(shaderIF, gray, extensLoc, 30, 400, 155, true));
+  roofPieces.push_back(new TriPrism(shaderIF, gray, extensLoc, 30, 420, 155, true));
   roofPieces.push_back(new Pyramid(shaderIF, r, 50, 185, 230, gray)); //roof
 //  models.push_back(new Pyramid(shaderIF, r, 20, 50, 100, gray));
 }

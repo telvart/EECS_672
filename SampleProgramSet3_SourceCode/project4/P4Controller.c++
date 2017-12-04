@@ -25,19 +25,21 @@ void P4Controller::handleDisplay()
 
   glClear(glClearFlags);
 
+  glUseProgram(shaderIF->getShaderPgmID()); //workaround
+
   glDepthMask(GL_TRUE);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glUniform1i(shaderIF->ppuLoc("sceneHasTransluscentObjects"), 1);
 
   glDisable(GL_BLEND);
-  //glUniform1i(shaderIF->ppuLoc("drawingOpaqueObjects"), 1);
+  glUniform1i(shaderIF->ppuLoc("drawingOpaqueObjects"), 1);
   drawAllObjects(); //drawing opaque objects
 
-  // glDepthMask(GL_FALSE);
-  // glEnable(GL_BLEND);
-  // glUniform1i(shaderIF->ppuLoc("drawingOpaqueObjects"), 0);
-  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  // drawAllObjects(); // drawing transluscent objects
+  glDepthMask(GL_FALSE);
+  glEnable(GL_BLEND);
+  glUniform1i(shaderIF->ppuLoc("drawingOpaqueObjects"), 0);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  drawAllObjects(); // drawing transluscent objects
 
   //
   checkForErrors(std::cout, "P4Controller::handleDisplay");

@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 	cryph::AffPoint fireLoc(-80.0, 75.0, 0.0);
 	cryph::AffPoint fire2Loc(150.0, 0.0, 0.0);
 
-	PhongMaterial house(0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 5, 0.5);
+	PhongMaterial house(0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 0.862, 0.752, 0.415, 5, 1.0);
 	PhongMaterial pine(0.004, 0.475, 0.435, 0.004, 0.475, 0.435, 0.300, 0.275, 0.435, 10, 1);
 	PhongMaterial yellow(1, 1, 0, 1, 1, 0, 1, 1, 0, 5, 1);
 	PhongMaterial orange(1, 0.27, 0, 1, 0.27, 0, 1, 0.27, 0, 10, 1);
