@@ -15,6 +15,7 @@
 #include "PhongMaterial.h"
 #include "ShaderIF.h"
 #include "BasicShapeRenderer.h"
+#include "P4Controller.h"
 
 static const int MAX_NUM_LIGHTS = 3; // MUST BE KEPT SAME AS IN the shader program
 typedef float vec3[3];
@@ -42,12 +43,14 @@ public:
 protected:
 	ShaderIF* shaderIF;
 	PhongMaterial matl;
-
+	GLuint texID;
+	GLenum wrapS, wrapT;
+	int textureSource;
+	void useTexture();
+	void disableTexture();
 
 private:
-	GLuint texID;
 	int colorGenerationMode;
-	int textureSource;
 
 	// lighting environment
 	static float lightPos[4*MAX_NUM_LIGHTS]; // (x,y,z,w) for each light

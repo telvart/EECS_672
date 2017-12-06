@@ -114,7 +114,7 @@ void House::defineCottage()
   models.push_back(new Block(shaderIF, -258.5, -28.5, 10, 2, 120, 100, screen));
   models.push_back(new Block(shaderIF, -255, 91.5, 10, 105, 2, 100, screen));
 
-  models.push_back(new Block(shaderIF, 50, -150, -50, 170, 75, 60, matl)); //front porch
+  models.push_back(new Block(shaderIF, 50, -150, -50, 170, 75, 60, matl, "textures/deckwood.jpg")); //front porch
   models.push_back(new Block(shaderIF, 50, -150, 10, 3, 3, 40, matl)); /* railing lines 106 - 126*/
   models.push_back(new Block(shaderIF, 50, -112.5, 10, 3, 3, 40, matl));
   models.push_back(new Block(shaderIF, 220, -112.5, 10, -3, 3, 40, matl));
@@ -137,17 +137,17 @@ void House::defineCottage()
   models.push_back(new Block(shaderIF, 170, -150, 29, -3, -40, 3, matl));
   models.push_back(new Block(shaderIF, 170, -190, 29, -40, 3, 3, matl));
 
-  models.push_back(new Block(shaderIF, 130, -150, 10, 40, -40, -8, red)); //stair platform
-  models.push_back(new Block(shaderIF, 130, -150, 2, 8, -8, -52, black)); /* platform posts */
-  models.push_back(new Block(shaderIF, 130, -190, 2, 8, 8, -52, black));
-  models.push_back(new Block(shaderIF, 170, -190, 2, -8, 8, -52, black));
-  models.push_back(new Block(shaderIF, 170, -150, 2, -8, -8, -52, black));
+  models.push_back(new Block(shaderIF, 130, -150, 10, 40, -40, -8, matl)); //stair platform
+  models.push_back(new Block(shaderIF, 130, -150, 2, 8, -8, -52, matl)); /* platform posts */
+  models.push_back(new Block(shaderIF, 130, -190, 2, 8, 8, -52, matl));
+  models.push_back(new Block(shaderIF, 170, -190, 2, -8, 8, -52, matl));
+  models.push_back(new Block(shaderIF, 170, -150, 2, -8, -8, -52, matl));
 
   models.push_back(new Block(shaderIF, 50, -190, -47, 3, 3, 40, matl));
   cryph::AffPoint p1(51.5, -188.5, -7);
-  cryph::AffPoint p2(131.5, -48.5, 50);
-//  rail = BasicShape::makeBoundedCylinder(p1, p2, 1, 1, 25, 2, BasicShape::CAP_AT_BOTH);
-//  railR = new BasicShapeRenderer(shaderIF, rail);
+  cryph::AffPoint p2(131.5, -188.5, 50);
+  rail = BasicShape::makeBoundedCylinder(p1, p2, 2, 25, 2, BasicShape::CAP_AT_BOTH);
+  railR = new BasicShapeRenderer(shaderIF, rail);
 
   models.push_back(new Block(shaderIF, 50, -150, -50, 11.4, -40, 3, matl)); /* stairs */
   models.push_back(new Block(shaderIF, 61.4, -150, -42, 11.4, -40, 3, matl));
@@ -189,9 +189,11 @@ void House::render()
       roofPieces[i] -> render();
 
   if(!dogHouse && (!drawingCottage))
-  {
     doorKnob -> render();
-  }
+
+  establishMaterial();
+  if(drawingCottage)
+    railR->drawShape();
 }
 
 bool House::handleCommand(unsigned char anASCIIChar, double ldsX, double ldsY)

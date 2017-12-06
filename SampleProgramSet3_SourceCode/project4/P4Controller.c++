@@ -41,7 +41,6 @@ void P4Controller::handleDisplay()
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   drawAllObjects(); // drawing transluscent objects
 
-  //
   checkForErrors(std::cout, "P4Controller::handleDisplay");
 
 }

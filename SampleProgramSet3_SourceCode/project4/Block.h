@@ -4,13 +4,17 @@
 #include "SceneElement.h"
 
 typedef float vec3[3];
+typedef float vec2[2];
 
 class Block : public SceneElement
 {
 public:
 	Block(ShaderIF* sIF, float cx, float cy, float cz, // lower left corner
 	      float lx, float ly, float lz, PhongMaterial& mat);// lengths in 3 directions
-				
+
+	Block(ShaderIF* sIF, float cx, float cy, float cz, // lower left corner
+	      float lx, float ly, float lz, PhongMaterial& mat, const char* texImgName);
+
 	virtual ~Block();
 
 	void getMCBoundingBox(double* xyzLimits) const;
@@ -21,9 +25,12 @@ private:
 
 	void defineBlock();
 	void renderBlock();
+	void renderBlockWithTexture();
+	void sendTextureData(vec2 tex[]);
+	bool hasTexture;
 
 	GLuint vao[1];
-	GLuint vbo[1];
+	GLuint vbo[2];
 	GLuint ebo[3];
 
 	float xmin, xmax, ymin, ymax, zmin, zmax;

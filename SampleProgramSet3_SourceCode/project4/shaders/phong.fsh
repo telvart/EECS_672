@@ -9,6 +9,7 @@ in PVA
 {
 	vec3 ecPosition;
 	vec3 ecUnitNormal;
+	vec2 texCoords;
 } pvaIn;
 
 uniform mat4 ec_lds = // (W-V map) * (projection matrix)
@@ -22,6 +23,8 @@ out vec4 fragmentColor;
 const int MAX_LIGHTS = 3;
 uniform int sceneHasTransluscentObjects = 0;
 uniform int drawingOpaqueObjects = 1;
+uniform int modelHasTexture = 0;
+uniform sampler2D textureMap;
 
 // Phong lighting model values
 uniform vec3 kd = vec3(0.8, 0.0, 0.0); // default: darkish red
@@ -114,9 +117,26 @@ vec4 evaluateLightingModel()
 	return vec4(Iq, alpha);
 }
 
+vec4 composeColors(vec4 lightingColor, vec4 textureColor)
+{
+	return textureColor * lightingColor;
+}
+
 void main ()
 {
-	vec4 color = evaluateLightingModel();
+	vec4 lightColor;
+	vec4 textureColor;
+	vec4 color;
+	if (modelHasTexture == 1)
+	{
+		lightColor = evaluateLightingModel();
+		textureColor = texture(textureMap, pvaIn.texCoords);
+		color = composeColors(lightColor, textureColor);
+		//color = texture(textureMap, pvaIn.texCoords);
+	}
+	else
+		color = evaluateLightingModel();
+
 	if(sceneHasTransluscentObjects == 1)
 	{
 		if(drawingOpaqueObjects == 1)

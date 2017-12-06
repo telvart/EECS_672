@@ -96,6 +96,21 @@ void SceneElement::establishTexture()
 	// (If you are texture-mapping onto faces of BasicShape instances,
 	// you use the "prepareForFace" callback which may or may not be
 	// implemented by calling this method.)
+
+	int activeTexture = 0;
+	glActiveTexture(GL_TEXTURE0 + activeTexture);
+	glUniform1i(shaderIF->ppuLoc("textureMap"), activeTexture);
+	glBindTexture(GL_TEXTURE_2D, texID);
+}
+
+void SceneElement::useTexture()
+{
+	glUniform1i(shaderIF->ppuLoc("modelHasTexture"), 1);
+}
+
+void SceneElement::disableTexture()
+{
+	glUniform1i(shaderIF->ppuLoc("modelHasTexture"), 0);
 }
 
 void SceneElement::establishView()
@@ -148,17 +163,20 @@ void SceneElement::setTextureImage(const std::string& imgFileName, int onFace)
 		std::cerr << "Could not open '" << imgFileName << "' for texture map.\n";
 		return;
 	}
+
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &texID);
 	glBindTexture(GL_TEXTURE_2D, texID);
-	float white[] = { 1.0, 1.0, 1.0, 1.0 };
+	float white[] = { 1.0, 1.0, 1.0, 1.0 }; //border color
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, white);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); //GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); //GL_CLAMP_TO_BORDER);
+
 	GLint level = 0;
-	int pw = ir->getWidth(), ph = ir->getHeight();
+	int pw = ir->getWidth();
+	int ph = ir->getHeight();
 	GLint iFormat = ir->getInternalFormat();
 	GLenum format = ir->getFormat();
 	GLenum type = ir->getType();
@@ -166,6 +184,8 @@ void SceneElement::setTextureImage(const std::string& imgFileName, int onFace)
 	const void* pixelData = ir->getTexture();
 	glTexImage2D(GL_TEXTURE_2D, level, iFormat, pw, ph, border, format, type, pixelData);
 	delete ir;
+
+  Controller::checkForErrors(std::cout, "SceneElement::setTextureImage");
 }
 
 void SceneElement::setTextureSource(int source, int onFace)

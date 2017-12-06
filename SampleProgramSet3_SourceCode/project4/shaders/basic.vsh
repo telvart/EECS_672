@@ -27,6 +27,7 @@ uniform mat4 ec_lds = // (W-V map) * (projection matrix)
 layout (location = 0) in vec3 mcPosition;
 // 2. incoming vertex normal vector in model coordinates
 in vec3 mcNormal; // incoming normal vector in model coordinates
+in vec2 texCoords;
 
 // The lighting model will be computed in the fragment shader, so we
 // just need to pass on the per-vertex information it needs to do so.
@@ -35,6 +36,7 @@ out PVA
 {
 	vec3 ecPosition;
 	vec3 ecUnitNormal;
+	vec2 texCoords;
 } pvaOut;
 
 void main ()
@@ -44,6 +46,7 @@ void main ()
 	pvaOut.ecPosition = p_ecPosition.xyz/p_ecPosition.w;
 	mat3 normalMatrix = transpose( inverse( mat3x3(mc_ec) ) );
 	pvaOut.ecUnitNormal = normalize(normalMatrix * mcNormal);
+	pvaOut.texCoords = texCoords;
 
 	//used for lighting model
 	// OpenGL expects us to set "gl_Position" to the projective space
