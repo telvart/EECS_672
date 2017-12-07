@@ -188,7 +188,7 @@ void Block::render()
 
 	if(hasTexture)
 	{
-		setTextureWrapMode(GL_REPEAT, GL_REPEAT);
+		//setTextureWrapMode(GL_REPEAT, GL_REPEAT);
 		renderBlockWithTexture();
 	}
 	else

@@ -10,6 +10,9 @@ class TriPrism: public SceneElement
 
 public:
   TriPrism(ShaderIF* sIF, PhongMaterial& mat, cryph::AffPoint loc, float height, float width, float length, bool onXaxis);
+  TriPrism(ShaderIF* sIF, PhongMaterial& mat, cryph::AffPoint loc,
+     float height, float width, float length, bool onXaxis, const char* textureImg);
+
   ~TriPrism();
 
 

@@ -49,6 +49,7 @@ protected:
 	int textureSource;
 	void useTexture();
 	void disableTexture();
+	bool hasTexture;
 
 private:
 	int colorGenerationMode;

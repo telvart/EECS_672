@@ -137,11 +137,11 @@ void House::defineCottage()
   models.push_back(new Block(shaderIF, 170, -150, 29, -3, -40, 3, matl, "textures/deckwood2.jpg"));
   models.push_back(new Block(shaderIF, 170, -190, 29, -40, 3, 3, matl, "textures/deckwood2.jpg"));
 
-  models.push_back(new Block(shaderIF, 130, -150, 10, 40, -40, -8, matl)); //stair platform
-  models.push_back(new Block(shaderIF, 130, -150, 2, 8, -8, -52, matl)); /* platform posts */
-  models.push_back(new Block(shaderIF, 130, -190, 2, 8, 8, -52, matl));
-  models.push_back(new Block(shaderIF, 170, -190, 2, -8, 8, -52, matl));
-  models.push_back(new Block(shaderIF, 170, -150, 2, -8, -8, -52, matl));
+  models.push_back(new Block(shaderIF, 130, -150, 10, 40, -40, -8, matl, "textures/deckwood.jpg")); //stair platform
+  models.push_back(new Block(shaderIF, 130, -150, 2, 8, -8, -52, matl, "textures/deckwood.jpg")); /* platform posts */
+  models.push_back(new Block(shaderIF, 130, -190, 2, 8, 8, -52, matl, "textures/deckwood.jpg"));
+  models.push_back(new Block(shaderIF, 170, -190, 2, -8, 8, -52, matl, "textures/deckwood.jpg"));
+  models.push_back(new Block(shaderIF, 170, -150, 2, -8, -8, -52, matl, "textures/deckwood.jpg"));
 
   models.push_back(new Block(shaderIF, 50, -190, -47, 3, 3, 40, matl));
   cryph::AffPoint p1(51.5, -188.5, -7);
@@ -149,13 +149,13 @@ void House::defineCottage()
   rail = BasicShape::makeBoundedCylinder(p1, p2, 2, 25, 2, BasicShape::CAP_AT_BOTH);
   railR = new BasicShapeRenderer(shaderIF, rail);
 
-  models.push_back(new Block(shaderIF, 50, -150, -50, 11.4, -40, 3, matl)); /* stairs */
-  models.push_back(new Block(shaderIF, 61.4, -150, -42, 11.4, -40, 3, matl));
-  models.push_back(new Block(shaderIF, 72.8, -150, -34, 11.4, -40, 3, matl));
-  models.push_back(new Block(shaderIF, 84.2, -150, -26, 11.4, -40, 3, matl));
-  models.push_back(new Block(shaderIF, 95.6, -150, -18, 11.4, -40, 3, matl));
-  models.push_back(new Block(shaderIF, 107, -150, -10, 11.4, -40, 3, matl));
-  models.push_back(new Block(shaderIF, 118.4, -150, -2, 11.4, -40, 3, matl));
+  models.push_back(new Block(shaderIF, 50, -150, -50, 11.4, -40, 3, matl, "textures/deckwood.jpg")); /* stairs */
+  models.push_back(new Block(shaderIF, 61.4, -150, -42, 11.4, -40, 3, matl, "textures/deckwood.jpg"));
+  models.push_back(new Block(shaderIF, 72.8, -150, -34, 11.4, -40, 3, matl, "textures/deckwood.jpg"));
+  models.push_back(new Block(shaderIF, 84.2, -150, -26, 11.4, -40, 3, matl, "textures/deckwood.jpg"));
+  models.push_back(new Block(shaderIF, 95.6, -150, -18, 11.4, -40, 3, matl, "textures/deckwood.jpg"));
+  models.push_back(new Block(shaderIF, 107, -150, -10, 11.4, -40, 3, matl, "textures/deckwood.jpg"));
+  models.push_back(new Block(shaderIF, 118.4, -150, -2, 11.4, -40, 3, matl, "textures/deckwood.jpg"));
 
 
 

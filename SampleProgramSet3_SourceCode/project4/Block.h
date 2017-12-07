@@ -27,7 +27,6 @@ private:
 	void renderBlock();
 	void renderBlockWithTexture();
 	void sendTextureData(vec2 tex[]);
-	bool hasTexture;
 
 	GLuint vao[1];
 	GLuint vbo[2];

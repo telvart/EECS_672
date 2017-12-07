@@ -12,6 +12,18 @@ TriPrism::TriPrism(ShaderIF* sIF, PhongMaterial& mat, cryph::AffPoint loc, float
   definePrism();
 }
 
+TriPrism::TriPrism(ShaderIF* sIF, PhongMaterial& mat, cryph::AffPoint loc,
+   float height, float width, float length, bool onXaxis, const char* texImgName)
+ : SceneElement(sIF, mat)
+{
+  this->loc = loc;
+  this->height = height;
+  this->width = width;
+  this->length = length;
+  alongX = onXaxis;
+  definePrism();
+}
+
 TriPrism::~TriPrism()
 {
 }
