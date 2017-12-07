@@ -37,6 +37,7 @@ public:
 	void setColorGenerationMode(int mode, int onFace=0);
 	void setTextureImage(const std::string& imgFileName, int onFace=0);
 	void setTextureSource(int source, int onFace=0);
+	void setTextureWrapMode(GLenum s, GLenum t);
 
 	bool isVisible;
 

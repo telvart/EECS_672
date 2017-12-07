@@ -27,6 +27,8 @@ SceneElement::SceneElement(ShaderIF* sIF, const PhongMaterial& matlIn) :
 	shaderIF(sIF), matl(matlIn), texID(0), colorGenerationMode(-1),
 	textureSource(-1), isVisible(true)
 {
+	wrapS = GL_CLAMP_TO_EDGE;
+	wrapT = GL_CLAMP_TO_EDGE;
 }
 
 SceneElement::~SceneElement()
@@ -171,8 +173,8 @@ void SceneElement::setTextureImage(const std::string& imgFileName, int onFace)
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, white);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); //GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); //GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS); //GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT); //GL_CLAMP_TO_BORDER);
 
 	GLint level = 0;
 	int pw = ir->getWidth();
@@ -186,6 +188,11 @@ void SceneElement::setTextureImage(const std::string& imgFileName, int onFace)
 	delete ir;
 
   Controller::checkForErrors(std::cout, "SceneElement::setTextureImage");
+}
+
+void SceneElement::setTextureWrapMode(GLenum s, GLenum t)
+{
+	wrapS = s; wrapT = t;
 }
 
 void SceneElement::setTextureSource(int source, int onFace)

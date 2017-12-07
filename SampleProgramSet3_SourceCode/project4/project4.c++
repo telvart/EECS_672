@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 	ShaderIF* sIF = new ShaderIF("shaders/basic.vsh", "shaders/phong.fsh");
 	c.setShaderIF(sIF);
 
-	c.addModel(new Block(sIF, -300, -300, -50, 600, 600, 1, grass)); //green underlay
+	c.addModel(new Block(sIF, -300, -300, -70, 600, 600, 1, grass)); //green underlay
 	//c.addModel(new Block(sIF, -12.5, -200, 1, 25, 150, 1, sidewalk)); //sidewalk
 
 	//c.addModel(new Tree(sIF,  0, 150, 0, 100, 20, pine));

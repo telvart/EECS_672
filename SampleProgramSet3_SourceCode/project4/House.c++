@@ -115,27 +115,27 @@ void House::defineCottage()
   models.push_back(new Block(shaderIF, -255, 91.5, 10, 105, 2, 100, screen));
 
   models.push_back(new Block(shaderIF, 50, -150, -50, 170, 75, 60, matl, "textures/deckwood.jpg")); //front porch
-  models.push_back(new Block(shaderIF, 50, -150, 10, 3, 3, 40, matl)); /* railing lines 106 - 126*/
-  models.push_back(new Block(shaderIF, 50, -112.5, 10, 3, 3, 40, matl));
-  models.push_back(new Block(shaderIF, 220, -112.5, 10, -3, 3, 40, matl));
-  models.push_back(new Block(shaderIF, 130, -150, 10, 3, 3, 40, matl));
-  models.push_back(new Block(shaderIF, 130, -190, 10, 3, 3, 40, matl));
-  models.push_back(new Block(shaderIF, 170, -190, 10, -3, 3, 40, matl));
-  models.push_back(new Block(shaderIF, 170, -150, 10, -3, 3, 40, matl));
-  models.push_back(new Block(shaderIF, 220, -150, 10, -3, 3, 40, matl));
-  models.push_back(new Block(shaderIF, 50, -150, 50, 3, 75, 3, matl));
-  models.push_back(new Block(shaderIF, 50, -150, 50, 83, 3, 3, matl));
-  models.push_back(new Block(shaderIF, 167, -150, 50, 53, 3, 3, matl));
-  models.push_back(new Block(shaderIF, 220, -150, 50, -3, 75, 3, matl));
-  models.push_back(new Block(shaderIF, 167, -190, 50, 3, 43, 3, matl));
-  models.push_back(new Block(shaderIF, 170, -190, 50, -40, 3, 3, matl));
-  models.push_back(new Block(shaderIF, 90, -150, 10, 3, 3, 40, matl));
-  models.push_back(new Block(shaderIF, 50, -150, 29, 83, 3, 3, matl));
-  models.push_back(new Block(shaderIF, 50, -150, 29, 3, 75, 3, matl));
-  models.push_back(new Block(shaderIF, 170, -150, 29, 50, 3, 3, matl));
-  models.push_back(new Block(shaderIF, 220, -150, 29, -3, 75, 3, matl));
-  models.push_back(new Block(shaderIF, 170, -150, 29, -3, -40, 3, matl));
-  models.push_back(new Block(shaderIF, 170, -190, 29, -40, 3, 3, matl));
+  models.push_back(new Block(shaderIF, 50, -150, 10, 3, 3, 40, matl, "textures/deckwood2.jpg")); /* railing lines 106 - 126*/
+  models.push_back(new Block(shaderIF, 50, -112.5, 10, 3, 3, 40, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 220, -112.5, 10, -3, 3, 40, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 130, -150, 10, 3, 3, 40, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 130, -190, 10, 3, 3, 40, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 170, -190, 10, -3, 3, 40, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 170, -150, 10, -3, 3, 40, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 220, -150, 10, -3, 3, 40, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 50, -150, 50, 3, 75, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 50, -150, 50, 83, 3, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 167, -150, 50, 53, 3, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 220, -150, 50, -3, 75, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 167, -190, 50, 3, 43, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 170, -190, 50, -40, 3, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 90, -150, 10, 3, 3, 40, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 50, -150, 29, 83, 3, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 50, -150, 29, 3, 75, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 170, -150, 29, 50, 3, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 220, -150, 29, -3, 75, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 170, -150, 29, -3, -40, 3, matl, "textures/deckwood2.jpg"));
+  models.push_back(new Block(shaderIF, 170, -190, 29, -40, 3, 3, matl, "textures/deckwood2.jpg"));
 
   models.push_back(new Block(shaderIF, 130, -150, 10, 40, -40, -8, matl)); //stair platform
   models.push_back(new Block(shaderIF, 130, -150, 2, 8, -8, -52, matl)); /* platform posts */

@@ -20,6 +20,7 @@ Block::Block(ShaderIF* sIF, float cx, float cy, float cz, float lx, float ly, fl
 	zmin = cz; zmax = cz + lz;
 	hasTexture = true;
 	defineBlock();
+	//setTextureWrapMode(GL_REPEAT, GL_REPEAT);
 	setTextureImage(texImgName, 0);
 }
 
@@ -47,15 +48,10 @@ void Block::defineBlock()
 	};
 
 	vec2 firstTex[] = {
-		{0, 0},
-		{0, 1},
-		{1, 0},
-		{1, 1},
-
-		{1, 0},
-		{1, 1},
-		{0, 0},
-		{0, 1} };
+		{0, 0},{0, 1},
+		{1, 0},{1, 1},
+		{0, 0},{0, 1},
+		{1, 0},{1, 1} };
 
 
 
@@ -114,10 +110,8 @@ void Block::renderBlock()
 	// The three faces that can be drawn with glDrawArrays
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, 0.0, 1.0);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
  	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 1.0, 0.0, 0.0);
  	glDrawArrays(GL_TRIANGLE_STRIP, 2, 4);
-
  	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, 0.0, -1.0);
  	glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
 //
@@ -133,7 +127,7 @@ void Block::renderBlock()
  	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, 1.0, 0.0);
  	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[2]);
  	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
-// }
+
 }
 
 void Block::renderBlockWithTexture()
@@ -146,24 +140,34 @@ void Block::renderBlockWithTexture()
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, 0.0, 1.0);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
+	vec2 tex2[] = {{0,0}, {0,0}, {0,1}, {1,1}, {0, 0}, {1,0}, {0,0}, {0,0}};
+	sendTextureData(tex2);
+
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 1.0, 0.0, 0.0);
 	glDrawArrays(GL_TRIANGLE_STRIP, 2, 4);
+
+	vec2 tex3[] = { {0,0}, {0,0}, {0,0}, {0,0}, {1,0}, {1,1}, {0,0}, {0,1}};
+	sendTextureData(tex3);
 
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, 0.0, -1.0);
 	glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
 
+	vec2 tex4[] = { {1,1}, {0,1}, {0,0}, {0,0}, {0,0}, {0,0}, {1,0}, {0,0}};
+	sendTextureData(tex4);
+
 	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), -1.0, 0.0, 0.0);
- 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
  	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
 
-	vec2 tex2[] = {
-		{0,1},{1,1},{1,1},{0,0},
-		{1,0},{0,0},{0,0},{1,0} };
-	sendTextureData(tex2);
+  vec2 tex5[] = { {0,1}, {1,1}, {1,1}, {0,0}, {1,0}, {0,0}, {0,0}, {1,0}};
+  sendTextureData(tex5);
 
  	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, -1.0, 0.0);
  	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[1]);
 	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, nullptr);
+
+  vec2 tex6[] = { {0,1}, {1,1}, {1,1}, {1,0}, {1,0}, {0,0}, {0,0}, {1,0}};
+	sendTextureData(tex6);
 
  	glVertexAttrib3f(shaderIF->pvaLoc("mcNormal"), 0.0, 1.0, 0.0);
  	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[2]);
@@ -183,7 +187,10 @@ void Block::render()
 	establishLightingEnvironment();
 
 	if(hasTexture)
+	{
+		setTextureWrapMode(GL_REPEAT, GL_REPEAT);
 		renderBlockWithTexture();
+	}
 	else
 		renderBlock();
 

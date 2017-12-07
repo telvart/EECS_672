@@ -41,6 +41,8 @@ void P4Controller::handleDisplay()
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   drawAllObjects(); // drawing transluscent objects
 
+  glfwSwapBuffers(theWindow);
+
   checkForErrors(std::cout, "P4Controller::handleDisplay");
 
 }
@@ -55,6 +57,6 @@ void P4Controller::drawAllObjects()
   // draw the collection of models
   for (std::vector<ModelView*>::iterator it=models.begin() ; it<models.end() ; it++)
     (*it)->render();
-  glfwSwapBuffers(theWindow);
+
 
 }
